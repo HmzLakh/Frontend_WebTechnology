@@ -7,10 +7,10 @@
           <div class="userprofile"></div>
       </div>
       <ul class="menu" v-else>
-         <li class="menu-style link">About Us</li>
-         <li class="menu-style link">Login</li>
-         <div class="signup link">
-            <li class="menu-style">Sign up</li>
+         <li class="menu-style"><p class="link">About Us</p></li>
+         <li class="menu-style"><p class="link">Login</p></li>
+         <div class="signup">
+            <li class="menu-style link">Sign up</li>
          </div>
       </ul>
       <div class="dropdown-container" v-if="showDropdown">
@@ -48,6 +48,7 @@ export default {
     border-bottom: 1px solid silver;
     background: white;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
 }
 
 .sitename-container {
@@ -55,7 +56,7 @@ export default {
     align-items: center;
     padding-left: 40px;
     height: 100%;
-    width: calc(100% - 270px);
+    width: calc(100% - 280px);
 }
 
 .sitename-container h1 {
@@ -66,7 +67,7 @@ export default {
     display: flex;
     float: right;
     align-items: center;
-    width: 270px;
+    width: 280px;
     list-style-type: none;
 }
 
@@ -77,6 +78,7 @@ export default {
 .menu-style {
     font-family: 'Nunito', sans-serif;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
 .signup {

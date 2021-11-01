@@ -1,6 +1,6 @@
 <template>
   <div id="article-filter">
-      <p>ok</p>
+      <p>Empty</p>
   </div>
 </template>
 
@@ -12,15 +12,8 @@ export default {
 </script>
 
 <style>
-@font-face {
-    font-family: nunito;
-    src: url('/src/assets/Fonts/Nunito-Light.woff');
-}
-
 #article-filter {
-    min-height: 600px;
-    width: 600px;
+    width: 350px;
     background-color: greenyellow;
 }
-
 </style>

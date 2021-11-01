@@ -1,12 +1,18 @@
 <template>
-  <div id="article-viewer" class="DIV">
-      <p>ok</p>
+  <div id="article-viewer">
+    <Article></Article>
+    <Article></Article>
+    <Article></Article>
+    <Article></Article>
   </div>
 </template>
 
 <script>
+import Article from './Article.vue'
+
 export default {
   name: 'article-viewer',
+  components: { Article },
   data () {}
 }
 </script>
@@ -18,9 +24,12 @@ export default {
 }
 
 #article-viewer {
-    min-height: 600px;
-    width: 600px;
-    background-color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
+#article-viewer > * {
+  margin: 10px;
+}
 </style>
