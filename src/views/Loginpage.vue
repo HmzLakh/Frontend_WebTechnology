@@ -1,13 +1,16 @@
 <template>
   <div id="loginpage">
-    <Navbar :isConnected="isConnected"></Navbar>
-    <p>This is the login page my friend!!!!!!!!!!!!</p>
+    <LoginContainer></LoginContainer>
+    <a @click="$router.go(-1)">Go back</a>
   </div>
 </template>
 
 <script>
+import LoginContainer from '../components/LoginContainer.vue'
+
 export default {
-  name: 'loginpage'
+  name: 'loginpage',
+  components: {LoginContainer}
 }
 </script>
 
@@ -17,9 +20,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: red;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(195,55,100);
+  background: linear-gradient(348deg, rgba(195,55,100,1) 0%, rgba(29,38,113,1) 100%);
 }
 
 </style>
