@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 // Components
 import PageA from '../components/PageA.vue'
 import Login from '../components/Login.vue'
-import notFound from '../components/NotFound.vue'
+import NotFound from '../components/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -21,7 +21,7 @@ const routes = [
     {
       name: 'notFound',
       path: '*',
-      component: notFound
+      component: NotFound
     }
 ]
 
