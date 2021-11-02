@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <Navbar :isConnected="isConnected"></Navbar>
     <router-view></router-view>
   </div>
 </template>
@@ -24,7 +23,6 @@ export default {
 
 <style>
 #app {
-  height: 100%;
   width: 100%;
 }
 </style>

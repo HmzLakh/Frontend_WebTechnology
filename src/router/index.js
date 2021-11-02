@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 // Components
-import PageA from '../components/PageA.vue'
-import Login from '../components/Login.vue'
-import NotFound from '../components/NotFound.vue'
+import Homepage from '../views/Homepage.vue'
+import Loginpage from '../views/Loginpage.vue'
+import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -11,12 +11,12 @@ const routes = [
   {
       name: 'root',
       path: '/',
-      component: PageA
+      component: Homepage
     },
     {
       name: 'login',
       path: '/login',
-      component: Login
+      component: Loginpage
     },
     {
       name: 'notFound',

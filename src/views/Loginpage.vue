@@ -1,23 +1,25 @@
 <template>
-  <div id="notfound">
-      <p>ERORR 4004: PAGE NOT FOUND IDIOT!</p>
+  <div id="loginpage">
+    <Navbar :isConnected="isConnected"></Navbar>
+    <p>This is the login page my friend!!!!!!!!!!!!</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'notfound'
+  name: 'loginpage'
 }
 </script>
 
 <style>
 
-#notfound {
+#loginpage {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: red;
 }
 
 </style>
