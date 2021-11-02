@@ -1,14 +1,14 @@
 <template>
   <div id="navbar">
       <div class="sitename-container">
-        <h1>MyGym</h1>
+        <h1 class="link"><router-link class="link" :to="{name: 'root'}">MyGym</router-link></h1>
       </div>
       <div class="userprofile-container" v-if="isConnected">
           <div class="userprofile"></div>
       </div>
       <ul class="menu" v-else>
-         <li class="menu-style"><p class="link">About Us</p></li>
-         <li class="menu-style"><p class="link">Login</p></li>
+         <li class="menu-style"><p class="link">About us</p></li>
+         <li class="menu-style"><router-link class="link" :to="{name: 'login'}">Login</router-link></li>
          <div class="signup">
             <li class="menu-style link">Sign up</li>
          </div>
@@ -102,6 +102,8 @@ export default {
 }
 
 .link {
+    color: black;
+    text-decoration: none;
     cursor: pointer;
 }
 

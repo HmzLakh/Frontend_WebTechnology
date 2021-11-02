@@ -1,9 +1,6 @@
 <template>
   <div id="article-viewer">
-    <Article></Article>
-    <Article></Article>
-    <Article></Article>
-    <Article></Article>
+    <!-- <Article></Article> -->
   </div>
 </template>
 
@@ -18,11 +15,6 @@ export default {
 </script>
 
 <style>
-@font-face {
-    font-family: nunito;
-    src: url('/src/assets/Fonts/Nunito-Light.woff');
-}
-
 #article-viewer {
   display: flex;
   flex-wrap: wrap;

@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <Navbar :isConnected="isConnected"></Navbar>
-    <!-- <MapViewer></MapViewer> -->
-    <div id="page-content">
-      <Article-container></Article-container>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -28,12 +25,6 @@ export default {
 <style>
 #app {
   height: 100%;
-  width: 100%;
-}
-
-#page-content {
-  display: flex;
-  flex-direction: row;
   width: 100%;
 }
 </style>
