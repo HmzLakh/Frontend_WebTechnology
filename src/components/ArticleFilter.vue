@@ -1,6 +1,17 @@
 <template>
   <div id="article-filter">
-      <p>Empty</p>
+    <div class="cat-one">
+      <label>Filter one</label>
+      <input type="text" />
+    </div>
+    <div class="cat-two">
+      <label>Filter two</label>
+      <input type="text" />
+    </div>
+    <div class="cat-three">
+      <label>Filter three</label>
+      <input type="text" />
+    </div>
   </div>
 </template>
 
@@ -13,7 +24,9 @@ export default {
 
 <style>
 #article-filter {
-    width: 350px;
-    background-color: greenyellow;
+  height: 500px;
+  width: 350px;
+  background-color: greenyellow;
+  padding: 15px;
 }
 </style>

@@ -175,6 +175,7 @@ export default {
 
 .password-forgotten:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .signup-link {

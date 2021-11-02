@@ -1,6 +1,9 @@
 <template>
   <div id="article-viewer">
-    <!-- <Article></Article> -->
+    <!-- <Article></Article>
+    <Article></Article>
+    <Article></Article>
+    <Article></Article>-->
   </div>
 </template>
 
@@ -18,7 +21,8 @@ export default {
 #article-viewer {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  width: calc(100% - 350px);
+  background-color: green;
 }
 
 #article-viewer > * {
