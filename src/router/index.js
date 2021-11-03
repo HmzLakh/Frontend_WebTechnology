@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 // Components
 import Homepage from '../views/Homepage.vue'
 import Loginpage from '../views/Loginpage.vue'
+import Registerpage from '../views/Registerpage.vue'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -17,6 +18,11 @@ const routes = [
       name: 'login',
       path: '/login',
       component: Loginpage
+    },
+    {
+      name: 'register',
+      path: '/register',
+      component: Registerpage
     },
     {
       name: 'notFound',

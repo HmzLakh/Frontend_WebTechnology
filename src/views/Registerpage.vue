@@ -1,0 +1,58 @@
+<template>
+  <div id="registerpage">
+    <RegisterChoice v-if="!choosen"></RegisterChoice>
+    <RegisterContainer v-else></RegisterContainer>
+    <a class="goback" @click="$router.go(-1)">
+        <font-awesome-icon :icon="['fas', 'arrow-alt-circle-left']" /> Go back
+    </a>
+  </div>
+</template>
+
+<script>
+import RegisterChoice from '../components/RegisterChoice.vue'
+import RegisterContainer from '../components/RegisterContainer.vue'
+
+export default {
+  name: 'registerpage',
+  components: {RegisterChoice, RegisterContainer},
+  data() {
+      return {
+          choosen: false
+      }
+  },
+  beforeRouteLeave(to, from, next) {
+      this.choosen = true;
+      alert(this.choosen)
+      next()
+  }
+}
+</script>
+
+<style>
+
+#registerpage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(195,55,100);
+  background: linear-gradient(348deg, rgba(195,55,100,1) 0%, rgba(29,38,113,1) 100%);
+}
+
+.goback {
+  margin: 15px 0;
+  font-family: Nunito;
+  color: white;
+  transition: 0.25s;
+}
+
+.goback:hover {
+  color: #ffdde1;
+  font-size: 20px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+</style>

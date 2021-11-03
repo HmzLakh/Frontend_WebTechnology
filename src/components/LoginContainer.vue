@@ -14,7 +14,7 @@
           </div>
           <p class="password-forgotten">Forgot password?</p>
           <input class="login-btn" type="button" value="Login">
-          <p class="signup-link">Not registered? <a href="#">Signup</a></p>
+          <p class="signup-link">Not registered? <router-link class="link" :to="{name: 'register'}">Signup</router-link></p>
       </div>
   </div>
 </template>

@@ -9,9 +9,11 @@
       <ul class="menu" v-else>
          <li class="menu-style"><p class="link">About us</p></li>
          <li class="menu-style"><router-link class="link" :to="{name: 'login'}">Login</router-link></li>
-         <div class="signup">
-            <li class="menu-style link">Sign up</li>
-         </div>
+         <router-link class="link" :to="{name: 'register'}">
+            <div class="signup">
+                <li class="menu-style">Sign up</li>
+            </div>
+         </router-link>
       </ul>
       <div class="dropdown-container" v-if="showDropdown">
             <div class="dropdown-element">
