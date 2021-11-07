@@ -1,9 +1,9 @@
 <template>
-  <div id="article-viewer">
-    <!-- <Article></Article>
+  <div id="article-container">
     <Article></Article>
     <Article></Article>
-    <Article></Article>-->
+    <Article></Article>
+    <Article></Article>
   </div>
 </template>
 
@@ -11,21 +11,19 @@
 import Article from './Article.vue'
 
 export default {
-  name: 'article-viewer',
-  components: { Article },
-  data () {}
+  name: 'article-container',
+  components: { Article }
 }
 </script>
 
 <style>
-#article-viewer {
+#article-container {
   display: flex;
   flex-wrap: wrap;
-  width: calc(100% - 350px);
   background-color: green;
 }
 
-#article-viewer > * {
+#article-container > * {
   margin: 10px;
 }
 </style>

@@ -1,15 +1,15 @@
 <template>
   <div id="article-filter">
     <div class="cat-one">
-      <label>Filter one</label>
+      <label>article-filter one</label>
       <input type="text" />
     </div>
     <div class="cat-two">
-      <label>Filter two</label>
+      <label>article-filter two</label>
       <input type="text" />
     </div>
     <div class="cat-three">
-      <label>Filter three</label>
+      <label>article-filter three</label>
       <input type="text" />
     </div>
   </div>
@@ -17,8 +17,7 @@
 
 <script>
 export default {
-  name: 'article-filter',
-  data () {}
+  name: 'article-filter'
 }
 </script>
 

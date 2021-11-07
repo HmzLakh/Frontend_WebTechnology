@@ -1,5 +1,5 @@
 <template>
-  <div id="article">
+  <div id="article-el">
       <div class="image-card">
           <img src="../assets/Images/exampleimg.jpg" />
       </div>
@@ -7,8 +7,8 @@
           <h1 class="article-title">VUB Building Sp...</h1>
           <h6 class="article-creator">By VUB</h6>
           <div class="review">
-              <font-awesome-icon v-for="index in 3" :key="index" class="star-on" :icon="['fas', 'star']" />
-              <font-awesome-icon v-for="index in 2" :key="index" :icon="['fas', 'star']" />
+              <font-awesome-icon v-for="index in 5" :key="index" class="star-on" :icon="['fas', 'star']" />
+              <!-- <font-awesome-icon v-for="index in 2" :key="index" :icon="['fas', 'star']" />-->
               <p class="review-amount">(7)</p>
           </div>
           <div class="view-button">
@@ -20,12 +20,11 @@
 
 <script>
 export default {
-  name: 'article',
-  data () {}
+  name: 'article-el'
 }
 </script>
 <style>
-#article {
+#article-el {
     position: relative;
     display: flex;
     flex-direction: column;
