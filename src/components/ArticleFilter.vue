@@ -1,17 +1,25 @@
 <template>
   <div id="article-filter">
-    <div class="cat-one">
-      <label>article-filter one</label>
-      <input type="text" />
+    <div class="select-sport">
+      <p>Sport</p>
+      <select class="value-holder" name="sports">
+        <option value="">Select</option>
+        <option value="football">Football</option>
+        <option value="basketball">Basketball</option>
+        <option value="tennis">Tennis</option>
+        <option value="handball">Handball</option>
+        <option value="squash">Squash</option>
+    </select>
     </div>
-    <div class="cat-two">
-      <label>article-filter two</label>
-      <input type="text" />
+    <div class="select-price">
+      <p>Price</p>
+      <input class="value-holder" type="text" />
     </div>
-    <div class="cat-three">
-      <label>article-filter three</label>
-      <input type="text" />
+    <div class="select-rating">
+      <p>Rating</p>
+      <input class="value-holder" type="text" />
     </div>
+    <button class="apply-button" type="button">Apply</button>
   </div>
 </template>
 
@@ -23,9 +31,21 @@ export default {
 
 <style>
 #article-filter {
-  height: 500px;
-  width: 350px;
-  background-color: greenyellow;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid silver;
   padding: 15px;
+  margin-right: 30px;
+}
+
+.value-holder {
+  width: 100%;
+}
+
+.apply-button {
+  border-radius: 25px;
+  margin: 30px 0;
+  outline: none;
 }
 </style>

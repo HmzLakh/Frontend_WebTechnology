@@ -31,10 +31,9 @@ export default {
 
 .container-layout {
   display: flex;
-  max-width: 1280px;
+  max-width: 1500px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
-  background-color: yellow;
 }
 </style>
