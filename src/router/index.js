@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Homepage from '../views/Homepage.vue'
 import Loginpage from '../views/Loginpage.vue'
 import Registerpage from '../views/Registerpage.vue'
+import Articlepage from '../views/Articlepage.vue'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -12,7 +13,7 @@ const routes = [
   {
       name: 'root',
       path: '/',
-      component: Homepage
+      component: Articlepage //Homepage
     },
     {
       name: 'login',
