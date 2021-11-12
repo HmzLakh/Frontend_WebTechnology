@@ -13,7 +13,7 @@ const routes = [
   {
       name: 'root',
       path: '/',
-      component: Articlepage //Homepage
+      component: Homepage
     },
     {
       name: 'login',
@@ -24,6 +24,12 @@ const routes = [
       name: 'register',
       path: '/register',
       component: Registerpage
+    },
+    {
+      name: 'article',
+      path: '/show/:id',
+      component: Articlepage,
+      props: true
     },
     {
       name: 'notFound',
