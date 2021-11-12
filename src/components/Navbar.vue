@@ -15,6 +15,9 @@
             </div>
          </router-link>
       </ul>
+      <div class="responsive-menu">
+          <font-awesome-icon :icon="['fas', 'bars']" />
+      </div>
       <div class="dropdown-container" v-if="showDropdown">
             <div class="dropdown-element">
               <p>My profile</p>
@@ -159,4 +162,26 @@ export default {
 .dropdown-element:last-child {
     border: none;
 }
+
+.responsive-menu {
+    display: none;
+    float: right;
+}
+
+@media screen and (max-width: 440px) {
+    .menu {
+        display: none;
+    }
+    .responsive-menu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        height: 100%;
+        width: 75px;
+    }
+    .sitename-container {
+        width: calc(100% - 75px);
+    }
+} 
 </style>
