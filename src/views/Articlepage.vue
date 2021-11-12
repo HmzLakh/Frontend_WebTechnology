@@ -2,30 +2,36 @@
   <div id="articlepage">
       <Navbar :isConnected="isConnected"></Navbar>
       <div class="container-layout">
-          <div class="image-show">
-              <div class="previous-img"><font-awesome-icon :icon="['fas', 'chevron-left']" /></div>
-              <img src="../assets/Images/imageshow.jpg" />
-              <div class="next-img"><font-awesome-icon :icon="['fas', 'chevron-right']" /></div>
-          </div>
+        <Slideshow></Slideshow>
           <div class="article-desc">
-              <h1>Article title</h1>
+              <h1 class="article-name">Article title</h1>
+              <h5>Pleinlaan 2, 1050 Elsene</h5>
               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+              <button class="reserve-button">
+                <ReservePopup v-if="openPopup" class="popup"></ReservePopup>
+                Reserve
+              </button>
           </div>
           <CommentSection></CommentSection>
       </div>
+      <Footer></Footer>
   </div>
 </template>
 
 <script>
+import Footer from '../components/Footer.vue'
 import Navbar from '../components/Navbar.vue'
+import Slideshow from '../components/Slideshow.vue'
+import ReservePopup from '../components/ReservePopup.vue'
 import CommentSection from '../components/CommentContainer.vue'
 
 export default {
   name: 'articlepage',
-  components: { Navbar, CommentSection },
+  components: { Navbar, Slideshow, CommentSection, ReservePopup, Footer},
   data () {
     return {
-      isConnected: false
+      isConnected: false,
+      openPopup: false,
     }
   }
 }
@@ -43,34 +49,37 @@ export default {
   padding: 0 20px;
 }
 
-.image-show {
-    display: flex;
-    justify-content: space-between;
-    height: 300px;
-    width: 100%;
-    background: 
-}
-
-.previous-img, .next-img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 5%;
-    background: rgba(0, 0, 0, 0.2);
-    transition: .25s all;
-}
-
-.previous-img:hover, .next-img:hover {
-    background: rgba(0, 0, 0, 0.5);
-    transition: .25s all;
+.article-name {
+  font-family: Nunito;
+  font-weight: 700;
 }
 
 .article-desc {
-    padding: 25px;
-    height: 300px;
-    width: 100%;
-    border: 1px solid silver;
-    border-top: none;
+  position: relative;
+  padding: 25px;
+  padding-bottom: 50px;
+  min-height: 300px;
+  width: 100%;
+  border: 1px solid silver;
+  border-top: none;
+}
+
+.reserve-button {
+  position: absolute;
+  right: 25px;
+  bottom: 13px;
+  width: 170px;
+  height: 30px;
+  font-size: 16px;
+  outline: none;
+  border: 1px solid silver;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup {
+  position: absolute;
+  right: 0;
+  bottom: 35px;
 }
 </style>

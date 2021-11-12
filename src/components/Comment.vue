@@ -9,14 +9,14 @@
             <h6>Sep 9th at 8:44pm</h6>
         </div>
         <div class="comment">
-            <p>{{msgContent}}</p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
         </div>
       </div>
       <div class="votes">
-          <div class="votes-amount"> 0 </div>
+          <div class="votes-amount">10000</div>
           <div class="votes-buttons">
-              <div class="up-button">/\</div>
-              <div class="down-button">\/</div>
+              <div class="up-button"><font-awesome-icon :icon="['fas', 'thumbs-up']" /></div>
+              <div class="down-button"><font-awesome-icon :icon="['fas', 'thumbs-down']" /></div>
         </div>
     </div>
   </div>
@@ -49,13 +49,13 @@ export default {
 }
 
 .right-side {
-    width: calc(100% - 50px);
-    padding-left: 10px;
+    width: 100%;
+    padding: 0 10px;
+    border-right: 1px solid silver;
 }
 
 .votes {
     display: flex;
-    width: 50px;
 }
 
 .votes-amount {
@@ -67,12 +67,30 @@ export default {
 .votes-buttons {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 30px;
 }
 
 .votes-buttons > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 50%;
-    width: 100%;
+}
+
+.up-button {
+    color: #6dd5ed;
+}
+
+.up-button:hover {
+    color: #2193b0;
+}
+
+.down-button {
+    color: #d66d75;
+}
+
+.down-button:hover {
+    color: #dd2476;
 }
 
 </style>
