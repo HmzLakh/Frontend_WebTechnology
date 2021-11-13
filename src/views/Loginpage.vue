@@ -8,11 +8,19 @@
 </template>
 
 <script>
+import store from '../store'
 import LoginContainer from '../components/LoginContainer.vue'
 
 export default {
   name: 'loginpage',
-  components: {LoginContainer}
+  components: {LoginContainer},
+  beforeRouteEnter: function(to, from, next) {
+    if(!store.getters.isUserConnected){
+      next()
+    } else {
+      next(false)
+    }
+  },
 }
 </script>
 

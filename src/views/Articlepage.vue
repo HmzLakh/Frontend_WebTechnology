@@ -1,6 +1,6 @@
 <template>
   <div id="articlepage">
-      <Navbar :isConnected="isConnected"></Navbar>
+      <Navbar></Navbar>
       <div class="article-container">
         <Slideshow></Slideshow>
           <div class="article-description">

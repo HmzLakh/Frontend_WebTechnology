@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :isConnected="isConnected"></Navbar>
+    <Navbar></Navbar>
     <p>ERORR 4004: PAGE NOT FOUND IDIOT!</p>
   </div>
 </template>

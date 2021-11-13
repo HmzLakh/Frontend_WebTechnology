@@ -11,7 +11,7 @@
               <!-- <font-awesome-icon v-for="index in 2" :key="index" :icon="['fas', 'star']" />-->
               <p class="review-amount">(7)</p>
           </div>
-          <router-link :to="{ name: 'article', params: {id:123}}"><div class="view-button"><font-awesome-icon class="view-button-image" :icon="['fas', 'eye']" /></div></router-link>
+          <router-link :to="{ name: 'article', params: {id: articleid} }"><div class="view-button"><font-awesome-icon class="view-button-image" :icon="['fas', 'eye']" /></div></router-link>
       </div>
   </div>
 </template>
@@ -19,6 +19,7 @@
 <script>
 export default {
   name: 'article-el',
+  props: ['articleid'],
   data() {
       return {
           id: 10

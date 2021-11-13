@@ -4,7 +4,7 @@
       <input type="search" >
     </div>
     <div class="article-inner">
-      <Article  v-for="index in 15" :key="index"></Article>
+      <Article  v-for="index in 15" :key="index" :articleid="index"></Article>
     </div>
   </div>
 </template>

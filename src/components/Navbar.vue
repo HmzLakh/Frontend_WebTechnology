@@ -34,13 +34,17 @@
 
 <script>
 export default {
-  name: 'navbar',
-  props: ['isConnected'],
-  data () { 
-    return {
-        showDropdown: false
+    name: 'navbar',
+    data () { 
+        return {
+            showDropdown: false
+        }
+    },
+    computed: {
+        isConnected(){
+            return this.$store.getters.isUserConnected
+        }
     }
-  }
 }
 </script>
 

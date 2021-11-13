@@ -5,15 +5,15 @@
           <div class="mail-input">
               <input v-model="username" type="text" required>
               <span></span>
-              <label class="label-input">Username</label>
+              <label ref="usernameLabel" class="label-input">Username</label>
           </div>
           <div class="pass-input">
-              <input v-model="password" type="password" required>
+              <input ref="passwordLabel" v-model="password" type="password" required>
               <span></span>
-              <label class="label-input">Password</label>
+              <label ref="passwordLabel" class="label-input">Password</label>
           </div>
           <p class="password-forgotten">Forgot password?</p>
-          <input class="login-btn" type="button" value="Login">
+          <input @click="logUserIn" class="login-btn" type="button" value="Login">
           <p class="signup-link">Not registered? <router-link class="link" :to="{name: 'register'}">Signup</router-link></p>
       </div>
   </div>
@@ -21,11 +21,30 @@
 
 <script>
 export default {
-  name: 'login-container',
-  data() { return {
-      username: '',
-      password: ''
-  }}
+    name: 'login-container',
+    data() { 
+        return {
+            username: '',
+            password: ''
+        }
+    },
+    methods: {
+        logUserIn: function (event) {
+            if(this.username.length == 0){
+                this.$refs.usernameLabel.classList.add("not-valid")
+                setTimeout(() => {
+                    this.$refs.usernameLabel.classList.remove("not-valid")
+                }, 1500)
+            }
+            if(this.password.length == 0){
+                this.$refs.passwordLabel.classList.add("not-valid")
+                setTimeout(() => {
+                    this.$refs.passwordLabel.classList.remove("not-valid")
+                }, 1500)
+            }
+            console.log("Loggin -> ", this.username, " <-> ",this.password, "->");
+        }
+    }
 }
 </script>
 
@@ -149,6 +168,12 @@ export default {
 .label-input {
     font-family: Nunito;
     font-size: 12px;
+}
+
+.not-valid {
+    color: red;
+    font-weight: bold;
+    transition: all 0.25s;
 }
 
 .login-btn {
