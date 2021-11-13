@@ -1,9 +1,7 @@
 <template>
   <div id="comment-container">
     <h1 class="comment-title">Comments (3)</h1>
-    <Comment :msgContent="msg1" ></Comment>
-    <Comment :msgContent="msg2"></Comment>
-    <Comment :msgContent="msg3"></Comment>
+    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.timestamp" :value="comment.value" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser"></Comment>
     <div class="add-comment">
       <h2 class="add-comment-title">Add a comment</h2>
       <textarea class="comment-area" maxlength="255"></textarea>
@@ -19,14 +17,8 @@ import Comment from '../components/Comment.vue'
 
 export default {
   name: 'comment-container',
-  components: { Comment },
-  data() {
-      return {
-          msg1: "Message ceci toi",
-          msg2: "Message toi cela",
-          msg3: "Pourtoi toi la"
-      }
-  }
+  props: ['comments'],
+  components: { Comment }
 }
 </script>
 <style>

@@ -4,15 +4,15 @@
       <div class="article-container">
         <Slideshow></Slideshow>
           <div class="article-description">
-              <h1 class="article-name">Article title</h1>
-              <h5>Pleinlaan 2, 1050 Elsene</h5>
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+              <h1 class="article-name">{{ getPost.title }}</h1>
+              <h5>{{ getPost.address }}</h5>
+              <p>{{ getPost.description }}</p>
               <button class="reserve-button">
                 <ReservePopup v-if="openPopup" class="popup"></ReservePopup>
                 Reserve
               </button>
           </div>
-          <CommentSection></CommentSection>
+          <CommentSection :comments="getPost.comments"></CommentSection>
       </div>
       <Footer></Footer>
   </div>
@@ -32,6 +32,15 @@ export default {
     return {
       isConnected: false,
       openPopup: false,
+    }
+  },
+  mounted(){
+    const paramid = this.$route.params.id
+    this.$store.dispatch("getArticle", paramid)
+  },
+  computed: {
+    getPost(){
+      return this.$store.getters.getCurrentArticle
     }
   }
 }

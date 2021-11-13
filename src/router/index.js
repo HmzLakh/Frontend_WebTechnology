@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 // Components
 import Homepage from '../views/Homepage.vue'
+import Testpage from '../views/Testpage.vue'
 import Loginpage from '../views/Loginpage.vue'
 import Registerpage from '../views/Registerpage.vue'
 import Articlepage from '../views/Articlepage.vue'

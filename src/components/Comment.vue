@@ -5,15 +5,15 @@
       </div>
       <div class="right-side">
         <div class="comment-information">
-            <p class="username">Username</p>
-            <h6>Sep 9th at 8:44pm</h6>
+            <p class="username">{{ username }}</p>
+            <h6>{{ timestamp }}</h6>
         </div>
         <div class="comment">
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <p>{{ value }}</p>
         </div>
       </div>
       <div class="votes">
-          <div class="votes-amount">10000</div>
+          <div class="votes-amount">{{ votes }}</div>
           <div class="votes-buttons">
               <div class="up-button"><font-awesome-icon :icon="['fas', 'thumbs-up']" /></div>
               <div class="down-button"><font-awesome-icon :icon="['fas', 'thumbs-down']" /></div>
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-    props: ['msgContent'],
+    props: ['username', 'userpic', 'timestamp', 'value', 'votes', 'isLiked', 'isDisliked'],
     name: 'comment'
 }
 </script>

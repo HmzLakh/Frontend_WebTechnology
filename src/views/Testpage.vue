@@ -16,12 +16,12 @@ export default {
     },
     methods: {
         removeC() {
-            this.$store.dispatch('checkUserIsAlreadyConnected')
+            this.$store.dispatch('getArticlesList')
         }
     },
     computed: {
         getBody(){
-            return this.$store.state.logstate
+            return this.$store.getters.getArticles
         }
   }
 }

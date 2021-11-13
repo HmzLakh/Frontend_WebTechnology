@@ -4,7 +4,7 @@
       <input type="search" >
     </div>
     <div class="article-inner">
-      <Article  v-for="index in 15" :key="index" :articleid="index"></Article>
+      <Article  v-for="p in getPosts" :key="p.id" :id="p.id" :name="p.name" :author="p.author" :tags="p.tags" :review="p.review"></Article>
     </div>
   </div>
 </template>
@@ -14,7 +14,15 @@ import Article from './Article.vue'
 
 export default {
   name: 'article-container',
-  components: { Article }
+  components: { Article },
+  mounted(){
+    this.$store.dispatch('getArticlesList')
+  },
+  computed: {
+    getPosts(){
+      return this.$store.getters.getArticles
+    }
+  }
 }
 </script>
 
