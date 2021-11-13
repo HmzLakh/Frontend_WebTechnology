@@ -1,6 +1,6 @@
 <template>
   <div id="homepage">
-    <Navbar :isConnected="isConnected"></Navbar>
+    <Navbar></Navbar>
     <div class="container-layout page-container">
       <ArticleFilter></ArticleFilter>
       <ArticleContainer></ArticleContainer>
@@ -15,12 +15,7 @@ import ArticleContainer from '../components/ArticleContainer.vue'
 
 export default {
   name: 'homepage',
-  components: {Navbar, ArticleContainer, ArticleFilter},
-  data () {
-    return {
-      isConnected: false
-    }
-  }
+  components: {Navbar, ArticleContainer, ArticleFilter}
 }
 </script>
 

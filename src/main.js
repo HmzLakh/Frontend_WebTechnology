@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Application from './Application.vue' // Main application
-import router from './router'
 import store from './store'
+import router from './router'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faStar, faEye,  faArrowAltCircleLeft, faSearch, faChevronLeft, faChevronRight, faThumbsUp, faThumbsDown, faBars} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

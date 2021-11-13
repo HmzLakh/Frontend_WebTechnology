@@ -8,19 +8,29 @@
 </template>
 
 <script>
-import store from '../store'
 import LoginContainer from '../components/LoginContainer.vue'
 
 export default {
   name: 'loginpage',
   components: {LoginContainer},
-  beforeRouteEnter: function(to, from, next) {
-    if(!store.getters.isUserConnected){
-      next()
-    } else {
-      next(false)
+  data (){
+    return {
+      unwatch: () => null
     }
   },
+  mounted() {
+    if(this.$store.getters.isUserConnected){
+      this.$router.replace('/')
+    }
+    this.unwatch = this.$store.watch(() => this.$store.getters.isUserConnected, (newValue) => {
+      if(newValue){
+        this.$router.replace('/')
+      }
+    })
+  },
+  beforeDestroy() {
+    this.unwatch()
+  }
 }
 </script>
 

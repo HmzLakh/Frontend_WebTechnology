@@ -5,15 +5,12 @@ import Vuex from 'vuex';
 Vue.use(Vuex)
 
 const state = {
-    logstate: false
+    authenticated: false
 }
 
 const mutations = {
-    removeCountA(state){
-        state.count--
-    },
     setLogState(state, isLogged){
-        state.logstate = isLogged
+        state.authenticated = isLogged
     }
 }
 
@@ -28,7 +25,7 @@ const actions = {
 
 const getters = {
     isUserConnected(state){
-        return state.logstate
+        return state.authenticated
     }
 }
 

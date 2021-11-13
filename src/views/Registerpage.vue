@@ -17,13 +17,22 @@ export default {
   components: {RegisterChoice, RegisterContainer},
   data() {
       return {
-          choosen: false
+        unwatch: () => null,
+        choosen: false
       }
   },
-  beforeRouteLeave(to, from, next) {
-      this.choosen = true;
-      alert(this.choosen)
-      next()
+  mounted() {
+    if(this.$store.getters.isUserConnected){
+      this.$router.replace('/')
+    }
+    this.unwatch = this.$store.watch(() => this.$store.getters.isUserConnected, (newValue) => {
+      if(newValue){
+        this.$router.replace('/')
+      }
+    })
+  },
+  beforeDestroy() {
+    this.unwatch()
   }
 }
 </script>
