@@ -1,14 +1,34 @@
 <template>
   <div id="slideshow">
-      <div class="previous-img"><font-awesome-icon :icon="['fas', 'chevron-left']" /></div>
-      <img class="img" src="../assets/Images/exampleimg1.jpg" />
-      <div class="next-img"><font-awesome-icon :icon="['fas', 'chevron-right']" /></div>
+      <button @click="slideLeft" class="previous-img"><font-awesome-icon :icon="['fas', 'chevron-left']" /></button>
+      <Slide v-for="(value, index) in imglinks" :key="index" :img="value" v-if="index == currentIdx"></Slide>
+      <button @click="slideRight"  class="next-img"><font-awesome-icon :icon="['fas', 'chevron-right']" /></button>
   </div>
 </template>
 
 <script>
+import Slide from './Slide.vue'
+
 export default {
-    name: 'slideshow'
+    name: 'slideshow',
+    components: { Slide },
+    props: ['imglinks'],
+    data () {
+        return {
+            currentIdx: 0
+        }
+    },
+    methods: {
+        slideRight(){
+            this.currentIdx = (this.currentIdx+1) % this.imglinks.length
+        },
+        slideLeft(){
+            this.currentIdx--
+            if(this.currentIdx<0){
+                this.currentIdx = this.imglinks.length-1
+            }
+        }
+    }
 }
 </script>
 <style>
@@ -35,19 +55,18 @@ export default {
 
 .previous-img {
     left: 0;
+    outline: none;
+    border: none;
 }
 
 .next-img {
     right: 0;
+    outline: none;
+    border: none;
 }
 
 .previous-img:hover, .next-img:hover {
     background: rgba(0, 0, 0, 0.5);
     transition: .25s all;
-}
-
-.img {
-    max-height: 100%;
-    max-width: 100%;
 }
 </style>

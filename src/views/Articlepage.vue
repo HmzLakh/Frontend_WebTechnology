@@ -2,7 +2,7 @@
   <div id="articlepage">
       <Navbar></Navbar>
       <div class="article-container">
-        <Slideshow></Slideshow>
+        <Slideshow :imglinks="getPost.images"></Slideshow>
           <div class="article-description">
               <h1 class="article-name">{{ getPost.title }}</h1>
               <h5>{{ getPost.address }}</h5>
