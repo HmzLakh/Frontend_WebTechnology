@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 // Components
 import Homepage from '../views/Homepage.vue'
 import Testpage from '../views/Testpage.vue'
+import Dashboardpage from '../views/Dashboardpage.vue'
 import Loginpage from '../views/Loginpage.vue'
 import Registerpage from '../views/Registerpage.vue'
 import Registerpage_owner from '../views/Registerpage_owner.vue'
@@ -16,6 +17,11 @@ const routes = [
       name: 'root',
       path: '/',
       component: Homepage
+    },
+    {
+      name: 'home',
+      path: '/home',
+      component: Dashboardpage
     },
     {
       name: 'login',
