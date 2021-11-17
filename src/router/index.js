@@ -5,6 +5,7 @@ import Homepage from '../views/Homepage.vue'
 import Testpage from '../views/Testpage.vue'
 import Loginpage from '../views/Loginpage.vue'
 import Registerpage from '../views/Registerpage.vue'
+import Registerpage_owner from '../views/Registerpage_owner.vue'
 import Articlepage from '../views/Articlepage.vue'
 import NotFound from '../views/NotFound.vue'
 
@@ -25,6 +26,11 @@ const routes = [
       name: 'register',
       path: '/register',
       component: Registerpage
+    },
+    {
+      name: 'register_owner',
+      path: '/register/owner',
+      component: Registerpage_owner
     },
     {
       name: 'article',
