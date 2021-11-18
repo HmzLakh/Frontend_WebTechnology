@@ -1,7 +1,7 @@
 <template>
   <div id="comment-container">
     <h1 class="comment-title">Comments (3)</h1>
-    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.timestamp" :value="comment.value" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser"></Comment>
+    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.timestamp" :value="comment.value" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser" :showLikeButtons="true"></Comment>
     <div class="add-comment">
       <h2 class="add-comment-title">Add a comment</h2>
       <textarea class="comment-area" maxlength="255"></textarea>

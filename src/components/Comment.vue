@@ -12,7 +12,7 @@
             <p>{{ value }}</p>
         </div>
       </div>
-      <div class="votes">
+      <div v-if="showLikeButtons" class="votes">
           <div class="votes-amount">{{ votes }}</div>
           <div class="votes-buttons">
               <div class="up-button"><font-awesome-icon :icon="['fas', 'thumbs-up']" /></div>
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-    props: ['username', 'userpic', 'timestamp', 'value', 'votes', 'isLiked', 'isDisliked'],
+    props: ['username', 'userpic', 'timestamp', 'value', 'votes', 'isLiked', 'isDisliked', 'showLikeButtons'],
     name: 'comment'
 }
 </script>
