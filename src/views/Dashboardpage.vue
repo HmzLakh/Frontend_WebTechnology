@@ -26,6 +26,7 @@
         <div class="dash-inner">
           <!-- <HomeComponent></HomeComponent> -->
           <!-- <EditComponent></EditComponent> -->
+          <PostComponent></PostComponent>
         </div>
       </div>
   </div>
@@ -35,10 +36,11 @@
 import Navbar from '../components/Navbar.vue'
 import HomeComponent from '../components/DashComponentHome.vue'
 import EditComponent from '../components/DashComponentEditProfile.vue'
+import PostComponent from '../components/DashComponentPost.vue'
 
 export default {
   name: 'dashboardpage',
-  components: { Navbar, HomeComponent, EditComponent },
+  components: { Navbar, HomeComponent, EditComponent, PostComponent },
 }
 </script>
 
