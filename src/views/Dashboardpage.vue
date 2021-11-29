@@ -24,7 +24,8 @@
           </ol>
         </div>
         <div class="dash-inner">
-          <HomeComponent></HomeComponent>
+          <!-- <HomeComponent></HomeComponent> -->
+          <!-- <EditComponent></EditComponent> -->
         </div>
       </div>
   </div>
@@ -33,10 +34,11 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 import HomeComponent from '../components/DashComponentHome.vue'
+import EditComponent from '../components/DashComponentEditProfile.vue'
 
 export default {
   name: 'dashboardpage',
-  components: { Navbar, HomeComponent },
+  components: { Navbar, HomeComponent, EditComponent },
 }
 </script>
 
@@ -96,5 +98,9 @@ export default {
   font-weight: 600;
   text-align: center;
   margin-bottom: 15px;
+}
+
+.dash-container {
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }
 </style>
