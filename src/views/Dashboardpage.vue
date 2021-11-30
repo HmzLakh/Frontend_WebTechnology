@@ -4,7 +4,7 @@
       <div class="dash-container">
         <div class="dash-menu">
           <h1 class="dash-menu-title">Menu</h1>
-          <ol class="dash-menu-list">
+          <ol>
             <li class="dash-element">
               <font-awesome-icon :icon="['fas', 'home']" class="dash-logo" />
               <p>Home</p>
@@ -24,7 +24,9 @@
           </ol>
         </div>
         <div class="dash-inner">
-          <EditComponent></EditComponent>
+          <!-- <HomeComponent></HomeComponent> -->
+          <!-- <EditComponent></EditComponent> -->
+          <PostComponent></PostComponent>
         </div>
       </div>
   </div>
@@ -33,11 +35,12 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 import HomeComponent from '../components/DashComponentHome.vue'
-import EditComponent from '../components/DashComponentEdit.vue'
+import EditComponent from '../components/DashComponentEditProfile.vue'
+import PostComponent from '../components/DashComponentPost.vue'
 
 export default {
   name: 'dashboardpage',
-  components: { Navbar, HomeComponent, EditComponent },
+  components: { Navbar, HomeComponent, EditComponent, PostComponent },
 }
 </script>
 
@@ -49,7 +52,6 @@ export default {
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  transition: 0.25;
 }
 
 .dash-container {
@@ -64,10 +66,6 @@ export default {
   border: 1px solid silver;
   border-right: none;
   background: rgb(195,55,100);
-}
-
-.dash-menu-list {
-  margin-bottom: 20px;
 }
 
 .dash-inner {
@@ -102,5 +100,9 @@ export default {
   font-weight: 600;
   text-align: center;
   margin-bottom: 15px;
+}
+
+.dash-container {
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }
 </style>
