@@ -3,8 +3,11 @@
     <div class="article-search">
       <input type="search" >
     </div>
-    <div class="article-inner">
+    <div class="article-inner" v-if="this.getPosts.length > 0">
       <Article  v-for="p in getPosts" :key="p.id" :id="p.id" :name="p.name" :author="p.author" :tags="p.tags" :review="p.review"></Article>
+    </div>
+    <div class="article-empty-inner" v-else>
+      <p class="article-empty-txt">Its a bit lonely here...<br/>You can be the first to change this!</p>
     </div>
   </div>
 </template>
@@ -29,13 +32,13 @@ export default {
 <style>
 #article-container {
   border: 1px solid silver;
+  width: 100%;
 }
 
 .article-inner {
   display: grid;
   grid-template-columns: auto auto auto auto;
   grid-auto-rows: minmax(100px, auto);
-  padding: 10px;
 }
 
 .article-inner > * {
@@ -62,5 +65,18 @@ export default {
   outline: none;
   background: url(../assets/Images/search.png) 10px center no-repeat;
   background-size: 10%;
+}
+
+.article-empty-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 70px);
+}
+
+.article-empty-txt {
+  font-family: Nunito;
+  font-weight: 500;
 }
 </style>
