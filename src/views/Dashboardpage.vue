@@ -4,29 +4,38 @@
       <div class="dash-container">
         <div class="dash-menu">
           <h1 class="dash-menu-title">Menu</h1>
-          <ol>
-            <li class="dash-element">
-              <font-awesome-icon :icon="['fas', 'home']" class="dash-logo" />
-              <p>Home</p>
-            </li>
-            <li class="dash-element">
-              <font-awesome-icon :icon="['fas', 'user-edit']" class="dash-logo" />
-              <p>Edit profile</p>
-            </li>
-            <li class="dash-element">
-              <font-awesome-icon :icon="['fas', 'search-location']" class="dash-logo" />
-              <p>My reviews</p>
-            </li>
-            <li class="dash-element">
-              <font-awesome-icon :icon="['fas', 'building']" class="dash-logo" />
-              <p>My posts</p>
-            </li>
+          <ol class="dash-list">
+              <router-link class="dash-router-link" :to="{name: 'home_home'}">
+                <li class="dash-element">
+                    <font-awesome-icon :icon="['fas', 'home']" class="dash-logo" />
+                    <p>Home</p>
+                </li>
+            </router-link>
+            <router-link class="dash-router-link" :to="{name: 'home_edit'}">
+                <li class="dash-element">
+                    <font-awesome-icon :icon="['fas', 'user-edit']" class="dash-logo" />
+                    <p>Edit profile</p>
+                </li>
+            </router-link>
+            <router-link class="dash-router-link" :to="{name: 'home_edit'}">
+                <li class="dash-element">
+                    <font-awesome-icon :icon="['fas', 'search-location']" class="dash-logo" />
+                    <p>My reviews</p>
+                </li>
+            </router-link>
+            <router-link class="dash-router-link" :to="{name: 'home_post'}">
+                <li class="dash-element">
+                    <font-awesome-icon :icon="['fas', 'building']" class="dash-logo" />
+                    <p>My posts</p>
+                </li>
+            </router-link>
           </ol>
         </div>
         <div class="dash-inner">
           <!-- <HomeComponent></HomeComponent> -->
           <!-- <EditComponent></EditComponent> -->
-          <PostComponent></PostComponent>
+          <!-- <PostComponent></PostComponent> -->
+          <router-view></router-view>
         </div>
       </div>
   </div>
@@ -59,6 +68,7 @@ export default {
   max-width: 1500px;
   margin-left: auto;
   margin-right: auto;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }
 
 .dash-menu {
@@ -80,7 +90,6 @@ export default {
   padding: 0 25px;
   font-family: nunito;
   font-size: 18px;
-  color: white;
   transition: 0.25s;
 }
 
@@ -90,7 +99,9 @@ export default {
   cursor: pointer;
 }
 
-.dash-element > p {
+.dash-element > p,
+.dash-element > a {
+    color: white;
   padding-left: 15px;
 }
 
@@ -99,10 +110,29 @@ export default {
   color: white;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 15px;
 }
 
-.dash-container {
-  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+.dash-list {
+    padding: 15px 0;
+}
+
+.dash-router-link {
+    display: block;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 665px) {
+    .dash-container {
+        flex-direction: column;
+    }
+    
+    .dash-inner {
+        width: 100%;
+    }
+    .dash-menu {
+        width: 100%;
+    }
 }
 </style>
