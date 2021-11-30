@@ -17,25 +17,17 @@
                 <p class="empty-txt">It's pretty empty around here...</p>
             </div>
             <div class="posts" v-else>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
-                <div class="single-post"></div>
+                <Post v-for="i in 20" :key="i" :title="'Title of this'"></Post>
             </div>
         </div>
     </div>
 </template>
 <script>
+import Post from './DashComponentSingleArticle.vue'
+
 export default {
   name: 'dashcomponentpost',
+  components: { Post },
   data () {
       return {
           dataset: ['ok']

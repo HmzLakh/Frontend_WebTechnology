@@ -32,9 +32,6 @@
           </ol>
         </div>
         <div class="dash-inner">
-          <!-- <HomeComponent></HomeComponent> -->
-          <!-- <EditComponent></EditComponent> -->
-          <!-- <PostComponent></PostComponent> -->
           <router-view></router-view>
         </div>
       </div>
@@ -43,13 +40,10 @@
 
 <script>
 import Navbar from '../components/Navbar.vue'
-import HomeComponent from '../components/DashComponentHome.vue'
-import EditComponent from '../components/DashComponentEditProfile.vue'
-import PostComponent from '../components/DashComponentPost.vue'
 
 export default {
   name: 'dashboardpage',
-  components: { Navbar, HomeComponent, EditComponent, PostComponent },
+  components: { Navbar }
 }
 </script>
 
@@ -69,6 +63,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  transition: all 0.25s;
 }
 
 .dash-menu {
