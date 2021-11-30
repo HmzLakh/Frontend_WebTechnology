@@ -4,6 +4,10 @@ import VueRouter from 'vue-router';
 import Homepage from '../views/Homepage.vue'
 import Testpage from '../views/Testpage.vue'
 import Dashboardpage from '../views/Dashboardpage.vue'
+import Dashboard_EditProfile from '../components/DashComponentEditProfile.vue'
+import Dashboard_Home from '../components/DashComponentHome.vue'
+import Dashboard_Post from '../components/DashComponentPost.vue'
+
 import Loginpage from '../views/Loginpage.vue'
 import Registerpage from '../views/Registerpage.vue'
 import Registerpage_owner from '../views/Registerpage_owner.vue'
@@ -21,7 +25,24 @@ const routes = [
     {
       name: 'home',
       path: '/home',
-      component: Dashboardpage
+      component: Dashboardpage,
+      children: [
+         {
+           name: 'home_home',
+           path: '',
+           component: Dashboard_Home
+         },
+         {
+           name: 'home_edit',
+           path: 'edit',
+           component: Dashboard_EditProfile
+         },
+         {
+          name: 'home_post',
+          path: 'post',
+          component: Dashboard_Post
+        }
+      ]
     },
     {
       name: 'login',
