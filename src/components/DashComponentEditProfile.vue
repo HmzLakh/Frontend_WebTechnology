@@ -131,7 +131,7 @@ export default {
 
 .edit-save-button {
     height: 45px;
-    width: 20%;
+    width: 250px;
     border: none;
     border-radius: 25px;
     margin: 30px 0;
