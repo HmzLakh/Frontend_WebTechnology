@@ -163,12 +163,6 @@ export default {
 }
 
 .posts > * {
-    margin: 5px;
-}
-
-.single-post {
-    height: 100px;
-    width: 100px;
-    background-color: red;
+    margin: 8px;
 }
 </style>
