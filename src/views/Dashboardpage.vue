@@ -29,6 +29,12 @@
                     <p>My posts</p>
                 </li>
             </router-link>
+            <router-link class="dash-router-link" :to="{name: 'home_appointment'}">
+                <li class="dash-element">
+                    <font-awesome-icon :icon="['fas', 'calendar-alt']" class="dash-logo" />
+                    <p>My appointments</p>
+                </li>
+            </router-link>
           </ol>
         </div>
         <div class="dash-inner">
@@ -68,8 +74,6 @@ export default {
 
 .dash-menu {
   width: 300px;
-  border: 1px solid silver;
-  border-right: none;
   background: rgb(195,55,100);
 }
 
@@ -118,16 +122,20 @@ export default {
     cursor: pointer;
 }
 
-@media screen and (max-width: 665px) {
+@media screen and (max-width: 1450px) {
     .dash-container {
         flex-direction: column;
     }
-    
     .dash-inner {
         width: 100%;
     }
     .dash-menu {
         width: 100%;
+    }
+    .dash-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 }
 </style>

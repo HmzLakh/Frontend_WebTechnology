@@ -7,6 +7,7 @@ import Dashboardpage from '../views/Dashboardpage.vue'
 import Dashboard_EditProfile from '../components/DashComponentEditProfile.vue'
 import Dashboard_Home from '../components/DashComponentHome.vue'
 import Dashboard_Post from '../components/DashComponentPost.vue'
+import Dashboard_Appointment from '../components/DashComponentAppointment.vue'
 
 import Loginpage from '../views/Loginpage.vue'
 import Registerpage from '../views/Registerpage.vue'
@@ -41,6 +42,10 @@ const routes = [
           name: 'home_post',
           path: 'post',
           component: Dashboard_Post
+        }, {
+          name: 'home_appointment',
+          path: 'appointment',
+          component: Dashboard_Appointment
         }
       ]
     },
