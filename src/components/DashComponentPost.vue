@@ -17,20 +17,29 @@
                 <p class="empty-txt">It's pretty empty around here...</p>
             </div>
             <div class="posts" v-else>
+                    <Overlay  animate="zoom-in" :opened="opened" :visible="visible" @closed="opened = visible = false">
+                        <div class="overlay-post">
+                            <p>2</p>
+                        </div>
+                    </Overlay>
+                    <button @click="opened = visible = true">Open Popup</button>
                 <Post v-for="i in 20" :key="i" :title="'Title of this'"></Post>
             </div>
         </div>
     </div>
 </template>
 <script>
+import { Overlay } from 'vuejs-overlay';
 import Post from './DashComponentSingleArticle.vue'
 
 export default {
   name: 'dashcomponentpost',
-  components: { Post },
+  components: { Post, Overlay },
   data () {
       return {
-          dataset: ['ok']
+          dataset: ['ok'],
+          opened: false,
+          visible: false
       }
   }
 }
@@ -165,4 +174,13 @@ export default {
 .posts > * {
     margin: 8px;
 }
+
+/* OVERLAY CODE FOR EDITING POST!!! */
+.overlay-post {
+    height: 400px;
+    width: 100%;
+}
+
+
+/* END OVERLAY CODE FOR EDITING POST!!! */
 </style>
