@@ -21,6 +21,7 @@
     "vue": "^2.5.11",
     "vue-class-component": "^7.2.6",
     "vue-router": "^3.5.3",
+    "vuejs-overlay": "^0.0.28",
     "vuex": "^3.6.2"
   },
   "browserslist": [
