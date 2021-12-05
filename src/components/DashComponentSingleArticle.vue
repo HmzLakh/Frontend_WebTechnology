@@ -1,5 +1,6 @@
 <template>
     <div id="singlepost">
+        <EditPost :opened="opened" :visible="visible"></EditPost>
         <div class="single-container">
             <img src="../assets/images/show.jpg" alt="">
             <div class="single-overlay">
@@ -7,7 +8,7 @@
             </div>
         </div>
         <div class="single-buttons">
-            <div class="single-edit-btn">
+            <div @click="opened = visible = true" class="single-edit-btn">
                 <font-awesome-icon :icon="['fas', 'edit']" />
             </div>
             <div class="single-delete-btn">
@@ -17,9 +18,29 @@
     </div>
 </template>
 <script>
+import EditPost from './overlay/EditPost.vue'
+
 export default {
   name: 'dashcomponentsinglepost',
-  props: ['title']
+  components: { EditPost },
+  props: ['title'],
+  data () {
+      return {
+          opened: false,
+          visible: false
+      }
+  },
+  methods: {
+      open(){
+          this.opened = true;
+      },
+      visible() {
+          this.visible = true;
+      },
+      close(){
+          this.opened = this.visible = false;
+      }
+  }
 }
 </script>
 
@@ -98,5 +119,4 @@ export default {
 .single-delete-btn:hover {
     background-color: #eb3349;
 }
-
 </style>
