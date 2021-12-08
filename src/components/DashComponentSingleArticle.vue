@@ -1,6 +1,6 @@
 <template>
     <div id="singlepost">
-        <EditPost :opened="opened" :visible="visible"></EditPost>
+        <EditPost :open="openOverlay" @close="close"></EditPost>
         <div class="single-container">
             <img src="../assets/images/show.jpg" alt="">
             <div class="single-overlay">
@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="single-buttons">
-            <div @click="opened = visible = true" class="single-edit-btn">
+            <div @click="openOverlay = true" class="single-edit-btn">
                 <font-awesome-icon :icon="['fas', 'edit']" />
             </div>
             <div class="single-delete-btn">
@@ -26,19 +26,12 @@ export default {
   props: ['title'],
   data () {
       return {
-          opened: false,
-          visible: false
+          openOverlay: false
       }
   },
   methods: {
-      open(){
-          this.opened = true;
-      },
-      visible() {
-          this.visible = true;
-      },
       close(){
-          this.opened = this.visible = false;
+          this.openOverlay = false;
       }
   }
 }
