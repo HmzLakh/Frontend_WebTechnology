@@ -1,6 +1,7 @@
 <template>
     <div id="singlepost">
-        <EditPost :open="openOverlay" @close="close"></EditPost>
+        <ConfirmBox :open="openConfirmationBox" @close="close"></ConfirmBox>
+        <EditPost title="Edit post" :open="openOverlay" @close="close"></EditPost>
         <div class="single-container">
             <img src="../assets/images/show.jpg" alt="">
             <div class="single-overlay">
@@ -11,7 +12,7 @@
             <div @click="openOverlay = true" class="single-edit-btn">
                 <font-awesome-icon :icon="['fas', 'edit']" />
             </div>
-            <div class="single-delete-btn">
+            <div @click="openConfirmationBox = true" class="single-delete-btn">
                 <font-awesome-icon :icon="['fas', 'trash']" />
             </div>
         </div>
@@ -19,19 +20,21 @@
 </template>
 <script>
 import EditPost from './overlay/PostEditor.vue'
+import ConfirmBox from './overlay/ConfirmationBox.vue'
 
 export default {
   name: 'dashcomponentsinglepost',
-  components: { EditPost },
+  components: { EditPost, ConfirmBox },
   props: ['title'],
   data () {
       return {
-          openOverlay: false
+          openOverlay: false,
+          openConfirmationBox: false
       }
   },
   methods: {
       close(){
-          this.openOverlay = false;
+          this.openOverlay = this.openConfirmationBox = false;
       }
   }
 }

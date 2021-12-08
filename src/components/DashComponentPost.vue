@@ -1,7 +1,8 @@
 <template>
     <div id="postcomponent">
+        <CreatePost title="Create post" :editor="false" :open="openPostCreator" @close="closePostCreator"></CreatePost>
         <div class="post-toolbar">
-            <div class="add-post-btn">
+            <div class="add-post-btn" @click="openPostCreator = true" >
                 <font-awesome-icon :icon="['fas', 'plus']" class="add-post-logo" />
             </div>
             <div class="search-name-input">
@@ -17,20 +18,27 @@
                 <p class="empty-txt">It's pretty empty around here...</p>
             </div>
             <div class="posts" v-else>
-                <Post v-for="i in 3" :key="i" :title="'Title of this'"></Post>
+                <Post v-for="i in 2" :key="i" :title="'Title of this'"></Post>
             </div>
         </div>
     </div>
 </template>
 <script>
 import Post from './DashComponentSingleArticle.vue'
+import CreatePost from './overlay/PostEditor.vue'
 
 export default {
     name: 'dashcomponentpost',
-    components: { Post },
+    components: { Post, CreatePost },
     data () {
         return {
-            dataset: ['dummy']
+            dataset: ['dummy'],
+            openPostCreator: false
+        }
+    },
+    methods: {
+        closePostCreator(){
+            this.openPostCreator = false;
         }
     }
 }

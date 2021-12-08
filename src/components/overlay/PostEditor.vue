@@ -1,5 +1,5 @@
 <template>
-    <SweetModal title="Edit post" ref="overlay" @close="overlayClosed">
+    <SweetModal :title="title" ref="overlay" @close="overlayClosed">
         <div id="overlay-editpost">
             <table id="postedit-table">
                 <tr class="posteditor-tr">
@@ -52,7 +52,9 @@
                     </td>
                 </tr>
             </table>
-            <button class="postedit-savebtn">Save</button>
+            <div class="posteditor-btncontainer">
+                <button class="postedit-savebtn">Save</button>
+            </div>
         </div>
     </SweetModal> 
 </template>
@@ -66,7 +68,19 @@ import { SweetModal } from 'sweet-modal-vue'
 export default {
     name: 'overlay-editpost',
     components: { SweetModal, VueTags, TagComponent, UploadImages, UploadComponent },
-    props: ['open'],
+    props: {open: {
+                required: true
+            }, 
+            title: {
+                type: String,
+                required: true,
+            },
+            editor: {
+                type: Boolean,
+                required: false,
+                default: true
+            }
+    },
     data () {
         return {
             colors: ['#0099ff', '#4cca3c', '#ff5460', '#963dff', '#FFB800'],
@@ -138,7 +152,7 @@ export default {
 
 <style>
 #overlay-editpost {
-    height: 55vh;
+    height: 60vh;
     width: 100%;
 }
 
@@ -147,7 +161,7 @@ export default {
 }
 
 .postedit-savebtn {
-    margin-top: 10px;
+    margin: 10px 0px;
     height: 30px;
     width: 80%;
     border-radius: 25px;
@@ -160,6 +174,11 @@ export default {
     background-color: black;
 }
 
+.posteditor-btncontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Responsive css */
 #postedit-table {
