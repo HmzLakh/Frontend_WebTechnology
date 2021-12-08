@@ -32,7 +32,7 @@
             <router-link class="dash-router-link" :to="{name: 'home_appointment'}">
                 <li class="dash-element">
                     <font-awesome-icon :icon="['fas', 'calendar-alt']" class="dash-logo" />
-                    <p>My appointments</p>
+                    <p>My reservations</p>
                 </li>
             </router-link>
           </ol>
