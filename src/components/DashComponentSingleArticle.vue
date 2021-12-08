@@ -18,7 +18,7 @@
     </div>
 </template>
 <script>
-import EditPost from './overlay/EditPost.vue'
+import EditPost from './overlay/PostEditor.vue'
 
 export default {
   name: 'dashcomponentsinglepost',

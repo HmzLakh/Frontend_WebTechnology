@@ -1,22 +1,41 @@
 <template>
-    <SweetModal ref="overlay" @close="overlayClosed">
+    <SweetModal title="Edit post" ref="overlay" @close="overlayClosed">
         <div id="overlay-editpost">
             <table id="postedit-table">
-                <tr>
-                    <td>Title of post:</td>
-                    <td>
+                <tr class="posteditor-tr">
+                    <td class="posteditor-td">Title</td>
+                    <td class="posteditor-td">
                         <input type="text" />
                     </td>
                 </tr>
-                <tr>
-                    <td>Image miniature</td>
-                    <td>
+                <tr class="posteditor-tr">
+                    <td class="posteditor-td">Thumbnail</td>
+                    <td class="posteditor-td">
                         <UploadComponent></UploadComponent>
                     </td>
                 </tr>
-                <tr>
-                    <td>Sport tags</td>
-                    <td>
+               <tr class="posteditor-tr">
+                    <td class="posteditor-td">Images (max 5)</td>
+                    <td class="posteditor-td">
+                        <UploadImages
+                            :max="5"
+                            maxError='Max files exceed!'
+                            uploadMsg="Upload images here"
+                            clearAll="remove all"
+                            @changed="handleImages"
+                        />
+                    </td>
+                </tr>
+                <tr class="posteditor-tr">
+                    <td class="posteditor-td">Names of rooms</td>
+                    <td class="posteditor-td">
+                        <TagComponent></TagComponent>
+                    </td>
+                </tr>
+                <tr class="posteditor-tr">
+                    <td class="posteditor-td">Sport tags</td>
+                    <td class="posteditor-td posteditor-vuetags">
+                        <!-- VueTags is not responsive, look for another plugin!!! -->
                         <VueTags
                         :active="activeSportTags"
                         :all="allSportTags"
@@ -32,25 +51,8 @@
                         @on-tag-list-closed="onSportTagListClosed" />
                     </td>
                 </tr>
-               <!-- tr>
-                    <td>Images</td>
-                    <td>
-                        <UploadImages
-                            :max="5"
-                            maxError='Max files exceed!'
-                            uploadMsg="Drag and drop images here"
-                            clearAll="remove all"
-                            @changed="handleImages"
-                        />
-                    </td>
-                </tr -->
-                <tr>
-                    <td>Names of rooms</td>
-                    <td>
-                        <TagComponent></TagComponent>
-                    </td>
-                </tr>
             </table>
+            <button class="postedit-savebtn">Save</button>
         </div>
     </SweetModal> 
 </template>
@@ -87,10 +89,10 @@ export default {
             this.activeSportTags = this.activeSportTags.filter(el => el !== e)
         },
         onSportTagListOpened(){
-
+            return null
         },
         onSportTagListClosed(){
-            
+            return null
         },
         handleImages(files) {
             console.log(files)
@@ -113,6 +115,14 @@ export default {
             {
                 id: 2,
                 sport: "handball"
+            },
+            {
+                id: 3,
+                sport: "hassball"
+            },
+            {
+                id: 4,
+                sport: "rotonde"
             }
             ]
         this.tmpsports.forEach((sport) => {
@@ -128,12 +138,40 @@ export default {
 
 <style>
 #overlay-editpost {
-    height: 60vh;
+    height: 55vh;
     width: 100%;
 }
 
 #postedit-table > tr > td {
   border: 1px solid black;
-  width: 150px;
+}
+
+.postedit-savebtn {
+    margin-top: 10px;
+    height: 30px;
+    width: 80%;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    background-color: red;
+}
+
+.postedit-savebtn:hover {
+    background-color: black;
+}
+
+
+/* Responsive css */
+#postedit-table {
+    width: 100%;
+}
+
+.posteditor-tr {
+    display: flex;
+    flex-direction: column;
+}
+
+.posteditor-td {
+    width: 100%;
 }
 </style>
