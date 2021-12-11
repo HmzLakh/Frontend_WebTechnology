@@ -7,7 +7,9 @@ Vue.use(Vuex)
 const state = {
     authenticated: false,
     articles: [],
-    currentArticle: null
+    currentArticle: null,
+    register: null,
+    registerMsg: null
 }
 
 const mutations = {
@@ -19,6 +21,16 @@ const mutations = {
     },
     setCurrentArticle(state, article){
         state.currentArticle = article
+    },
+    setRegisterState(state, bool){
+        state.register = bool
+    },
+    setRegisterMessage(state, str){
+        state.registerMsg = str
+    },
+    resetRegisterState(state){
+        state.register = null
+        state.registerMsg = null
     }
 }
 
@@ -31,15 +43,22 @@ const actions = {
     },
     getArticlesList(context){
         axios.get('http://localhost:9999/api/all-articles')
-        .then(response => {
-            context.commit('setArticleState', response.data)
-        })
+        .then(response => { context.commit('setArticleState', response.data) })
     },
     getArticle(context, id){
-        axios.get('http://localhost:9999/api/getPost/${id}')
-        .then(response => {
-            context.commit('setCurrentArticle', response.data)
+        axios.get(`http://localhost:9999/api/getPost/${id}`)
+        .then(response => { context.commit('setCurrentArticle', response.data) })
+    },
+    postRegisterOwner(context, registerCred){
+        axios.post('http://localhost:9999/api/register', registerCred)
+        .then(response => { context.commit('setRegisterState', response.data.success) })
+        .catch(err => { 
+            context.commit('setRegisterState', false)
+            context.commit('setRegisterMessage', "Can't connect to server!")
         })
+    },
+    resetRegisterStates(context){
+        context.commit('resetRegisterState')
     }
 }
 
@@ -52,6 +71,12 @@ const getters = {
     },
     getCurrentArticle(state){
         return state.currentArticle;
+    },
+    getRegisterStatus(state){
+        return state.register
+    },
+    getRegisterMessageStatus(state){
+        return state.registerMsg
     }
 }
 

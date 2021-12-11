@@ -1,41 +1,92 @@
 <template>
   <div class="owner-register-container">
-    <div class="special-input">
-      <input type="text" required>
-      <span></span>
-      <label class="label-input">First name</label>
+    <Loading v-if="loading" />
+    <div v-else>
+      <div class="special-input">
+        <input type="text" required>
+        <span></span>
+        <label class="label-input">First name</label>
+      </div>
+      <div class="special-input">
+        <input type="text" required>
+        <span></span>
+        <label class="label-input">Last name</label>
+      </div>
+      <div class="special-input">
+        <input type="text" required>
+        <span></span>
+        <label class="label-input">Email</label>
+      </div>
+      <div class="bod_input">
+          <input type="date" v-model="birthdate" value="1970-01-01" min="1900-01-01" max="2100-12-31">
+      </div>
+      <div class="special-input">
+        <input type="text" required>
+        <span></span>
+        <label class="label-input">Username</label>
+      </div>
+      <div class="special-input">
+        <input type="password" required>
+        <span></span>
+        <label class="label-input">Password</label>
     </div>
-    <div class="special-input">
-      <input type="text" required>
-      <span></span>
-      <label class="label-input">Last name</label>
-    </div>
-    <div class="special-input">
-      <input type="text" required>
-      <span></span>
-      <label class="label-input">Email</label>
-    </div>
-    <div class="bod_input">
-        <input type="date" value="1970-01-01" min="1900-01-01" max="2100-12-31">
-    </div>
-    <div class="special-input">
-      <input type="text" required>
-      <span></span>
-      <label class="label-input">Username</label>
-    </div>
-    <div class="special-input">
-      <input type="password" required>
-      <span></span>
-      <label class="label-input">Password</label>
-    </div>
-    <input class="register-btn" type="button" value="Register">
+    <p class="registerpagerenter-errormsg">{{ errorMsg }}</p>
+    <input class="register-btn" type="button" @click="submitForm" value="Register">
     <p class="login-link">Already registered? <router-link class="link" :to="{name: 'login'}">Login</router-link></p>
   </div>
+</div>
 </template>
 
 <script>
+import Loading from './LoadingSpinner.vue'
+
 export default {
-  name: 'registerpage_owner'
+  name: 'registerpage_owner',
+  components: { Loading },
+  data () {
+    return {
+      loading: false,
+      errorMsg: null,
+      fname: '',
+      lname: '',
+      birthdate: '1970-01-01',
+      email: '',
+      username: '',
+      password: ''
+    }
+  },
+  methods: {
+    submitForm(){
+      const renter_model = {
+        'fname': this.fname,
+        'lname': this.lname,
+        'email': this.email,
+        'birthdate': this.birthdate,
+        'username': this.username,
+        'password': this.password
+      }
+      this.$store.dispatch('postRegisterOwner', renter_model)
+      this.loading = true
+    }
+  },
+  computed: {
+    getRegisterStatus(){
+      return this.$store.getters.getRegisterStatus
+    }
+  },
+  watch:{
+    getRegisterStatus: function() {
+      const register_succes = this.$store.getters.getRegisterStatus
+            if(register_succes === null) return;
+      if(register_succes){
+        this.loading = false
+      } else {
+        this.loading = false
+        this.errorMsg = this.$store.getters.getRegisterMessageStatus
+      }
+      this.$store.dispatch('resetRegisterStates')
+    }
+  }
 }
 </script>
 
@@ -145,5 +196,12 @@ export default {
 .login-link {
     font-family: Nunito;
     font-size: 14px;
+}
+
+.registerpagerenter-errormsg {
+  color: red;
+  font-size: 13px;
+  font-family: Nunito;
+  text-align: center;
 }
 </style>

@@ -1,42 +1,91 @@
 <template>
   <div class="owner-register-container">
-    <div class="special-input">
-      <input type="text" required>
+    <Loading v-if="loading"/>
+    <div v-else>
+      <div class="special-input">
+      <input type="text" v-model="fname" required>
       <span></span>
       <label class="label-input">First name</label>
     </div>
     <div class="special-input">
-      <input type="text" required>
+      <input type="text" v-model="lname" required>
       <span></span>
       <label class="label-input">Last name</label>
     </div>
     <div class="special-input">
-      <input type="text" required>
+      <input type="text" v-model="email" required>
       <span></span>
       <label class="label-input">Email</label>
     </div>
     <div class="special-input">
-      <input type="text" required>
+      <input type="text" v-model="username" required>
       <span></span>
       <label class="label-input">Username</label>
     </div>
     <div class="special-input">
-      <input type="password" required>
+      <input type="password" v-model="password" required>
       <span></span>
       <label class="label-input">Password</label>
     </div>
-    <input class="register-btn" type="button" value="Register">
-    <p class="login-link">Already registered? <router-link class="link" :to="{name: 'login'}">Login</router-link></p>
+    <p class="registerpageowner-errormsg">{{ errorMsg }}</p>
+    <input class="register-btn" type="button" value="Register" @click="submitForm">
+    <p class="login-link">Already registered? {{ errorMsg }} <router-link class="link" :to="{name: 'login'}">Login</router-link></p>
+    </div>
   </div>
 </template>
 
 <script>
+import Loading from './LoadingSpinner.vue'
+
 export default {
-  name: 'registerpage_owner'
+  name: 'registerpage_owner',
+  components: { Loading },
+  data () {
+    return {
+      loading: false,
+      errorMsg: null,
+      fname: '',
+      lname: '',
+      email: '',
+      username: '',
+      password: ''
+    }
+  },
+  methods: {
+    submitForm(){
+      const owner_model = {
+        'fname': this.fname,
+        'lname': this.lname,
+        'email': this.email,
+        'username': this.username,
+        'password': this.password
+      }
+      this.$store.dispatch('postRegisterOwner', owner_model)
+      this.loading = true
+    }
+  },
+  computed: {
+    getRegisterStatus(){
+      return this.$store.getters.getRegisterStatus
+    }
+  },
+  watch:{
+    getRegisterStatus: function() {
+      const register_succes = this.$store.getters.getRegisterStatus
+            if(register_succes === null) return;
+      if(register_succes){
+        this.loading = false
+      } else {
+        this.loading = false
+        this.errorMsg = this.$store.getters.getRegisterMessageStatus
+      }
+      this.$store.dispatch('resetRegisterStates')
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .owner-register-container {
   width: min(500px, 100%);
   padding: 25px;
@@ -128,5 +177,12 @@ export default {
 .login-link {
     font-family: Nunito;
     font-size: 14px;
+}
+
+.registerpageowner-errormsg {
+  color: red;
+  font-size: 13px;
+  font-family: Nunito;
+  text-align: center;
 }
 </style>
