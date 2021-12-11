@@ -1,20 +1,18 @@
 <template>
   <div id="articlepage">
-      <Navbar></Navbar>
+      <Navbar />
+      <ReserveOverlay :open="openPopup" @close="closeReserveOverlay" />
       <div class="article-container">
-        <Slideshow :imglinks="getPost.images"></Slideshow>
+        <Slideshow :imglinks="getPost.images" />
           <div class="article-description">
               <h1 class="article-name">{{ getPost.title }}</h1>
               <h5>{{ getPost.address }}</h5>
               <p>{{ getPost.description }}</p>
-              <button class="reserve-button">
-                <ReservePopup v-if="openPopup" class="popup"></ReservePopup>
-                Reserve
-              </button>
+              <button class="reserve-button" @click="openPopup = true">Reserve</button>
           </div>
-          <CommentSection :comments="getPost.comments"></CommentSection>
+          <CommentSection :comments="getPost.comments" />
       </div>
-      <Footer></Footer>
+      <Footer />
   </div>
 </template>
 
@@ -22,15 +20,15 @@
 import Footer from '../components/Footer.vue'
 import Navbar from '../components/Navbar.vue'
 import Slideshow from '../components/article_components/Slideshow.vue'
-import ReservePopup from '../components/article_components/ReservePopup.vue'
+//import ReservePopup from '../components/article_components/ReservePopup.vue'
+import ReserveOverlay from '../components/overlay/ReserveOverlay.vue'
 import CommentSection from '../components/article_components/CommentContainer.vue'
 
 export default {
   name: 'articlepage',
-  components: { Navbar, Slideshow, CommentSection, ReservePopup, Footer},
+  components: { Navbar, Slideshow, CommentSection, ReserveOverlay, Footer},
   data () {
     return {
-      isConnected: false,
       openPopup: false,
     }
   },
@@ -41,6 +39,11 @@ export default {
   computed: {
     getPost(){
       return this.$store.getters.getCurrentArticle
+    }
+  },
+  methods: {
+    closeReserveOverlay(){
+      this.openPopup = false;
     }
   }
 }
