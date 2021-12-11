@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Article from '../article_components/Article.vue'
+import Article from './Article.vue'
 
 export default {
   name: 'article-container',

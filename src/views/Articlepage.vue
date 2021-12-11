@@ -20,7 +20,6 @@
 import Footer from '../components/Footer.vue'
 import Navbar from '../components/Navbar.vue'
 import Slideshow from '../components/article_components/Slideshow.vue'
-//import ReservePopup from '../components/article_components/ReservePopup.vue'
 import ReserveOverlay from '../components/overlay/ReserveOverlay.vue'
 import CommentSection from '../components/article_components/CommentContainer.vue'
 

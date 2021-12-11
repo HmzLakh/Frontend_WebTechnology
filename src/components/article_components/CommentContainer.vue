@@ -1,27 +1,22 @@
 <template>
   <div id="comment-container">
-    <h1 class="comment-title">Comments (3)</h1>
-    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.timestamp" :value="comment.value" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser" :showLikeButtons="true"></Comment>
-    <div class="add-comment">
-      <h2 class="add-comment-title">Add a comment</h2>
-      <textarea class="comment-area" maxlength="255"></textarea>
-      <div class="button-container">
-        <button class="comment-send">Send</button>
-      </div>
-    </div>
+    <h1 class="comment-title">Comments ({{ comments.length }})</h1>
+    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.timestamp" :value="comment.value" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser" :showLikeButtons="true" />
+    <InputComment v-if="this.$store.getters.isUserConnected" />
   </div>
 </template>
 
 <script>
+import InputComment from './AddCommentInput.vue'
 import Comment from './Comment.vue'
 
 export default {
   name: 'comment-container',
   props: ['comments'],
-  components: { Comment }
+  components: { Comment, InputComment }
 }
 </script>
-<style>
+<style scope>
 #comment-container {
     min-height: 260px;
     width: 100%;
@@ -79,5 +74,4 @@ export default {
   border-bottom: 1px solid silver;
   padding: 10px;
 }
-
 </style>
