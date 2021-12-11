@@ -36,7 +36,6 @@ export default {
   flex-direction: column;
   border: 1px solid silver;
   padding: 15px;
-  margin-right: 30px;
 }
 
 .value-holder {

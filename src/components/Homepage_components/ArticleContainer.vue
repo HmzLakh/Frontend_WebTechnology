@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Article from './Article.vue'
+import Article from '../Article.vue'
 
 export default {
   name: 'article-container',
@@ -63,7 +63,7 @@ export default {
   border: 1px solid silver;
   padding: 0 20px 0 42px;
   outline: none;
-  background: url(../assets/Images/search.png) 10px center no-repeat;
+  background: url(../../assets/Images/search.png) 10px center no-repeat;
   background-size: 10%;
 }
 

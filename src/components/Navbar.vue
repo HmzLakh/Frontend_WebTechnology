@@ -1,5 +1,5 @@
 <template>
-  <div id="navbar">
+  <nav id="navbar">
       <div class="sitename-container">
         <h1 class="link"><router-link class="link" :to="{name: 'root'}">MyGym</router-link></h1>
       </div>
@@ -29,7 +29,7 @@
                 <p>Disconnect</p>
             </div>
       </div>
-  </div>
+  </nav>
 </template>
 
 <script>

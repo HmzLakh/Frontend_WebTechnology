@@ -1,18 +1,18 @@
 <template>
   <div id="homepage">
-    <Navbar></Navbar>
-    <MapViewer></MapViewer>
-    <div class="container-layout page-container">
-      <ArticleFilter></ArticleFilter>
-      <ArticleContainer></ArticleContainer>
+    <Navbar />
+    <MapViewer />
+    <div class="container-layout">
+      <ArticleFilter />
+      <ArticleContainer class="home-article-container" />
     </div>
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
-import ArticleFilter from '../components/ArticleFilter.vue'
-import ArticleContainer from '../components/ArticleContainer.vue'
+import ArticleFilter from '../components/Homepage_components/ArticleFilter.vue'
+import ArticleContainer from '../components/Homepage_components/ArticleContainer.vue'
 import MapViewer from '../components/MapViewer.vue'
 
 export default {
@@ -32,5 +32,15 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .container-layout {
+    flex-direction: column;
+  }
+
+  .home-article-container {
+    margin-bottom: 30px;
+  }
 }
 </style>
