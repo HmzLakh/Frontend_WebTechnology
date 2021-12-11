@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Comment from './Comment.vue'
+import Comment from '../Comment.vue'
 
 export default {
   name: 'dashcomponenthome',

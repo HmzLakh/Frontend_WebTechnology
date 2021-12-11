@@ -25,7 +25,7 @@
 </template>
 <script>
 import Post from './DashComponentSingleArticle.vue'
-import CreatePost from './overlay/PostEditor.vue'
+import CreatePost from '../overlay/PostEditor.vue'
 
 export default {
     name: 'dashcomponentpost',

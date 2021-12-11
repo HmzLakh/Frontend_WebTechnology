@@ -3,7 +3,7 @@
         <ConfirmBox :open="openConfirmationBox" @close="close"></ConfirmBox>
         <EditPost title="Edit post" :open="openOverlay" @close="close"></EditPost>
         <div class="single-container">
-            <img src="../assets/images/show.jpg" alt="">
+            <img src="../../assets/images/show.jpg" alt="">
             <div class="single-overlay">
                 <p class="single-overlay-txt">{{ title }}</p>
             </div>
@@ -19,8 +19,8 @@
     </div>
 </template>
 <script>
-import EditPost from './overlay/PostEditor.vue'
-import ConfirmBox from './overlay/ConfirmationBox.vue'
+import EditPost from '../overlay/PostEditor.vue'
+import ConfirmBox from '../overlay/ConfirmationBox.vue'
 
 export default {
   name: 'dashcomponentsinglepost',
