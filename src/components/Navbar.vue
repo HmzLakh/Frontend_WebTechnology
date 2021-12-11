@@ -9,7 +9,7 @@
       <ul class="menu" v-else>
          <li class="menu-style"><p class="link">About us</p></li>
          <li class="menu-style"><router-link class="link" :to="{name: 'login'}">Login</router-link></li>
-         <router-link class="link" :to="{name: 'register'}">
+         <router-link class="link" :to="{name: 'register_choice'}">
             <div class="signup">
                 <li class="menu-style">Sign up</li>
             </div>
