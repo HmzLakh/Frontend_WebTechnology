@@ -36,13 +36,28 @@
           </div>
         </l-tooltip>
       </l-marker>
+      
+      <l-marker :lat-lng="[50.8503396, 4.3517103]">
+        <l-popup>
+          <div @click="innerClick">
+            I am a popup
+            <p v-show="showParagraph">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
+              Donec finibus semper metus id malesuada.
+            </p>
+          </div>
+        </l-popup>
+        <l-icon :icon-size="dynamicSize" icon-url="../assets/Images/exampleimg.jpg" ></l-icon> 
+      </l-marker>
+
     </l-map>
   </div>
 </template>
 
 <script>
 import { latLng } from 'leaflet';
-import { LMap, LTileLayer, LMarker, LPopup, LTooltip } from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LPopup, LTooltip, LControl, LIcon } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css'
 
 export default {
@@ -52,7 +67,9 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    LTooltip
+    LTooltip,
+    LControl,
+    LIcon
   },
   data () {
     return {
