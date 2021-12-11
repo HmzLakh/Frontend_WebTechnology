@@ -18,17 +18,6 @@
       <div class="responsive-menu">
           <font-awesome-icon :icon="['fas', 'bars']" />
       </div>
-      <div class="dropdown-container" v-if="showDropdown">
-            <div class="dropdown-element">
-              <p>My profile</p>
-            </div>
-            <div class="dropdown-element">
-                <p>Something</p>
-            </div>
-            <div class="dropdown-element">
-                <p>Disconnect</p>
-            </div>
-      </div>
   </nav>
 </template>
 
@@ -37,7 +26,7 @@ export default {
     name: 'navbar',
     data () { 
         return {
-            showDropdown: false
+            showDropdown: true
         }
     },
     computed: {
@@ -147,26 +136,6 @@ export default {
     z-index: 1;
 }
 
-.dropdown-element {
-    height: 40px;
-    padding: 12px 16px 12px 12px;
-    background-color: #fff;
-    font-family: nunito;
-    font-weight: 400;
-    border-bottom: 1px solid silver;
-    transition: 0.25s;
-}
-
-.dropdown-element:hover {
-    padding-left: 20px;
-    background-color: #d66d75;
-    transition: 0.25s;
-}
-
-.dropdown-element:last-child {
-    border: none;
-}
-
 .responsive-menu {
     display: none;
     float: right;
@@ -174,6 +143,9 @@ export default {
 
 @media screen and (max-width: 440px) {
     .menu {
+        display: none;
+    }
+    .userprofile-container{
         display: none;
     }
     .responsive-menu {
