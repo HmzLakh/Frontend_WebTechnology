@@ -21,9 +21,9 @@
 <script>
 import Footer from '../components/Footer.vue'
 import Navbar from '../components/Navbar.vue'
-import Slideshow from '../components/Slideshow.vue'
-import ReservePopup from '../components/ReservePopup.vue'
-import CommentSection from '../components/CommentContainer.vue'
+import Slideshow from '../components/article_components/Slideshow.vue'
+import ReservePopup from '../components/article_components/ReservePopup.vue'
+import CommentSection from '../components/article_components/CommentContainer.vue'
 
 export default {
   name: 'articlepage',

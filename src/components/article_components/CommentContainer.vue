@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Comment from '../components/Comment.vue'
+import Comment from './Comment.vue'
 
 export default {
   name: 'comment-container',

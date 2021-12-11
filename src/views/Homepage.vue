@@ -13,7 +13,7 @@
 import Navbar from '../components/Navbar.vue'
 import ArticleFilter from '../components/Homepage_components/ArticleFilter.vue'
 import ArticleContainer from '../components/Homepage_components/ArticleContainer.vue'
-import MapViewer from '../components/MapViewer.vue'
+import MapViewer from '../components/Homepage_components/MapViewer.vue'
 
 export default {
   name: 'homepage',

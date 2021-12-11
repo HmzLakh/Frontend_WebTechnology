@@ -1,7 +1,7 @@
 <template>
   <div id="article-el">
       <div class="image-card">
-          <img src="../assets/Images/exampleimg.jpg" />
+          <img src="../../assets/Images/exampleimg.jpg" />
       </div>
       <div class="article-desc">
           <h1 class="article-title">{{ name }}</h1>

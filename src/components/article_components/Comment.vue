@@ -1,7 +1,7 @@
 <template>
   <div id="comment">
       <div class="comment-profile">
-          <img class="profilepic" src="../assets/Images/login.png">
+          <img class="profilepic" src="../../assets/Images/login.png">
       </div>
       <div class="right-side">
         <div class="comment-information">
