@@ -47,6 +47,9 @@ export default {
     background-color: purple;
     border-radius: 15px;
     overflow: hidden;
+    flex-basis: 250px;
+	flex-shrink: 1;
+	flex-grow: 1;
 }
 
 .single-container {

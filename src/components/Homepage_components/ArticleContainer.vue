@@ -36,13 +36,12 @@ export default {
 }
 
 .article-inner {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-auto-rows: minmax(100px, auto);
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .article-inner > * {
-  margin: 5px;
+  margin: 10px;
 }
 
 .article-search {

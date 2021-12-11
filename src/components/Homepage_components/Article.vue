@@ -28,9 +28,12 @@ export default {
     display: flex;
     flex-direction: column;
     height: 260px;
-    width: 250px;
+    min-width: 250px;
     border: 1px solid silver;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    flex-basis: 250px;
+	flex-shrink: 1;
+	flex-grow: 1;
 }
 
 .image-card {
