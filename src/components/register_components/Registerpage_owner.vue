@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Loading from './LoadingSpinner.vue'
+import Loading from '../LoadingSpinner.vue'
 
 export default {
   name: 'registerpage_owner',
@@ -72,13 +72,14 @@ export default {
   watch:{
     getRegisterStatus: function() {
       const register_succes = this.$store.getters.getRegisterStatus
-            if(register_succes === null) return;
+      if(register_succes === null) return;
+      
       if(register_succes){
-        this.loading = false
+        this.$router.replace('/')
       } else {
-        this.loading = false
         this.errorMsg = this.$store.getters.getRegisterMessageStatus
       }
+      this.loading = false
       this.$store.dispatch('resetRegisterStates')
     }
   }

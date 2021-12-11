@@ -1,31 +1,40 @@
 <template>
   <div id="login-container">
-      <img class="login-img" src="../assets/Images/login.png" />
-      <div class="inputs">
-          <div class="mail-input">
-              <input v-model="username" type="text" required>
-              <span></span>
-              <label ref="usernameLabel" class="label-input">Username</label>
-          </div>
-          <div class="pass-input">
-              <input ref="passwordLabel" v-model="password" type="password" required>
-              <span></span>
-              <label ref="passwordLabel" class="label-input">Password</label>
-          </div>
-          <p class="password-forgotten">Forgot password?</p>
-          <input @click="logUserIn" class="login-btn" type="button" value="Login">
-          <p class="signup-link">Not registered? <router-link class="link" :to="{name: 'register'}">Signup</router-link></p>
+      <Loading v-if="loading" />
+      <div v-else>
+        <img class="login-img" src="../assets/Images/login.png" />
+        <div class="inputs">
+            <div class="mail-input">
+                <input v-model="username" type="text" required>
+                <span></span>
+                <label ref="usernameLabel" class="label-input">Username</label>
+            </div>
+            <div class="pass-input">
+                <input ref="passwordLabel" v-model="password" type="password" required>
+                <span></span>
+                <label ref="passwordLabel" class="label-input">Password</label>
+            </div>
+            <p class="password-forgotten">Forgot password?</p>
+            <input @click="logUserIn" class="login-btn" type="button" value="Login">
+            <p class="loginerrormsg">{{ errorMsg }}</p>
+            <p class="signup-link">Not registered? <router-link class="link" :to="{name: 'register_choice'}">Signup</router-link></p>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
+import Loading from './LoadingSpinner.vue'
+
 export default {
     name: 'login-container',
+    components: { Loading },
     data() { 
         return {
             username: '',
-            password: ''
+            password: '',
+            errorMsg: null,
+            loading: false
         }
     },
     methods: {
@@ -42,7 +51,33 @@ export default {
                     this.$refs.passwordLabel.classList.remove("not-valid")
                 }, 1500)
             }
-            console.log("Loggin -> ", this.username, " <-> ",this.password, "->");
+            const login_model = {
+                username: this.username,
+                password: this.password
+            }
+
+            if(this.username.length !== 0 && this.password.length !== 0) {
+                this.$store.dispatch('postLoginCredentials', login_model)
+                this.loading = true
+            }
+        }
+    },
+    computed: {
+        getLoginStatus(){
+            return this.$store.getters.isUserConnected
+        }
+    },
+    watch: {
+        getLoginStatus: function () {
+            const isConnected = this.$store.getters.isUserConnected
+            if (isConnected === null) return;
+            if(isConnected) {
+                this.$router.replace('/')
+            } else {
+                this.errorMsg = this.$store.getters.getAuthenticationMessage
+            }
+            this.loading = false
+            this.$store.dispatch('resetLoginState')
         }
     }
 }
@@ -211,5 +246,12 @@ export default {
 .signup-link {
     font-family: Nunito;
     font-size: 14px;
+}
+
+.loginerrormsg {
+  color: red;
+  font-size: 13px;
+  font-family: Nunito;
+  text-align: center;
 }
 </style>

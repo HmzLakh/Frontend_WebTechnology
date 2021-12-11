@@ -2,10 +2,13 @@ import axios from 'axios'
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+const apiURL = "http://localhost:9999/api"
+
 Vue.use(Vuex)
 
 const state = {
-    authenticated: false,
+    authenticated: null,
+    authenticationMsg: null,
     articles: [],
     currentArticle: null,
     register: null,
@@ -15,6 +18,9 @@ const state = {
 const mutations = {
     setLogState(state, isLogged){
         state.authenticated = isLogged
+    },
+    setLogMsg(state, logMsg){
+        state.authenticationMsg = logMsg
     },
     setArticleState(state, data){
         state.articles = data
@@ -31,26 +37,42 @@ const mutations = {
     resetRegisterState(state){
         state.register = null
         state.registerMsg = null
+    },
+    resetLoginState(state){
+        if(!state.authenticated){
+            state.authenticated = null
+        }
+        state.authenticationMsg = null
     }
 }
 
 const actions = {
     checkUserIsAlreadyConnected(context){
-        axios.get('http://localhost:9999/api/connected')
+        axios.get(apiURL+'/connected')
         .then(response => {
-            context.commit('setLogState', response.data.logged)
+            if(response.data.logged){
+                context.commit('setLogState', true)
+            }
         })
     },
     getArticlesList(context){
-        axios.get('http://localhost:9999/api/all-articles')
+        axios.get(apiURL+'/all-articles')
         .then(response => { context.commit('setArticleState', response.data) })
     },
     getArticle(context, id){
-        axios.get(`http://localhost:9999/api/getPost/${id}`)
+        axios.get(apiURL+`/getPost/${id}`)
         .then(response => { context.commit('setCurrentArticle', response.data) })
     },
+    postLoginCredentials(context, loginCred){
+        axios.post(apiURL+'/login', loginCred)
+        .then(response => { context.commit('setLogState', response.data.success) })
+        .catch(err => {
+            context.commit('setLogState', false)
+            context.commit('setLogMsg', "Can't connect to server!")
+        })
+    },
     postRegisterOwner(context, registerCred){
-        axios.post('http://localhost:9999/api/register', registerCred)
+        axios.post(apiURL+'/register', registerCred)
         .then(response => { context.commit('setRegisterState', response.data.success) })
         .catch(err => { 
             context.commit('setRegisterState', false)
@@ -59,12 +81,18 @@ const actions = {
     },
     resetRegisterStates(context){
         context.commit('resetRegisterState')
+    },
+    resetLoginState(context){
+        context.commit('resetLoginState')
     }
 }
 
 const getters = {
     isUserConnected(state){
         return state.authenticated
+    },
+    getAuthenticationMessage(state){
+        return state.authenticationMsg
     },
     getArticles(state){
         return state.articles

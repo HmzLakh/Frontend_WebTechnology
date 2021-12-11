@@ -3,17 +3,17 @@
     <Loading v-if="loading" />
     <div v-else>
       <div class="special-input">
-        <input type="text" required>
+        <input type="text" v-model="fname" required>
         <span></span>
         <label class="label-input">First name</label>
       </div>
       <div class="special-input">
-        <input type="text" required>
+        <input type="text" v-model="lname" required>
         <span></span>
         <label class="label-input">Last name</label>
       </div>
       <div class="special-input">
-        <input type="text" required>
+        <input type="text" v-model="email" required>
         <span></span>
         <label class="label-input">Email</label>
       </div>
@@ -21,12 +21,12 @@
           <input type="date" v-model="birthdate" value="1970-01-01" min="1900-01-01" max="2100-12-31">
       </div>
       <div class="special-input">
-        <input type="text" required>
+        <input type="text" v-model="username" required>
         <span></span>
         <label class="label-input">Username</label>
       </div>
       <div class="special-input">
-        <input type="password" required>
+        <input type="password" v-model="password" required>
         <span></span>
         <label class="label-input">Password</label>
     </div>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import Loading from './LoadingSpinner.vue'
+import Loading from '../LoadingSpinner.vue'
 
 export default {
   name: 'registerpage_owner',
@@ -77,13 +77,14 @@ export default {
   watch:{
     getRegisterStatus: function() {
       const register_succes = this.$store.getters.getRegisterStatus
-            if(register_succes === null) return;
+      if(register_succes === null) return;
+
       if(register_succes){
-        this.loading = false
+        this.$router.replace('/')
       } else {
-        this.loading = false
         this.errorMsg = this.$store.getters.getRegisterMessageStatus
       }
+      this.loading = false
       this.$store.dispatch('resetRegisterStates')
     }
   }
