@@ -1,6 +1,6 @@
 <template>
   <div id="dashboardpage">
-      <Navbar></Navbar>
+      <Navbar />
       <div class="dash-container">
         <div class="dash-menu">
           <h1 class="dash-menu-title">Menu</h1>
