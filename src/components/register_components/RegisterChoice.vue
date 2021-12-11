@@ -1,15 +1,19 @@
 <template>
   <div id="register-choice">
-    <h1 class="choice-title">I am a</h1>
+    <h1 class="choice-title">Register as a</h1>
     <div class="choices">
-      <div class="renter">
-        <img src="../assets/Images/renter.png">
-        <p>Renter</p>
-      </div>
-      <div class="landlord">
-          <img src="../assets/Images/landlord.png">
-          <p>landlord</p>
-      </div>
+      <router-link class="dash-router-link" :to="{name: 'register_renter'}">
+        <div class="renter">
+          <img src="../../assets/Images/renter.png">
+          <p class="registerchoice-renterchoice">Renter</p>
+        </div>
+      </router-link>
+      <router-link class="dash-router-link" :to="{name: 'register_owner'}">
+        <div class="landlord">
+            <img src="../../assets/Images/landlord.png">
+            <p class="registerchoice-renterchoice">Owner</p>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -22,7 +26,7 @@ export default {
 
 <style>
 #register-choice {
-  width: 800px;
+  width: min(800px, 100%);
   background-color: white;
   border-radius: 30px;
   padding: 0 30px;
@@ -78,4 +82,19 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
 }
+
+.registerchoice-renterchoice {
+  color: black;
+}
+
+@media screen and (max-width: 800px) {
+  .choices {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .choices > * {
+    margin: 30px 0;
+  }
+} 
 </style>

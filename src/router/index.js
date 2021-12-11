@@ -11,7 +11,9 @@ import Dashboard_Appointment from '../components/DashComponentAppointment.vue'
 
 import Loginpage from '../views/Loginpage.vue'
 import Registerpage from '../views/Registerpage.vue'
-import Registerpage_owner from '../views/Registerpage_owner.vue'
+import RegisterChoice from '../components/register_components/RegisterChoice.vue'
+import Registerpage_owner from '../components/register_components/Registerpage_owner.vue'
+import Registerpage_renter from '../components/register_components/Registerpage_renter.vue'
 import Articlepage from '../views/Articlepage.vue'
 import NotFound from '../views/NotFound.vue'
 
@@ -57,12 +59,24 @@ const routes = [
     {
       name: 'register',
       path: '/register',
-      component: Registerpage
-    },
-    {
-      name: 'register_owner',
-      path: '/register/owner',
-      component: Registerpage_owner
+      component: Registerpage,
+      children: [
+        {
+          name: 'register_choice',
+          path: '/register',
+          component: RegisterChoice
+        },
+        {
+          name: 'register_owner',
+          path: 'owner',
+          component: Registerpage_owner
+        },
+        {
+          name: 'register_renter',
+          path: 'renter',
+          component: Registerpage_renter
+        }
+      ]
     },
     {
       name: 'article',

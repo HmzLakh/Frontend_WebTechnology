@@ -1,7 +1,6 @@
 <template>
   <div id="registerpage">
-    <RegisterChoice v-if="!choosen"></RegisterChoice>
-    <RegisterContainer v-else></RegisterContainer>
+    <router-view></router-view>
     <a class="goback" @click="$router.go(-1)">
         <font-awesome-icon :icon="['fas', 'arrow-alt-circle-left']" /> Go back
     </a>
@@ -9,12 +8,9 @@
 </template>
 
 <script>
-import RegisterChoice from '../components/RegisterChoice.vue'
-import RegisterContainer from '../components/RegisterContainer.vue'
 
 export default {
   name: 'registerpage',
-  components: {RegisterChoice, RegisterContainer},
   data() {
       return {
         unwatch: () => null,
