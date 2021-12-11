@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import LoginContainer from '../components/LoginContainer.vue'
+import LoginContainer from '../components/login_components/LoginContainer.vue'
 
 export default {
   name: 'loginpage',

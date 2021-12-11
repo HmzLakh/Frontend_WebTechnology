@@ -2,7 +2,7 @@
   <div id="login-container">
       <Loading v-if="loading" />
       <div v-else>
-        <img class="login-img" src="../assets/Images/login.png" />
+        <img class="login-img" src="../../assets/Images/login.png" />
         <div class="inputs">
             <div class="mail-input">
                 <input v-model="username" type="text" required>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Loading from './LoadingSpinner.vue'
+import Loading from '../LoadingSpinner.vue'
 
 export default {
     name: 'login-container',
