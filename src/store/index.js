@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Vue from 'vue';
 import Vuex from 'vuex';
+import qs from 'qs'
 
 const apiURL = "http://localhost:5555/api"
 
@@ -64,15 +65,11 @@ const actions = {
         .then(response => { context.commit('setCurrentArticle', response.data) })
     },
     postLoginCredentials(context, loginCred){
-        axios.post(apiURL+'/login', loginCred, {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
-        .then(response => { 
-            console.log(loginCred);
-            console.log(response.data);
-            context.commit('setLogState', (response.data.is_renter || response.data.is_owner)) })
+        axios.post(apiURL+'/login', qs.stringify(loginCred), { withCredentials: true })
+        .then(response => {
+            context.commit('setLogState', response.data.success)
+            context.commit('setLogMsg', response.data.errorMsg)
+        })
         .catch(err => {
             context.commit('setLogState', false)
             context.commit('setLogMsg', "Can't connect to server!")
