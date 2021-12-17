@@ -2,7 +2,7 @@ import axios from 'axios'
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-const apiURL = "http://localhost:9999/api"
+const apiURL = "http://localhost:5555/api"
 
 Vue.use(Vuex)
 
@@ -56,7 +56,7 @@ const actions = {
         })
     },
     getArticlesList(context){
-        axios.get(apiURL+'/all-articles')
+        axios.get(apiURL+'/getPosts')
         .then(response => { context.commit('setArticleState', response.data) })
     },
     getArticle(context, id){

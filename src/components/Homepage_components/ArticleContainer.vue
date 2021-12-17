@@ -4,7 +4,7 @@
       <input type="search" >
     </div>
     <div class="article-inner" v-if="this.getPosts.length > 0">
-      <Article  v-for="p in getPosts" :key="p.id" :id="p.id" :name="p.name" :author="p.author" :tags="p.tags" :review="p.review"></Article>
+      <Article  v-for="p in getPosts" :key="p.post_id" :id="p.post_id" :name="p.title" :author="p.username" :tags="p.sports" :review="p.rating"></Article>
     </div>
     <div class="article-empty-inner" v-else>
       <p class="article-empty-txt">Its a bit lonely here...<br/>You can be the first to change this!</p>
