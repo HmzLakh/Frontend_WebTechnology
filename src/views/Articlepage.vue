@@ -10,7 +10,7 @@
               <p>{{ getPost.description }}</p>
               <button class="reserve-button" @click="openPopup = true">Reserve</button>
           </div>
-          <CommentSection :comments="getPost.comments" />
+          <CommentSection :comments="getPost.reviews" />
       </div>
       <Footer />
   </div>

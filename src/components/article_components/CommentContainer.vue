@@ -1,7 +1,7 @@
 <template>
   <div id="comment-container">
     <h1 class="comment-title">Comments ({{ comments.length }})</h1>
-    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.timestamp" :value="comment.value" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser" :showLikeButtons="true" />
+    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.renter_id" :userpic="comment.userpic" :timestamp="comment.date_time" :value="comment.content" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser" :showLikeButtons="true" />
     <InputComment v-if="this.$store.getters.isUserConnected" />
   </div>
 </template>

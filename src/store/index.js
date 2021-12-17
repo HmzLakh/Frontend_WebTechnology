@@ -64,8 +64,15 @@ const actions = {
         .then(response => { context.commit('setCurrentArticle', response.data) })
     },
     postLoginCredentials(context, loginCred){
-        axios.post(apiURL+'/login', loginCred)
-        .then(response => { context.commit('setLogState', response.data.success) })
+        axios.post(apiURL+'/login', loginCred, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+        .then(response => { 
+            console.log(loginCred);
+            console.log(response.data);
+            context.commit('setLogState', (response.data.is_renter || response.data.is_owner)) })
         .catch(err => {
             context.commit('setLogState', false)
             context.commit('setLogMsg', "Can't connect to server!")
