@@ -7,13 +7,13 @@
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Title</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-title" type="text" />
+                            <input class="posteditor-input" type="text" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Location</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-title" type="text" />
+                            <input class="posteditor-input" type="text" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
@@ -71,19 +71,19 @@
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Field name</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-title" placeholder="Name" type="text" />
+                            <input class="posteditor-input" placeholder="Name" type="text" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Recommended number of people</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-title" placeholder="Amount of people" type="number" min="0" max="300" />
+                            <input class="posteditor-input" placeholder="Amount of people" type="number" min="0" max="300" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Price/hour</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-title" placeholder="Price" type="number" min="0" max="10000" />
+                            <input class="posteditor-input" placeholder="Price" type="number" min="0" max="10000" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
@@ -224,7 +224,7 @@ export default {
     padding: 5px;
 }
 
-.posteditor-title {
+.posteditor-input {
     padding-left: 15px;
     height: 30px;
     width: 100%;
