@@ -3,10 +3,10 @@ import Application from './Application.vue' // Main application
 import store from './store'
 import router from './router'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faStar, faEye,  faArrowAltCircleLeft, faSearch, faChevronLeft, faChevronRight, faThumbsUp, faThumbsDown, faBars, faHome, faSearchLocation, faUserEdit, faBuilding, faPlus, faEdit, faTrash, faCalendarAlt, faTimes, faSpinner} from '@fortawesome/free-solid-svg-icons'
+import { faStar, faEye,  faArrowAltCircleLeft, faSearch, faChevronLeft, faChevronRight, faThumbsUp, faThumbsDown, faBars, faHome, faSearchLocation, faUserEdit, faBuilding, faPlus, faEdit, faTrash, faCalendarAlt, faTimes, faSpinner, faInfoCircle} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faStar, faEye, faArrowAltCircleLeft, faSearch, faChevronLeft, faChevronRight, faThumbsUp, faThumbsDown, faBars, faHome, faSearchLocation, faUserEdit, faBuilding, faPlus, faEdit, faTrash, faCalendarAlt, faTimes, faSpinner)
+library.add(faStar, faEye, faArrowAltCircleLeft, faSearch, faChevronLeft, faChevronRight, faThumbsUp, faThumbsDown, faBars, faHome, faSearchLocation, faUserEdit, faBuilding, faPlus, faEdit, faTrash, faCalendarAlt, faTimes, faSpinner, faInfoCircle)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 new Vue({
