@@ -12,19 +12,19 @@
             <table class="profile-table">
                 <tr>
                     <td><p>Firstname</p></td>
-                    <td><input class="input-edit" type="text" value="Firstname"/></td>
+                    <td><input class="input-edit" type="text" v-model="firstname" placeholder="Firstname"/></td>
                 </tr>
                 <tr>
                     <td><p>Lastname</p></td>
-                    <td><input class="input-edit" type="text" value="Lastname"/></td>
+                    <td><input class="input-edit" type="text" v-model="lastname" placeholder="Lastname"/></td>
                 </tr>
                 <tr>
                     <td><p>Email</p></td>
-                    <td><input class="input-edit" type="email" value="Email"/></td>
+                    <td><input class="input-edit" type="email" v-model="email" placeholder="Email"/></td>
                 </tr>
                 <tr>
                     <td><p>Password</p></td>
-                    <td><input class="input-edit" type="password" value="password"/></td>
+                    <td><input class="input-edit" type="password" v-model="password" placeholder="password"/></td>
                 </tr>
             </table>
         </div>
@@ -35,7 +35,41 @@
 </template>
 <script>
 export default {
-  name: 'dashcomponentedit'
+    name: 'dashcomponentedit',
+    data(){
+        return {
+            firstname: '',
+            lastname: '',
+            email: '',
+            password: '',
+        }
+    },
+    mounted() {
+        //default password
+        this.password = 'falsepasswordlol'
+
+        console.log(this.$store.getters.getUserProfile);
+        const info = this.$store.getters.getUserProfile
+        this.firstname = info.firstname
+        this.lastname = info.lastname
+        this.email = info.email
+    },
+    methods: {
+        submitForm(){
+            const updateProfile = {
+                firstname: this.firstname,
+                lastname: this.lastname,
+                email: this.email,
+                password: this.password,
+                is_renter: false,
+                is_owner: false
+            }
+            if(updateProfile.password == 'falsepasswordlol'){
+                delete updateProfile.password
+            }
+            // Show overlay confirmation and then send request!!!
+        }
+    }
 }
 </script>
 

@@ -13,6 +13,9 @@ const state = {
     userid: null,
     user_is_renter: null,
     user_is_owner: null,
+    firstname: null,
+    lastname: null,
+    email: null,
     authenticationMsg: null,
     articles: [],
     currentArticle: null,
@@ -33,6 +36,9 @@ const mutations = {
         state.userid = data.userid
         state.user_is_renter = data.is_renter
         state.user_is_owner = data.is_owner
+        state.firstname = data.firstname
+        state.lastname = data.lastname
+        state.email = data.email
     },
     setLogMsg(state, logMsg){
         state.authenticationMsg = logMsg
@@ -150,12 +156,9 @@ const actions = {
     getProfileInfo(context, username){
         axios.get(apiURL+`/profile/${username}`, {withCredentials: true})
         .then(response => {
-            console.log("Exec!!");
             if(response.data.success){
-                console.log("Good state");
                 context.commit("setProfileViewer", response.data)
             } else {
-                console.log("Bad state!!");
                 context.commit("setBadProfileViewer", false)
             }
         })
@@ -206,6 +209,14 @@ const getters = {
     },
     getProfileStatus(state){
         return state.currentProfile_show
+    },
+    getUserProfile(state){
+        const info = {
+            firstname: state.firstname,
+            lastname: state.lastname,
+            email: state.email
+        }
+        return info
     }
 }
 
