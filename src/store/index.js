@@ -51,15 +51,26 @@ const mutations = {
             state.authenticated = null
         }
         state.authenticationMsg = null
+    },
+    setLogoutState(state){
+        state.authenticated = null
+        state.userid = null
+        state.user_is_renter = null
+        state.user_is_owner = null
+        state.register = null
+        state.registerMsg = null
+        state.authenticationMsg = null
     }
 }
 
 const actions = {
+    logoutUser(context){
+        context.commit('setLogoutState')
+    },
     checkUserIsAlreadyConnected(context){
         axios.get(apiURL+'/connected', {withCredentials: true})
         .then(response => {
             if(response.data.logged){
-                console.log(response.data.userid);
                 context.commit('setLogState', response.data)
             }
         })
@@ -72,15 +83,16 @@ const actions = {
         axios.get(apiURL+`/getPost/${id}`, {withCredentials: true})
         .then(response => { context.commit('setCurrentArticle', response.data) })
     },
-    postLoginCredentials(context, loginCred){
+    postLoginCredentials({ commit, dispatch }, loginCred){
         axios.post(apiURL+'/login', qs.stringify(loginCred), {withCredentials: true})
         .then(response => {
-            context.commit('setLogState', response.data.success)
-            context.commit('setLogMsg', response.data.errorMsg)
+            commit('setLogState', response.data.success)
+            commit('setLogMsg', response.data.errorMsg)
+            dispatch('checkUserIsAlreadyConnected')
         })
         .catch(err => {
-            context.commit('setLogState', false)
-            context.commit('setLogMsg', "Can't connect to server!")
+            commit('setLogState', false)
+            commit('setLogMsg', "Can't connect to server!")
         })
     },
     postRegisterOwner(context, registerCred){

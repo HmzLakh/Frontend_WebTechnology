@@ -15,6 +15,10 @@
                     <font-awesome-icon :icon="['fas', 'info-circle']" class="navbar-logo" />
                     <p>About us</p>
                 </li>
+                <li class="navbar-element" @click="disconnectUser">
+                    <font-awesome-icon :icon="['fas', 'info-circle']" class="navbar-logo" />
+                    <p>Disconnect</p>
+                </li>
                 <li class="navbar-element" @click="outsideClick">
                     <font-awesome-icon :icon="['fas', 'times']" class="navbar-logo" />
                     <p>Close menu</p>
@@ -36,6 +40,10 @@ export default {
             if(e.sourceCapabilities !== null){
                 this.$emit('closeMenu')
             }
+        },
+        disconnectUser(){
+            this.$store.dispatch('logoutUser')
+            this.$emit('closeMenu')
         }
     },
     mounted() {
