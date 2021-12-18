@@ -87,7 +87,7 @@ const routes = [
     },
     {
       name: 'profile',
-      path: '/profile/:id',
+      path: '/profile/:username',
       component: Profilepage,
       props: true
     },

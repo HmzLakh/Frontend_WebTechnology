@@ -17,7 +17,14 @@ const state = {
     articles: [],
     currentArticle: null,
     register: null,
-    registerMsg: null
+    registerMsg: null,
+    currentProfile_show: null,
+    currentProfile_username: null,
+    currentProfile_firstName: null,
+    currentProfile_lastName: null,
+    currentProfile_email: null,
+    currentProfile_isOwner: null,
+    currentProfile_isRenter: null
 }
 
 const mutations = {
@@ -60,6 +67,27 @@ const mutations = {
         state.register = null
         state.registerMsg = null
         state.authenticationMsg = null
+    },
+    setProfileViewer(state, data){
+        state.currentProfile_show = data.success
+        state.currentProfile_username = data.username
+        state.currentProfile_firstName = data.first_name
+        state.currentProfile_lastName = data.last_name
+        state.currentProfile_email = data.email
+        state.currentProfile_isOwner = data.is_owner
+        state.currentProfile_isRenter = data.is_renter
+    },
+    resetProfileViewer(state){
+        state.currentProfile_show = null
+        state.currentProfile_username = null
+        state.currentProfile_firstName = null
+        state.currentProfile_lastName = null
+        state.currentProfile_email = null
+        state.currentProfile_isOwner = null
+        state.currentProfile_isRenter = null
+    },
+    setBadProfileViewer(state, show){
+        state.currentProfile_show = show
     }
 }
 
@@ -119,6 +147,25 @@ const actions = {
             commit('setRegisterMessage', "Can't connect to server!")
         })
     },
+    getProfileInfo(context, username){
+        axios.get(apiURL+`/profile/${username}`, {withCredentials: true})
+        .then(response => {
+            console.log("Exec!!");
+            if(response.data.success){
+                console.log("Good state");
+                context.commit("setProfileViewer", response.data)
+            } else {
+                console.log("Bad state!!");
+                context.commit("setBadProfileViewer", false)
+            }
+        })
+        .catch(err => { 
+            context.commit("setBadProfileViewer")
+        })
+    },
+    resetProfileViewer(context){
+        context.commit("resetProfileViewer")
+    },
     resetRegisterStates(context){
         context.commit('resetRegisterState')
     },
@@ -145,6 +192,20 @@ const getters = {
     },
     getRegisterMessageStatus(state){
         return state.registerMsg
+    },
+    getProfileInformations(state){
+        const info = {
+            username: state.currentProfile_username,
+            firstname: state.currentProfile_firstName,
+            lastname: state.currentProfile_lastName,
+            email: state.currentProfile_email,
+            isOwner: state.currentProfile_isOwner,
+            isRenter: state.currentProfile_isRenter,
+        }
+        return info
+    },
+    getProfileStatus(state){
+        return state.currentProfile_show
     }
 }
 

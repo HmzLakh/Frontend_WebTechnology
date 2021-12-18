@@ -7,12 +7,13 @@
       </div>
       <div class="profile-informations-container">
           <ProfileCard title="Type of profile">
-              <p>This user is a owner</p>
+              <p v-if="profile.isOwner">This user is a owner</p>
+              <p v-if="profile.isRenter">This user is a renter</p>
           </ProfileCard>
           <ProfileCard title="Profile information">
-              <p>Hamza Lakhloufi enrolled 01/01/1999</p>
+              <p>{{ profile.firstname }} {{ profile.lastname }} has {{ profile.email }} as email</p>
           </ProfileCard>
-          <ProfileCard title="Last posts (ONLY IF OWNER)">
+          <ProfileCard v-if="profile.isOwner" title="Last posts (ONLY IF OWNER)">
               <p>Show here the last posts with links</p>
           </ProfileCard>
       </div>
@@ -24,6 +25,7 @@ import ProfileCard from './ProfileCardInformation.vue'
 
 export default {
   name: 'profileviewer',
+  props: ['profile'],
   components: {ProfileCard}
 }
 </script>
