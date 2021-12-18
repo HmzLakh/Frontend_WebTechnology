@@ -1,5 +1,5 @@
 <template>
-    <div id="singlepost">
+    <div class="singlepost">
         <ConfirmBox :open="openConfirmationBox" @close="close"></ConfirmBox>
         <EditPost title="Edit post" :open="openOverlay" @close="close"></EditPost>
         <div class="single-container">
@@ -41,10 +41,9 @@ export default {
 </script>
 
 <style>
-#singlepost {
+.singlepost {
     width: 250px;
     height: 200px;
-    background-color: purple;
     border-radius: 15px;
     overflow: hidden;
     flex-basis: 250px;

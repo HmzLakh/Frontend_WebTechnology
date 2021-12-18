@@ -32,7 +32,7 @@ export default {
     components: { Post, CreatePost },
     data () {
         return {
-            dataset: ['dummy'],
+            dataset: ['dummy'], // ????
             openPostCreator: false
         }
     },

@@ -16,6 +16,7 @@ import Registerpage_owner from '../components/register_components/Registerpage_o
 import Registerpage_renter from '../components/register_components/Registerpage_renter.vue'
 import Articlepage from '../views/Articlepage.vue'
 import NotFound from '../views/NotFound.vue'
+import Profilepage from '../views/Profilepage.vue'
 
 Vue.use(VueRouter)
 
@@ -32,7 +33,7 @@ const routes = [
       children: [
          {
            name: 'home_home',
-           path: '',
+           path: '/home',
            component: Dashboard_Home
          },
          {
@@ -82,6 +83,12 @@ const routes = [
       name: 'article',
       path: '/show/:id',
       component: Articlepage,
+      props: true
+    },
+    {
+      name: 'profile',
+      path: '/profile/:id',
+      component: Profilepage,
       props: true
     },
     {

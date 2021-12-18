@@ -1,37 +1,55 @@
 <template>
-  <nav id="navbar">
-      <div class="sitename-container">
-        <h1 class="link"><router-link class="link" :to="{name: 'root'}">MyGym</router-link></h1>
-      </div>
-      <div class="userprofile-container" v-if="isConnected">
-          <div class="userprofile"></div>
-      </div>
-      <ul class="menu" v-else>
-         <li class="menu-style"><p class="link">About us</p></li>
-         <li class="menu-style"><router-link class="link" :to="{name: 'login'}">Login</router-link></li>
-         <router-link class="link" :to="{name: 'register_choice'}">
-            <div class="signup">
-                <li class="menu-style">Sign up</li>
+    <div>
+        <transition name="fade">
+            <Menu v-if="openNavMenu" @closeMenu="closeMenu"/>
+        </transition>
+        <nav id="navbar">
+            <div class="sitename-container">
+                <h1 class="link"><router-link class="link" :to="{name: 'root'}">MyGym</router-link></h1>
             </div>
-         </router-link>
-      </ul>
-      <div class="responsive-menu">
-          <font-awesome-icon :icon="['fas', 'bars']" />
-      </div>
-  </nav>
+            <div class="userprofile-container" v-if="isConnected">
+                <div class="userprofile" @click="openMenu"></div>
+            </div>
+            <ul class="menu" v-else>
+                <li class="menu-style"><p class="link">About us</p></li>
+                <li class="menu-style"><router-link class="link" :to="{name: 'login'}">Login</router-link></li>
+                <router-link class="link" :to="{name: 'register_choice'}">
+                    <div class="signup">
+                        <li class="menu-style">Sign up</li>
+                    </div>
+                </router-link>
+            </ul>
+            <div v-if="!isConnected" class="responsive-menu">
+                <font-awesome-icon :icon="['fas', 'bars']" />
+            </div>
+        </nav>
+    </div>
 </template>
 
 <script>
+import Menu from './NavbarMenu.vue'
+
 export default {
     name: 'navbar',
-    data () { 
+    components: { Menu },
+    data (){
         return {
-            showDropdown: true
+            openNavMenu: false
         }
     },
     computed: {
         isConnected(){
             return this.$store.getters.isUserConnected
+        }
+    },
+    methods: {
+        openMenu(){
+            this.openNavMenu = true
+            document.body.style.overflowY = "hidden";
+        },
+        closeMenu(){
+            this.openNavMenu = false
+            document.body.style.overflowY = "visible";
         }
     }
 }
@@ -113,27 +131,19 @@ export default {
 .userprofile {
     float: right;
     height: 100%;
-    width: 30%;
+    width: 80px;
     background: url(../assets/Images/user.png);
     background-size: 50%;
     background-position: center;
     background-repeat: no-repeat;
     transition: 0.25s;
     outline: none;
+    border-radius: 50px;
 }
 
 .userprofile:hover {
     background-size: 75%;
     transition: 0.25s;
-}
-
-.dropdown-container {
-    position: absolute;
-    top: 75px;
-    right: 0;
-    width: 250px;
-    background-color: red;
-    z-index: 1;
 }
 
 .responsive-menu {
@@ -143,9 +153,6 @@ export default {
 
 @media screen and (max-width: 440px) {
     .menu {
-        display: none;
-    }
-    .userprofile-container{
         display: none;
     }
     .responsive-menu {
@@ -159,5 +166,12 @@ export default {
     .sitename-container {
         width: calc(100% - 75px);
     }
-} 
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .25s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 </style>
