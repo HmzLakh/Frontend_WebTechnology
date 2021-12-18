@@ -58,7 +58,8 @@ export default {
         'lname': this.lname,
         'email': this.email,
         'username': this.username,
-        'password': this.password
+        'password': this.password,
+        'is_owner': true
       }
       this.$store.dispatch('postRegisterOwner', owner_model)
       this.loading = true

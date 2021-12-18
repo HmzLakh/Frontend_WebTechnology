@@ -95,12 +95,28 @@ const actions = {
             commit('setLogMsg', "Can't connect to server!")
         })
     },
-    postRegisterOwner(context, registerCred){
-        axios.post(apiURL+'/register', registerCred, {withCredentials: true})
-        .then(response => { context.commit('setRegisterState', response.data.success) })
+    postRegisterOwner({ commit, dispatch }, registerCred){
+        axios.post(apiURL+'/register', qs.stringify(registerCred), {withCredentials: true})
+        .then(response => { 
+            commit('setRegisterState', response.data.success)
+            commit('setRegisterMessage', response.data.errorMsg)
+            dispatch('checkUserIsAlreadyConnected')
+        })
         .catch(err => { 
-            context.commit('setRegisterState', false)
-            context.commit('setRegisterMessage', "Can't connect to server!")
+            commit('setRegisterState', false)
+            commit('setRegisterMessage', "Can't connect to server!")
+        })
+    },
+    postRegisterRenter({ commit, dispatch }, registerCred){
+        axios.post(apiURL+'/register', qs.stringify(registerCred), {withCredentials: true})
+        .then(response => { 
+            commit('setRegisterState', response.data.success)
+            commit('setRegisterMessage', response.data.errorMsg)
+            dispatch('checkUserIsAlreadyConnected')
+        })
+        .catch(err => { 
+            commit('setRegisterState', false)
+            commit('setRegisterMessage', "Can't connect to server!")
         })
     },
     resetRegisterStates(context){

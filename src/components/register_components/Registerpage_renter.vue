@@ -61,11 +61,12 @@ export default {
         'fname': this.fname,
         'lname': this.lname,
         'email': this.email,
-        'birthdate': this.birthdate,
+        'dateofbirth': this.birthdate,
         'username': this.username,
-        'password': this.password
+        'password': this.password,
+        'is_renter': true
       }
-      this.$store.dispatch('postRegisterOwner', renter_model)
+      this.$store.dispatch('postRegisterRenter', renter_model)
       this.loading = true
     }
   },
