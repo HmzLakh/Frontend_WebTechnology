@@ -4,11 +4,15 @@ import Vuex from 'vuex';
 import qs from 'qs'
 
 const apiURL = "http://localhost:5555/api"
+axios.defaults.withCredentials = true;
 
 Vue.use(Vuex)
 
 const state = {
     authenticated: null,
+    userid: null,
+    user_is_renter: null,
+    user_is_owner: null,
     authenticationMsg: null,
     articles: [],
     currentArticle: null,
@@ -17,8 +21,11 @@ const state = {
 }
 
 const mutations = {
-    setLogState(state, isLogged){
-        state.authenticated = isLogged
+    setLogState(state, data){
+        state.authenticated = data.logged
+        state.userid = data.userid
+        state.user_is_renter = data.is_renter
+        state.user_is_owner = data.is_owner
     },
     setLogMsg(state, logMsg){
         state.authenticationMsg = logMsg
@@ -49,23 +56,24 @@ const mutations = {
 
 const actions = {
     checkUserIsAlreadyConnected(context){
-        axios.get(apiURL+'/connected')
+        axios.get(apiURL+'/connected', {withCredentials: true})
         .then(response => {
             if(response.data.logged){
-                context.commit('setLogState', true)
+                console.log(response.data.userid);
+                context.commit('setLogState', response.data)
             }
         })
     },
     getArticlesList(context){
-        axios.get(apiURL+'/getPosts')
+        axios.get(apiURL+'/getPosts', {withCredentials: true})
         .then(response => { context.commit('setArticleState', response.data) })
     },
     getArticle(context, id){
-        axios.get(apiURL+`/getPost/${id}`)
+        axios.get(apiURL+`/getPost/${id}`, {withCredentials: true})
         .then(response => { context.commit('setCurrentArticle', response.data) })
     },
     postLoginCredentials(context, loginCred){
-        axios.post(apiURL+'/login', qs.stringify(loginCred), { withCredentials: true })
+        axios.post(apiURL+'/login', qs.stringify(loginCred), {withCredentials: true})
         .then(response => {
             context.commit('setLogState', response.data.success)
             context.commit('setLogMsg', response.data.errorMsg)
@@ -76,7 +84,7 @@ const actions = {
         })
     },
     postRegisterOwner(context, registerCred){
-        axios.post(apiURL+'/register', registerCred)
+        axios.post(apiURL+'/register', registerCred, {withCredentials: true})
         .then(response => { context.commit('setRegisterState', response.data.success) })
         .catch(err => { 
             context.commit('setRegisterState', false)
