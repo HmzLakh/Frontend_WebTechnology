@@ -11,13 +11,13 @@
 
 <script>
 export default {
-  name: 'profilecard',
+    name: 'profilecard',
     props: {
         title: {
             type: String,
             required: true
         }
-    },
+    }
 }
 </script>
 
