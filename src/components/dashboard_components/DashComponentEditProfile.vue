@@ -1,73 +1,130 @@
 <template>
-    <div id="editcomponent">
-        <div class="edit-pic-container">
-            <div class="image-location">
-                <img src="https://cultivatedculture.com/wp-content/uploads/2019/12/Austin-Portrait-Taken-By-Professional-Photographer-683x1024.png" alt="Profile picture">
-                <div class="image-edit-container">
-                    <p class="image-edit-txt">Edit profile</p>
+    <div>
+        <ConfirmationBox :open="confirmationOpenOverlay" text="Are you sure you want to submit your modifications?" @close="closeConfirmationOverlay" @yes="submitConfirmationOverlay" />
+        <div id="editcomponent">
+            <div class="edit-pic-container">
+                <div class="image-location">
+                    <img src="https://cultivatedculture.com/wp-content/uploads/2019/12/Austin-Portrait-Taken-By-Professional-Photographer-683x1024.png" alt="Profile picture">
+                    <div class="image-edit-container">
+                        <p class="image-edit-txt">Edit profile</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="edit-profile-container">
-            <table class="profile-table">
-                <tr>
-                    <td><p>Firstname</p></td>
-                    <td><input class="input-edit" type="text" v-model="firstname" placeholder="Firstname"/></td>
-                </tr>
-                <tr>
-                    <td><p>Lastname</p></td>
-                    <td><input class="input-edit" type="text" v-model="lastname" placeholder="Lastname"/></td>
-                </tr>
-                <tr>
-                    <td><p>Email</p></td>
-                    <td><input class="input-edit" type="email" v-model="email" placeholder="Email"/></td>
-                </tr>
-                <tr>
-                    <td><p>Password</p></td>
-                    <td><input class="input-edit" type="password" v-model="password" placeholder="password"/></td>
-                </tr>
-            </table>
-        </div>
-        <div class="edit-btn">
-            <button class="edit-save-button">Confirm changes</button>
+            <div class="edit-profile-container">
+                <table class="profile-table">
+                    <tr>
+                        <td><p>Firstname</p></td>
+                        <td><input class="input-edit" type="text" v-model="firstname" placeholder="Firstname"/></td>
+                    </tr>
+                    <tr>
+                        <td><p>Lastname</p></td>
+                        <td><input class="input-edit" type="text" v-model="lastname" placeholder="Lastname"/></td>
+                    </tr>
+                    <tr>
+                        <td><p>Email</p></td>
+                        <td><input class="input-edit" type="email" v-model="email" placeholder="Email"/></td>
+                    </tr>
+                    <tr v-if="isRenter">
+                        <td><p>Date of birth</p></td>
+                        <td><input class="input-edit" type="date" v-model="dateofbirth" placeholder="Email"/></td>
+                    </tr>
+                    <tr>
+                        <td><p>Password</p></td>
+                        <td><input class="input-edit" type="password" v-model="password" placeholder="password"/></td>
+                    </tr>
+                </table>
+                <div class="edit-errormsg" v-if="errorMsg !== null">
+                    <p>{{ errorMsg }}</p>
+                </div>
+                <div class="edit-successmsg" v-if="showSuccess">
+                    <p>{{ successMsg }}</p>
+                </div>
+            </div>
+            <div class="edit-btn">
+                <button class="edit-save-button" @click="openSubmitOverlay">Confirm changes</button>
+            </div>
         </div>
     </div>
 </template>
 <script>
+import ConfirmationBox from '../overlay/ConfirmationBox.vue'
+
 export default {
     name: 'dashcomponentedit',
+    components: {ConfirmationBox},
     data(){
         return {
             firstname: '',
             lastname: '',
             email: '',
             password: '',
+            dateofbirth: '1970-01-01',
+            isRenter: null,
+            isOwner: null,
+            confirmationOpenOverlay: false,
+            errorMsg: null,
+            successMsg: "Profile edited successfully!",
+            showSuccess: false
+        }
+    },
+    computed: {
+        getEditProfileStatus(){
+            return this.$store.getters.getEditProfileStatus
+        }
+    },
+    watch: {
+        getEditProfileStatus: function () {
+            const profileResponse = this.$store.getters.getEditProfileStatus
+            if (profileResponse === null) return;
+            if(profileResponse) { //Profile has been edited!
+                this.showSuccess = true
+            } else { // Error occured when profile edited
+                this.errorMsg = this.$store.getters.getEditProfileMsgError
+                console.log("PROFILE ERROR WHEN EDIT! ", this.errorMsg);
+            }
+            this.$store.dispatch('resetEditProfile')
         }
     },
     mounted() {
         //default password
         this.password = 'falsepasswordlol'
-
-        console.log(this.$store.getters.getUserProfile);
-        const info = this.$store.getters.getUserProfile
-        this.firstname = info.firstname
-        this.lastname = info.lastname
-        this.email = info.email
+        // Create method in order to reset data when needed!
+        this.initUserInformations()
     },
     methods: {
-        submitForm(){
+        initUserInformations(){
+            const info = this.$store.getters.getUserProfile
+            this.firstname = info.firstname
+            this.lastname = info.lastname
+            this.email = info.email
+            this.isRenter = info.is_renter
+            this.isOwner = info.is_owner
+        },
+        closeConfirmationOverlay(){
+            this.confirmationOpenOverlay = false
+        },
+        submitConfirmationOverlay(){
             const updateProfile = {
-                firstname: this.firstname,
-                lastname: this.lastname,
+                fname: this.firstname,
+                lname: this.lastname,
                 email: this.email,
                 password: this.password,
-                is_renter: false,
-                is_owner: false
+                dateofbirth: this.dateofbirth,
+                is_renter: this.$store.getters.getUserProfile.is_renter,
+                is_owner: this.$store.getters.getUserProfile.is_owner
             }
             if(updateProfile.password == 'falsepasswordlol'){
                 delete updateProfile.password
             }
-            // Show overlay confirmation and then send request!!!
+            console.log("Sending: ", updateProfile);
+            this.$store.dispatch('postEditProfile', updateProfile)
+            this.closeConfirmationOverlay()
+        },
+        openSubmitOverlay(){
+            this.errorMsg = null
+            this.showSuccess = false
+            this.$store.dispatch('resetEditProfile')
+            this.confirmationOpenOverlay = true
         }
     }
 }
@@ -135,6 +192,7 @@ export default {
 
 .edit-profile-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -177,5 +235,27 @@ export default {
 
 .edit-save-button:hover {
     background-color: #aa076b;
+}
+
+.edit-errormsg {
+    margin: 15px 0;
+}
+
+.edit-errormsg p {
+    font-family: Nunito;
+    font-size: 12px;
+    color: red;
+    font-style: italic;
+}
+
+.edit-successmsg {
+    margin: 15px 0;
+}
+
+.edit-successmsg p {
+    font-family: Nunito;
+    font-size: 12px;
+    color: green;
+    font-style: italic;
 }
 </style>

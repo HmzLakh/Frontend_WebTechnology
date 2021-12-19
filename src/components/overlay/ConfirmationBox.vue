@@ -1,10 +1,10 @@
 <template>
-    <SweetModal icon="warning" title="Confirmation" ref="confirmationbox" @close="overlayClosed">
+    <SweetModal icon="warning" title="Confirmation" ref="confirmationbox">
         <div id="confirmationbox">
-            <p>Are you sure you want to delete this?</p>
-            <div class="confirm-deletebtn">
-                <button>No</button>
-                <button>Yes</button>
+            <p class="confirmationbox-txt">{{ text }}</p>
+            <div class="confirm-btns">
+                <button class="confirm-btn-yes" @click="yesEvent">Yes</button>
+                <button class="confirm-btn-no" @click="overlayClosed">No</button>
             </div>
         </div>
     </SweetModal> 
@@ -16,6 +16,11 @@ export default {
     name: 'confirmationbox',
     props: {
         open: {
+            type: Boolean,
+            required: true
+        },
+        text: {
+            type: String,
             required: true
         }
     },
@@ -29,34 +34,49 @@ export default {
     },
     methods: { 
         overlayClosed(){
+            this.$refs.confirmationbox.close()
             this.$emit('close')
+        },
+        yesEvent(){
+            this.$refs.confirmationbox.close()
+            this.$emit('yes')
         }
     }
 }
 </script>
 
 <style>
-.confirm-deletebtn {
+.confirm-btns {
     display:flex;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
 
-.confirm-deletebtn > * {
+.confirm-btns > * {
     margin: 0 15px;
 }
 
-.confirm-deletebtn button {
+.confirm-btns button {
     margin-top: 15px;
     height: 50px;
     width: 30%;
     border-radius: 25px;
     border: none;
     outline: none;
+    color:white;
+    background: #95a5a6;
 }
 
-.confirm-deletebtn button:hover {
-    background-color: red;
+.confirm-btn-yes:hover {
+    background-color: #16a085;
+}
+
+.confirm-btn-no:hover {
+    background-color: #c0392b;
+}
+
+.confirmationbox-txt {
+    font-family: Nunito;
 }
 </style>

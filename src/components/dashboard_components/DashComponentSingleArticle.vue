@@ -1,6 +1,6 @@
 <template>
     <div class="singlepost">
-        <ConfirmBox :open="openConfirmationBox" @close="close"></ConfirmBox>
+        <ConfirmBox :open="openConfirmationBox" text="Are you sure you want to delete this?" @close="close"></ConfirmBox>
         <EditPost title="Edit post" :open="openOverlay" @close="close"></EditPost>
         <div class="single-container">
             <img src="../../assets/images/show.jpg" alt="">

@@ -5,10 +5,10 @@
                 <h2 class="navbar-menutop-title">MyGym</h2>
             </div>
             <ol>
-                <router-link class="navbar-router-link" :to="{name: 'home_edit'}">
+                <router-link class="navbar-router-link" :to="{name: 'home_home'}">
                     <li class="navbar-element">
                         <font-awesome-icon :icon="['fas', 'user-edit']" class="navbar-logo" />
-                        <p>Edit profile</p>
+                        <p>Dashboard</p>
                     </li>
                 </router-link>
                 <li class="navbar-element">

@@ -7,36 +7,27 @@
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Title</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-input" type="text" />
+                            <input class="posteditor-input" v-model="post_title" placeholder="Title of post" type="text" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Location</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-input" type="text" />
+                            <input class="posteditor-input" v-model="post_location" placeholder="Location of building" type="text" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Thumbnail</p></td>
                         <td class="posteditor-td">
-                            <UploadComponent></UploadComponent>
-                        </td>
-                    </tr>
-                <tr class="posteditor-tr">
-                        <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Images (max 5)</p></td>
-                        <td class="posteditor-td">
-                            <UploadImages
-                                :max="5"
-                                maxError='Max files exceed!'
-                                uploadMsg="Upload images here"
-                                clearAll="remove all"
-                                @changed="handleImages"
-                            />
+                            <UploadComponent @uploadthumbnail="uploadthumbnail"></UploadComponent>
+                            <div v-if="thumbnail !== null" class="posteditor-imgpreview-thumbnail">
+                                <img :src="'http://localhost:5555/api/image/'+thumbnail" alt="Thumbnail">
+                            </div>
                         </td>
                     </tr>
                 </table>
                 <div class="posteditor-btncontainer">
-                    <button class="postedit-savebtn">Save</button>
+                    <button class="postedit-savebtn" @click="sendPost">Save</button>
                 </div>
             </div>
             </SweetModalTab>
@@ -46,7 +37,7 @@
                         <tr class="posteditor-tr">
                             <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Fields</p></td>
                             <td class="posteditor-td">
-                                <input class="posteditor-addfield-input" v-model="newFieldName" type="text" maxlength="20" />
+                                <input class="posteditor-addfield-input" v-model="newFieldName" type="text" placeholder="Field name" maxlength="20" />
                                 <button class="posteditor-addfield-cbtn" @click="addField">Add field</button>
                             </td>
                         </tr>
@@ -55,10 +46,45 @@
                             <td class="posteditor-td">
                                 <table class="posteditor-innertable">
                                     <tr v-for="(item, idx) in fieldsArray" :key="idx" class="posteditor-innertable-tr">
-                                        <td><p class="posteditor-innertable-txt">{{ item }}</p></td>
-                                        <td><button class="posteditor-innertable-tr-editbtn"  @click="OpenFieldOverlay">Edit field</button></td>
+                                        <td><p class="posteditor-innertable-txt">{{ item.name }}</p></td>
+                                        <td><button class="posteditor-innertable-tr-editbtn"  @click="OpenFieldOverlay(item, idx)">Edit field</button></td>
                                     </tr>
                                 </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </SweetModalTab>
+            <SweetModalTab title="Description" id="tab3">
+                <div>
+                    <table class="postedit-table">
+                        <tr class="posteditor-tr">
+                            <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Description</p></td>
+                            <td class="posteditor-td">
+                                <textarea class="posteditor-td-textarea" name="description" v-model="post_description" placeholder="Description of post" cols="30" rows="10"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </SweetModalTab>
+            <SweetModalTab title="Images" id="tab4">
+                <div>
+                    <table class="postedit-table">
+                        <tr class="posteditor-tr">
+                            <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Upload</p></td>
+                            <td class="posteditor-td">
+                                <UploadComponent @uploadthumbnail="uploadMultipleImages"></UploadComponent>
+                            </td>
+                        </tr>
+                        <tr class="posteditor-tr">
+                            <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Images for post (max 5)</p></td>
+                            <td class="posteditor-td posteditor-imagelist">
+                                <div class="posteditor-imgpreview" v-for="(imgidx, idx) in images" :key="idx">
+                                    <div class="posteditor-imgpreview-delete" @click="removeImageFromPost(imgidx)">
+                                        <p>Click here to delete</p>
+                                    </div>
+                                    <img :src="'http://localhost:5555/api/image/'+imgidx" alt="Image for post">
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -71,39 +97,35 @@
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Field name</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-input" placeholder="Name" type="text" />
+                            <input class="posteditor-input" placeholder="Name" v-model="fieldname" type="text" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Recommended number of people</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-input" placeholder="Amount of people" type="number" min="0" max="300" />
+                            <input class="posteditor-input" placeholder="Amount of people" v-model="recommended_people" type="number" min="0" max="300" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Price/hour</p></td>
                         <td class="posteditor-td">
-                            <input class="posteditor-input" placeholder="Price" type="number" min="0" max="10000" />
+                            <input class="posteditor-input" placeholder="Price" v-model="price" type="number" min="0" max="10000" />
                         </td>
                     </tr>
                     <tr class="posteditor-tr">
                         <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Sport tags</p></td>
                         <td class="posteditor-td">
                             <p class="posteditor-selectedtags-txt">Current selected tags: </p>
+                            <!-- Loop this for every tag! -->
                             <div class="posteditor-showselectedtags">
-                                <span class="posteditor-selectedtag" v-for="i in 10" :key="i">
-                                    <p class="posteditor-selectedtag-closebtn"><font-awesome-icon :icon="['fas', 'times']" /></p>
-                                    <p>Football {{i}}</p>
+                                <span class="posteditor-selectedtag" v-for="(element, i) in tags" :key="i">
+                                    <p class="posteditor-selectedtag-closebtn"><font-awesome-icon :icon="['fas', 'times']" @click="removeTagFromField(element)" /></p>
+                                    <p>{{ element }}</p>
                                 </span>
                             </div>
-                            <select class="posteditor-selectedtag-input"> <!-- get list from server for here -->
+                            <select class="posteditor-selectedtag-input" v-model="currentSelectedSport" @click="addTagToField">
                                 <option value="">Select your tag</option>
-                                <option value="dog">Football</option>
-                                <option value="cat">basketball</option>
-                                <option value="hamster">Hamster</option>
-                                <option value="parrot">Parrot</option>
-                                <option value="spider">Spider</option>
-                                <option value="goldfish">Goldfish</option>
+                                <option v-for="(item, idx) in unselected_tags" :key="idx">{{ item }}</option>
                             </select>
                         </td>
                     </tr>
@@ -114,15 +136,16 @@
     </div>
 </template>
 <script>
-import UploadImages from "vue-upload-drop-images"
 import TagComponent from '../TagComponent.vue'
 import UploadComponent from '../UploadFileComponent.vue'
 import { VueTags } from 'vue-tags-component';
 import { SweetModal, SweetModalTab } from 'sweet-modal-vue'
+import axios from 'axios'
+import qs from 'qs'
 
 export default {
     name: 'overlay-editpost',
-    components: { SweetModal, VueTags, TagComponent, UploadImages, UploadComponent, SweetModalTab },
+    components: { SweetModal, VueTags, TagComponent, UploadComponent, SweetModalTab },
     props: {open: {
                 required: true
             }, 
@@ -136,14 +159,30 @@ export default {
                 default: true
             }
     },
+    mounted(){
+        this.$store.dispatch('getSportTags')
+    },
     data() {
         return {
-            fieldsArray: ["ok"],
-            newFieldName: "test"
+            currentSelectedSport: null,
+            currentFieldId: null,
+            currentField: null,
+            fieldsArray: [],
+            newFieldName: '',
+            fieldname: '',
+            recommended_people: 0,
+            price: 0,
+            tags: [],
+            unselected_tags: [],
+            post_title: '',
+            post_location: '',
+            post_description: '',
+            thumbnail: null,
+            images: [], 
         }
     },
     watch: { 
-        open: function(newVal, oldVal) { // watch it
+        open: function(newVal, oldVal) {
             if(newVal == true) {
                 this.$refs.overlay.open()
             }
@@ -157,17 +196,101 @@ export default {
             this.$emit('close')
         },
         addField(){
-            this.fieldsArray.push(this.newFieldName)
-            this.newFieldName = ""
+            if(this.newFieldName.length > 0){
+                const field = {
+                    name: this.newFieldName,
+                    recommended: 0,
+                    price: 0,
+                    tags: [],
+                    unselected_tags: this.$store.getters.getSportTags
+                }
+                this.fieldsArray.push(field)
+                this.newFieldName = ''
+            }
         },
         editField(field){
-            console.log("Editing field: ", field);
+            console.log("Editing field: ", field); // To remove
         },
-        OpenFieldOverlay(){
+        OpenFieldOverlay(item, idx){
+            console.log("OPENING FIELD: ", item); // To remove
+            this.currentField = item
+            this.currentFieldId = idx
+            this.fieldname = item.name
+            this.recommended_people = item.recommended
+            this.price = item.price
+            this.tags = item.tags
+            this.unselected_tags = item.unselected_tags
             this.$refs.fieldOverlay.open()
         },
         closeFieldOverlay(){
-            console.log("Save field informations!!");
+            this.currentField.name = this.fieldname
+            this.currentField.recommended = this.recommended_people
+            this.currentField.price = this.price
+            this.currentField.tags = this.tags
+            this.currentField.unselected_tags = this.unselected_tags
+            this.fieldsArray[this.currentFieldId] = this.currentField
+            this.currentField = null
+            this.currentFieldId = null
+        },
+        addTagToField(){
+            const filteredList = this.unselected_tags.filter((value) => { return this.currentSelectedSport !== value })
+            if(filteredList.length !== this.unselected_tags.length){
+                this.tags.push(this.currentSelectedSport)
+                this.unselected_tags = filteredList
+                this.currentSelectedSport = null
+            }
+        },
+        removeTagFromField(element){
+            const filteredList = this.tags.filter((value) => { return element !== value })
+            this.unselected_tags.push(element)
+            this.tags = filteredList
+        },
+        sendPost(){
+            const post = {
+                name: this.post_title,
+                location: this.post_location,
+                description: this.post_description,
+                fields: this.fieldsArray,
+                thumbnail: this.thumbnail,
+                images: this.images
+            }
+            console.log("Sending post: ", post);
+        },
+        uploadthumbnail(thumbnail){
+            this.disableSaveButton()
+            axios.post("http://localhost:5555/api"+'/uploadimage', thumbnail, { withCredentials: true})
+            .then(response => {
+                if(response.data.success){
+                    this.thumbnail = response.data.imageid
+                }
+                this.enableSaveButton()
+            })
+            .catch(err => {
+                console.log("Error while sending image:", err);
+            })
+        },
+        uploadMultipleImages(image){
+            if(this.images.length < 6){
+                axios.post("http://localhost:5555/api"+'/uploadimage', image, { withCredentials: true})
+                .then(response => {
+                    if(response.data.success){
+                        this.images.push(response.data.imageid)
+                    }
+                    this.enableSaveButton()
+                })
+                .catch(err => {
+                    console.log("Error while sending image:", err);
+                })
+            }
+        },
+        removeImageFromPost(imgidx){
+            this.images = this.images.filter((value) => { return imgidx !== value })
+        },
+        disableSaveButton(){
+            // Disable save button
+        },
+        enableSaveButton(){
+            // Enable save button
         }
     },
 }
@@ -355,4 +478,71 @@ export default {
     font-family: Nunito;
     font-size: 17px;
 }
+
+.posteditor-td-textarea {
+    padding: 10px;
+    width: 100%;
+    resize: vertical;
+}
+
+.posteditor-imgpreview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 200px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.posteditor-imgpreview img {
+    margin: 10px;
+    border: 1px solid silver;
+}
+
+.posteditor-imgpreview img {
+    width: 100%;
+    max-height:200px;
+    max-width:100%;
+    width: auto;
+    height: auto;
+}
+
+.posteditor-imagelist {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.posteditor-imgpreview-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    height: 30px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+    font-family: Nunito;
+}
+
+.posteditor-imgpreview-delete:hover {
+    cursor: pointer;
+    background-color: #95a5a6;
+}
+
+.posteditor-imgpreview-thumbnail {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.posteditor-imgpreview-thumbnail img {
+    width: 100%;
+    max-height:200px;
+    max-width:100%;
+    width: auto;
+    height: auto;
+    border: 1px solid silver;
+}
+
 </style>

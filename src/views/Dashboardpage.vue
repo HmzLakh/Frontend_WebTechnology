@@ -17,19 +17,19 @@
                     <p>Edit profile</p>
                 </li>
             </router-link>
-            <router-link class="dash-router-link" :to="{name: 'home_edit'}">
+            <!-- router-link class="dash-router-link" :to="{name: 'home_edit'}">
                 <li class="dash-element">
                     <font-awesome-icon :icon="['fas', 'search-location']" class="dash-logo" />
                     <p>My reviews</p>
                 </li>
-            </router-link>
-            <router-link class="dash-router-link" :to="{name: 'home_post'}">
+            </router-link -->
+            <router-link class="dash-router-link" :to="{name: 'home_post'}" v-if="this.$store.getters.getUserProfile.is_owner">
                 <li class="dash-element">
                     <font-awesome-icon :icon="['fas', 'building']" class="dash-logo" />
                     <p>My posts</p>
                 </li>
             </router-link>
-            <router-link class="dash-router-link" :to="{name: 'home_appointment'}">
+            <router-link class="dash-router-link" :to="{name: 'home_appointment'}" v-if="this.$store.getters.getUserProfile.is_renter">
                 <li class="dash-element">
                     <font-awesome-icon :icon="['fas', 'calendar-alt']" class="dash-logo" />
                     <p>My reservations</p>
@@ -49,7 +49,26 @@ import Navbar from '../components/Navbar.vue'
 
 export default {
   name: 'dashboardpage',
-  components: { Navbar }
+  components: { Navbar },
+  data(){
+    return {
+      unwatch: () => null
+    }
+  },
+  mounted() {
+    // Logic in order to avoid that users that arent logged in, access this page!
+    if(!(this.$store.getters.isUserConnected)){
+      this.$router.replace('/')
+    }
+    this.unwatch = this.$store.watch(() => this.$store.getters.isUserConnected, (newValue) => {
+      if(!newValue){
+        this.$router.replace('/')
+      }
+    })
+  },
+  beforeDestroy() {
+    this.unwatch()
+  }
 }
 </script>
 

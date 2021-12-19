@@ -27,11 +27,15 @@ const state = {
     currentProfile_lastName: null,
     currentProfile_email: null,
     currentProfile_isOwner: null,
-    currentProfile_isRenter: null
+    currentProfile_isRenter: null,
+    editProfile_success: null,
+    editProfile_errorMsg: null,
+    sportTags: []
 }
 
 const mutations = {
     setLogState(state, data){
+        console.log(data);
         state.authenticated = data.logged
         state.userid = data.userid
         state.user_is_renter = data.is_renter
@@ -73,6 +77,9 @@ const mutations = {
         state.register = null
         state.registerMsg = null
         state.authenticationMsg = null
+        state.firstname = null
+        state.lastname = null
+        state.email = null
     },
     setProfileViewer(state, data){
         state.currentProfile_show = data.success
@@ -94,12 +101,27 @@ const mutations = {
     },
     setBadProfileViewer(state, show){
         state.currentProfile_show = show
+    },
+    setEditProfileStatus(state, data){
+        state.editProfile_success = data.success
+        state.editProfile_errorMsg = data.errorMsg
+    },
+    resetEditProfile(state){
+        state.editProfile_success = null
+        state.editProfile_errorMsg = null
+    },
+    setSportTags(state, tags){
+        state.sportTags = tags
     }
 }
 
 const actions = {
-    logoutUser(context){
-        context.commit('setLogoutState')
+    logoutUser({ commit, dispatch }){
+        axios.get(apiURL+'/logout', {withCredentials: true})
+        .then(response => { 
+            commit('setLogoutState')
+            dispatch('checkUserIsAlreadyConnected')
+        })
     },
     checkUserIsAlreadyConnected(context){
         axios.get(apiURL+'/connected', {withCredentials: true})
@@ -169,6 +191,40 @@ const actions = {
     resetProfileViewer(context){
         context.commit("resetProfileViewer")
     },
+    postEditProfile({ commit, dispatch }, newProfileInfo){
+        axios.post(apiURL+'/editprofile', qs.stringify(newProfileInfo), {withCredentials: true})
+        .then(response => {
+            commit('setEditProfileStatus', response.data)
+            if(response.data.success){
+                dispatch('checkUserIsAlreadyConnected') // In order to update data if data was updated serverside
+            }
+        })
+        .catch(err => { 
+            commit('setEditProfileStatus', {success: false, errorMsg: "Check your connection!"})
+        })
+    },
+    resetEditProfile(context){
+        context.commit("resetEditProfile")
+    },
+    postUserReview(context, comment){
+        console.log("I AM THE STORE, AND I CANT SEND THE COMMENT: ", comment);
+        axios.post(apiURL+'/review', qs.stringify(comment), {withCredentials: true})
+        .then(response => {
+            // Reload showPage + send msg to user saying everything is ok!
+        })
+        .catch(err => { 
+            //commit('', {success: false, errorMsg: "Check your connection!"})
+        })
+    },
+    getSportTags(context){
+        axios.get(apiURL+'/tags', {withCredentials: true})
+        .then(response => {
+            context.commit("setSportTags", response.data.tags)
+        })
+        .catch(err => { 
+            context.commit("setSportTags", ['Empty'])
+        })
+    },
     resetRegisterStates(context){
         context.commit('resetRegisterState')
     },
@@ -214,9 +270,20 @@ const getters = {
         const info = {
             firstname: state.firstname,
             lastname: state.lastname,
-            email: state.email
+            email: state.email,
+            is_renter: state.user_is_renter,
+            is_owner: state.user_is_owner,
         }
         return info
+    },
+    getEditProfileStatus(state){
+        return state.editProfile_success
+    },
+    getEditProfileMsgError(state){
+        return state.editProfile_errorMsg
+    },
+    getSportTags(state){
+        return state.sportTags
     }
 }
 

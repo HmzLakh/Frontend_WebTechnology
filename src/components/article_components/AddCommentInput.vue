@@ -1,13 +1,15 @@
 <template>
     <div id="add-comment">
-        <SuccessBox message="Thanks for your rating!" :open="openSuccessOverlay" @close="closeOverlay"/>
+        <SuccessBox :open="openSuccessOverlay" @close="closeOverlay">
+          <p class="comment-successbox-txt">Thanks for your rating!</p>
+        </SuccessBox>
         <div class="topside">
             <h2 class="add-comment-title">Add a rating</h2>
             <StarRating @updateRating="updateRating" />
         </div>
         <textarea class="comment-area" v-model="comment_input" maxlength="255"></textarea>
         <div class="button-container">
-            <button class="comment-send" @click="openSuccessOverlay = true">Send</button>
+            <button class="comment-send" @click="sendComment">Send</button>
         </div>
     </div>
 </template>
@@ -18,29 +20,37 @@ import SuccessBox from '../overlay/SuccesBox.vue'
 import Comment from './Comment.vue'
 
 export default {
-    name: 'comment-input',
-    props: ['comments'],
-    components: { Comment, StarRating, SuccessBox },
-    data(){
-        return {
-            rating: 0,
-            comment_input: '',
-            openSuccessOverlay: false
-        }
+  name: 'comment-input',
+  props: ['comments'],
+  components: { Comment, StarRating, SuccessBox },
+  data(){
+    return {
+      rating: 0,
+      comment_input: '',
+      openSuccessOverlay: false
+      }
+  },
+  methods: {
+    updateRating(value){
+      this.rating = value
     },
-    methods: {
-        updateRating(value){
-            this.rating = value
-        },
-        closeOverlay(){
-            this.openSuccessOverlay = false
-            this.resetComponent()
-        },
-        resetComponent(){
-            this.rating = 0
-            this.comment_input = ''
-        }
+    closeOverlay(){
+      this.openSuccessOverlay = false
+      this.resetComponent()
+    },
+    resetComponent(){
+      this.rating = 0
+      this.comment_input = ''
+    },
+    sendComment(){
+      const commentToSend = {
+        rating: this.rating,
+        content: this.comment_input
+      }
+      this.$store.dispatch("postUserReview", commentToSend)
+      this.openSuccessOverlay = true
     }
+  }
 }
 </script>
 <style>
@@ -90,5 +100,9 @@ export default {
 
 .topside {
     display: flex;
+}
+
+.comment-successbox-txt {
+  font-family: Nunito;
 }
 </style>
