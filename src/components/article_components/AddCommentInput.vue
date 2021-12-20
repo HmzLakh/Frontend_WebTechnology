@@ -21,7 +21,7 @@ import Comment from './Comment.vue'
 
 export default {
   name: 'comment-input',
-  props: ['comments'],
+  props: ['comments', 'postid'],
   components: { Comment, StarRating, SuccessBox },
   data(){
     return {
@@ -44,6 +44,7 @@ export default {
     },
     sendComment(){
       const commentToSend = {
+        post_id: this.postid,
         rating: this.rating,
         content: this.comment_input
       }

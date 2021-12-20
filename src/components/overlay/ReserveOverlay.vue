@@ -1,55 +1,26 @@
 <template>
     <div>
-        <SweetModal title="Reserve" ref="reserveOverlay" @close="overlayClosed">
+        <SweetModal title="Sports" ref="reserveOverlay" @close="overlayClosed">
         <div id="reserveOverlay">
             <table class="reserve-table">
                     <tr class="reserve-tr">
-                        <td class="reserve-td reserve-td-title"><p class="reserve-table-txt">Choose desired sport</p></td>
-                        <td class="reserve-td">
-                            <select v-model="sportChoice" class="reserve-selectedtag-input"> <!-- get list from server for here -->
-                                <option value="" disabled selected>Select field</option>
-                                <option value="dog">Football</option>
-                                <option value="cat">basketball</option>
-                                <option value="hamster">Hamster</option>
-                                <option value="parrot">Parrot</option>
-                                <option value="spider">Spider</option>
-                                <option value="goldfish">Goldfish</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr class="reserve-tr">
-                        <td class="reserve-td reserve-td-title"><p class="reserve-table-txt">Choose field</p></td>
+                        <td class="reserve-td reserve-td-title"><p class="reserve-table-txt">See fields</p></td>
                         <td class="reserve-td">
                             <select v-model="fieldChoice" class="reserve-selectedtag-input"> <!-- get list from server for here -->
                                 <option value="" disabled selected>Select field</option>
-                                <option value="dog">Football</option>
-                                <option value="cat">basketball</option>
-                                <option value="hamster">Hamster</option>
-                                <option value="parrot">Parrot</option>
-                                <option value="spider">Spider</option>
-                                <option value="goldfish">Goldfish</option>
+                                <option v-for="(f, i) in fields" :key="i">{{ f.name }} ({{ f.sports_names }})</option>
                             </select>
                         </td>
                     </tr>
                     <tr class="reserve-tr">
-                        <td class="reserve-td reserve-td-title"><p class="reserve-table-txt">Session duration</p></td>
+                        <td class="reserve-td reserve-td-title"><p class="reserve-table-txt">Sports available here</p></td>
                         <td class="reserve-td">
-                            <input class="reserve-input" v-model="reserveDuration" type="number" min="0" max="6">
-                        </td>
-                    </tr>
-                    <tr class="reserve-tr">
-                        <td class="reserve-td reserve-td-title"><p class="reserve-table-txt">When</p></td>
-                        <td class="reserve-td">
-                            <input class="reserve-input-date" v-model="date" type="date">
-                            <input class="reserve-input-time" v-model="time" type="time">
+                            <p class="reserve-td-sports" v-for="(s, i) in sports" :key="i">{{ s }}</p>
                         </td>
                     </tr>
             </table>
             <div class="reserve-errormsg" v-if="errorForm">
                 <p>{{ errorFormMessage }}</p>
-            </div>
-            <div class="confirm-deletebtn">
-                <button @click="validForm">Confirm</button>
             </div>
         </div>
     </SweetModal>
@@ -65,6 +36,12 @@ export default {
     name: 'reserveOverlay',
     props: {
         open: {
+            required: true
+        },
+        sports: {
+            required: true
+        },
+        fields: {
             required: true
         }
     },
@@ -93,10 +70,8 @@ export default {
         },
         validForm(){
             // Check formvalidation!
-            console.log("Results: ", this.sportChoice, " <-> ", this.fieldChoice, " <-> ", this.reserveDuration, " <-> ", this.date, " <-> ", this.time);
-            this.errorForm = true
-            this.errorFormMessage = "Incorrect form!"
-            this.$refs.nestedChild.open()
+            //this.$refs.nestedChild.open()
+            this.overlayClosed()
         },
         closeNestedEvent(){
             this.$refs.reserveOverlay.close()
@@ -107,7 +82,7 @@ export default {
 
 <style>
 #reserveOverlay {
-    height: 500px;
+    height: 240px;
 }
 
 .confirm-deletebtn {
@@ -223,6 +198,11 @@ export default {
     font-size: 12px;
     font-family: Nunito;
     color: red;
+    font-style: italic;
+}
+
+.reserve-td-sports{
+    font-family: Nunito;
     font-style: italic;
 }
 </style>

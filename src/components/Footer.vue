@@ -1,17 +1,18 @@
 <template>
-  <div id="footer">
+  <footer>
       <p class="footer-txt">Copyright ©Telhi corp</p>
-  </div>
+  </footer>
 </template>
 
 <script>
 export default {
-  name: 'footer'
+  name: 'footerr'
 }
 </script>
-<style>
-#footer {
+<style scope>
+footer {
     margin-top: 25px;
+    padding-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;

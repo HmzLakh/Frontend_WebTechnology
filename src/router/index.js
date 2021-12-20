@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 // Components
 import Homepage from '../views/Homepage.vue'
-import Testpage from '../views/Testpage.vue'
 import Dashboardpage from '../views/Dashboardpage.vue'
 import Dashboard_EditProfile from '../components/dashboard_components/DashComponentEditProfile.vue'
 import Dashboard_Home from '../components/dashboard_components/DashComponentHome.vue'

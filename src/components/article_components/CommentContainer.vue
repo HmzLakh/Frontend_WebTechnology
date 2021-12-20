@@ -1,8 +1,8 @@
 <template>
   <div id="comment-container">
     <h1 class="comment-title">Comments ({{ comments.length }})</h1>
-    <Comment v-for="(comment, index) in comments" :key="index" :username="comment.renter_id" :userpic="comment.userpic" :timestamp="comment.date_time" :value="comment.content" :votes="comment.votes"  :isDisliked="comment.dislikedbyuser" :isLiked="comment.likedbyuser" :showLikeButtons="true" />
-    <InputComment v-if="this.$store.getters.isUserConnected" />
+    <Comment v-for="(comment, index) in comments" :key="index" :reviewid="comment.review_id" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.date_time" :value="comment.content" :votes="comment.votes" :showLikeButtons="true" />
+    <InputComment :postid="postid" v-if="this.$store.getters.isUserConnected && this.$store.getters.getUserProfile.is_renter" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import Comment from './Comment.vue'
 
 export default {
   name: 'comment-container',
-  props: ['comments'],
+  props: ['comments', 'postid'],
   components: { Comment, InputComment }
 }
 </script>

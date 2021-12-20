@@ -9,6 +9,7 @@ axios.defaults.withCredentials = true;
 Vue.use(Vuex)
 
 const state = {
+    apiurl: "http://localhost:5555/api",
     authenticated: null,
     userid: null,
     user_is_renter: null,
@@ -30,7 +31,10 @@ const state = {
     currentProfile_isRenter: null,
     editProfile_success: null,
     editProfile_errorMsg: null,
-    sportTags: []
+    sportTags: [],
+    ownersPost: [],
+    ownersSinglePosts: [],
+    mapInfo: []
 }
 
 const mutations = {
@@ -43,6 +47,11 @@ const mutations = {
         state.firstname = data.firstname
         state.lastname = data.lastname
         state.email = data.email
+        state.editProfile_success = null
+        state.editProfile_errorMsg = null
+        state.sportTags = []
+        state.ownersPost = []
+        state.ownersSinglePosts = []
     },
     setLogMsg(state, logMsg){
         state.authenticationMsg = logMsg
@@ -112,6 +121,23 @@ const mutations = {
     },
     setSportTags(state, tags){
         state.sportTags = tags
+    },
+    setOwnersPost(state, data){
+        state.ownersPost = data
+    },
+    setOwnersSinglePost(state, data){
+        state.ownersSinglePosts[data.postid] = data.content
+    },
+    setMapInfo(state, data){
+        const result = []
+        for (const key of data) {
+            key.maploc = [0, 0]
+            result.push(key)
+        }
+        state.mapInfo = result
+    },
+    deletePost(state, postid){
+        state.ownersPost = state.ownersPost.filter(post => post.post_id !== postid)
     }
 }
 
@@ -128,6 +154,9 @@ const actions = {
         .then(response => {
             if(response.data.logged){
                 context.commit('setLogState', response.data)
+                if(response.data.is_owner){
+                    context.dispatch('getOwnersPost')
+                }
             }
         })
     },
@@ -207,13 +236,11 @@ const actions = {
         context.commit("resetEditProfile")
     },
     postUserReview(context, comment){
-        console.log("I AM THE STORE, AND I CANT SEND THE COMMENT: ", comment);
+        console.log("Sended: ", comment);
         axios.post(apiURL+'/review', qs.stringify(comment), {withCredentials: true})
         .then(response => {
-            // Reload showPage + send msg to user saying everything is ok!
-        })
-        .catch(err => { 
-            //commit('', {success: false, errorMsg: "Check your connection!"})
+            console.log(response.data);
+            context.dispatch("getArticle", comment.post_id)
         })
     },
     getSportTags(context){
@@ -225,6 +252,60 @@ const actions = {
             context.commit("setSportTags", ['Empty'])
         })
     },
+    postUserPost(context, post){
+        axios.post(apiURL+'/post', qs.stringify(post), {withCredentials: true})
+        .then(response => {
+            // Show overlay to user?
+            console.log("Got as anwser (create): "+JSON.stringify(response.data));
+            context.dispatch("getOwnersPost")
+        })
+        .catch(err => { 
+            console.log("Erreur when making request!");
+        })
+    },
+    postEditedUserPost(context, post){
+        axios.put(apiURL+'/post', qs.stringify(post), {withCredentials: true})
+        .then(response => {
+            // Show overlay to user?
+            console.log("Got as anwser (edit): "+JSON.stringify(response.data));
+        })
+        .catch(err => { 
+            console.log("Erreur when making request!");
+        })
+    },
+    getOwnersPost(context){
+        axios.get(apiURL+'/getMyPosts', {withCredentials: true})
+        .then(response => {
+            // Init also data of posts for owners!
+            context.commit("setOwnersPost", response.data)
+            for (const x of response.data) {
+                context.dispatch('getOwnerSinglePost', x.post_id)
+            }
+        })
+    },
+    getOwnerSinglePost(context, postid){
+        axios.get(apiURL+'/getMyPost/'+postid, {withCredentials: true})
+        .then(response => {
+            context.commit("setOwnersSinglePost", {postid, content: response.data})
+        })
+    },
+    getMapInfo(context){
+        axios.get(apiURL+'/getmap', {withCredentials: true})
+        .then(response => {
+            context.commit("setMapInfo", response.data)
+        })
+    },
+    deletePost(context, deleteObject){
+        axios.post(apiURL+'/deletepost', qs.stringify(deleteObject), { withCredentials: true}).then(response => {
+            context.commit("deletePost", deleteObject.postid)
+            console.log("Response ", response.data);
+        })
+    },
+    sendOpinion(context, value){
+        axios.post(apiURL+'/opinion', qs.stringify(value), { withCredentials: true}).then(response => {
+            console.log("Response ", response.data);
+        })
+    },
     resetRegisterStates(context){
         context.commit('resetRegisterState')
     },
@@ -234,6 +315,9 @@ const actions = {
 }
 
 const getters = {
+    getAPIURL(state){
+        return state.apiurl
+    },
     isUserConnected(state){
         return state.authenticated
     },
@@ -284,6 +368,15 @@ const getters = {
     },
     getSportTags(state){
         return state.sportTags
+    },
+    getOwnersPost(state){
+        return state.ownersPost
+    }, 
+    getOwnersSinglePost(state){
+        return state.ownersSinglePosts
+    },
+    getMapInfo(state){
+        return state.mapInfo
     }
 }
 

@@ -2,7 +2,7 @@
   <div id="profileviewer">
       <div class="profile-image">
           <div class="profile-image-container">
-              <img src="https://cultivatedculture.com/wp-content/uploads/2019/12/Austin-Portrait-Taken-By-Professional-Photographer-683x1024.png" alt="Profile picture">
+              <img :src="`https://www.gravatar.com/avatar/${getGravatarHash}?s=200`" alt="Profile picture">
           </div>
       </div>
       <div class="profile-informations-container">
@@ -13,20 +13,23 @@
           <ProfileCard title="Profile information">
               <p>{{ profile.firstname }} {{ profile.lastname }} has {{ profile.email }} as email</p>
           </ProfileCard>
-          <ProfileCard v-if="profile.isOwner" title="Last posts (ONLY IF OWNER)">
-              <p>Show here the last posts with links</p>
-          </ProfileCard>
       </div>
   </div>
 </template>
 
 <script>
 import ProfileCard from './ProfileCardInformation.vue'
+import md5 from 'md5';
 
 export default {
   name: 'profileviewer',
   props: ['profile'],
-  components: {ProfileCard}
+  components: {ProfileCard},
+  computed: {
+      getGravatarHash(){
+          return md5(this.profile.email)
+    }
+  }
 }
 </script>
 

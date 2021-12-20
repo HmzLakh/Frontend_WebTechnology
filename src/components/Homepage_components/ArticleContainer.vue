@@ -1,10 +1,10 @@
 <template>
   <div id="article-container">
     <div class="article-search">
-      <input type="search" >
+      <input placeholder="Search post name" v-model="searchbar" type="search" >
     </div>
     <div class="article-inner" v-if="this.getPosts.length > 0">
-      <Article  v-for="p in getPosts" :key="p.post_id" :id="p.post_id" :name="p.title" :author="p.username" :tags="p.sports" :review="p.rating"></Article>
+      <Article  v-for="p in getPosts" :key="p.post_id" :id="p.post_id" :name="p.title" :author="p.username" :tags="p.sports" :review="Math.round(p.rating)" :thumbnail="p.image"></Article>
     </div>
     <div class="article-empty-inner" v-else>
       <p class="article-empty-txt">Its a bit lonely here...<br/>You can be the first to change this!</p>
@@ -18,12 +18,17 @@ import Article from './Article.vue'
 export default {
   name: 'article-container',
   components: { Article },
+  data(){
+    return {
+      searchbar: ''
+    }
+  },
   mounted(){
     this.$store.dispatch('getArticlesList')
   },
   computed: {
     getPosts(){
-      return this.$store.getters.getArticles
+      return this.$store.getters.getArticles.filter(article => article.title.includes(this.searchbar))
     }
   }
 }

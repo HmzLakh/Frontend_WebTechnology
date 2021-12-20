@@ -45,9 +45,10 @@
                             <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Edit fields</p></td>
                             <td class="posteditor-td">
                                 <table class="posteditor-innertable">
-                                    <tr v-for="(item, idx) in fieldsArray" :key="idx" class="posteditor-innertable-tr">
-                                        <td><p class="posteditor-innertable-txt">{{ item.name }}</p></td>
-                                        <td><button class="posteditor-innertable-tr-editbtn"  @click="OpenFieldOverlay(item, idx)">Edit field</button></td>
+                                    <tr v-for="(item, idx) in getFields" :key="idx" class="posteditor-innertable-tr">
+                                        <td class="posteditor-innertable-tr-td-title"><p class="posteditor-innertable-txt">{{ item.name }}</p></td>
+                                        <td class="posteditor-innertable-tr-td-editbtn"><button class="posteditor-innertable-tr-editbtn"  @click="OpenFieldOverlay(item, idx)">Edit field</button></td>
+                                        <td class="posteditor-innertable-tr-td-dltbtn"><button class="posteditor-innertable-tr-td-dltbtn-btn"  @click="deleteField(item, idx)">Remove</button></td>
                                     </tr>
                                 </table>
                             </td>
@@ -83,8 +84,20 @@
                                     <div class="posteditor-imgpreview-delete" @click="removeImageFromPost(imgidx)">
                                         <p>Click here to delete</p>
                                     </div>
-                                    <img :src="'http://localhost:5555/api/image/'+imgidx" alt="Image for post">
+                                    <img :src="$store.getters.getAPIURL+'/image/'+imgidx" alt="Image for post">
                                 </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </SweetModalTab>
+            <SweetModalTab title="Informations" id="tab5">
+                <div>
+                    <table class="postedit-table">
+                        <tr class="posteditor-tr">
+                            <td class="posteditor-td posteditor-td-title"><p class="posteditor-table-txt">Phone number</p></td>
+                            <td class="posteditor-td posteditor-imagelist">
+                                <input class="posteditor-input" type="text" v-model="phonenumber" placeholder="+32 489 123 789" />
                             </td>
                         </tr>
                     </table>
@@ -141,7 +154,6 @@ import UploadComponent from '../UploadFileComponent.vue'
 import { VueTags } from 'vue-tags-component';
 import { SweetModal, SweetModalTab } from 'sweet-modal-vue'
 import axios from 'axios'
-import qs from 'qs'
 
 export default {
     name: 'overlay-editpost',
@@ -156,11 +168,43 @@ export default {
             editor: {
                 type: Boolean,
                 required: false,
-                default: true
-            }
+                default: false
+            },
+            post: {},
+            postid: {}
     },
     mounted(){
         this.$store.dispatch('getSportTags')
+        if(this.editor){
+            console.log(this.post)
+            const fields = []
+            for (const field of this.post.fields) {
+                const parsedField = {
+                    id: field.field_id,
+                    name: field.name,
+                    recommended: field.recommended_number_of_persons,
+                    price: field.price,
+                    tags: (field.sports_names == null || field.sports_names == undefined) ? [] : field.sports_names,
+                    unselected_tags: this.$store.getters.getSportTags
+                }
+                fields.push(parsedField)
+            }
+            this.post_title = this.post.name
+            this.post_location = this.post.address
+            this.post_description = this.post.description
+            this.fieldsArray = fields
+            this.thumbnail = this.post.thumbnail
+            this.images = this.post.images.map(x => x.image_id)
+        }
+    },
+    computed: {
+        getFields(){
+            if(this.editor){
+                return this.fieldsArray.concat(this.addedFieldsArray)
+            } else {
+                return this.fieldsArray
+            }
+        }
     },
     data() {
         return {
@@ -168,6 +212,8 @@ export default {
             currentFieldId: null,
             currentField: null,
             fieldsArray: [],
+            deletedFieldsArray: [],
+            addedFieldsArray: [],
             newFieldName: '',
             fieldname: '',
             recommended_people: 0,
@@ -178,7 +224,8 @@ export default {
             post_location: '',
             post_description: '',
             thumbnail: null,
-            images: [], 
+            images: [],
+            phonenumber: ''
         }
     },
     watch: { 
@@ -204,15 +251,27 @@ export default {
                     tags: [],
                     unselected_tags: this.$store.getters.getSportTags
                 }
-                this.fieldsArray.push(field)
+                if(this.editor){
+                    this.addedFieldsArray.push(field);
+                } else {
+                    this.fieldsArray.push(field)
+                }
                 this.newFieldName = ''
             }
         },
-        editField(field){
-            console.log("Editing field: ", field); // To remove
+        deleteField(field, idx){
+            if(this.editor){
+                if(field.id !== undefined){
+                    this.fieldsArray = this.fieldsArray.filter(function(value, index, arr){ return index !== idx; });
+                    this.deletedFieldsArray.push(field.id)
+                } else {
+                    this.fieldsArray = this.fieldsArray.filter(function(value, index, arr){ return index !== idx; });
+                }
+            } else {
+                this.fieldsArray = this.fieldsArray.filter(function(value, index, arr){ return index !== idx; });
+            }
         },
         OpenFieldOverlay(item, idx){
-            console.log("OPENING FIELD: ", item); // To remove
             this.currentField = item
             this.currentFieldId = idx
             this.fieldname = item.name
@@ -246,19 +305,41 @@ export default {
             this.tags = filteredList
         },
         sendPost(){
-            const post = {
-                name: this.post_title,
-                location: this.post_location,
-                description: this.post_description,
-                fields: this.fieldsArray,
-                thumbnail: this.thumbnail,
-                images: this.images
+            if(this.editor){
+                const editPost = {
+                    postid: this.postid,
+                    name: this.post_title,
+                    location: this.post_location,
+                    description: this.post_description,
+                    fields: this.fieldsArray,
+                    deletedfields: this.deletedFieldsArray,
+                    addedfields: this.addedFieldsArray,
+                    thumbnail: this.thumbnail,
+                    images: this.images,
+                    phonenumber: this.phonenumber
+                }
+                console.log("Sending edited post: ", editPost);
+                this.$store.dispatch("postEditedUserPost", editPost);
+            } else {
+                const newPost = {
+                    name: this.post_title,
+                    location: this.post_location,
+                    description: this.post_description,
+                    fields: this.fieldsArray,
+                    thumbnail: this.thumbnail,
+                    images: this.images,
+                    phonenumber: this.phonenumber
+                }
+                console.log("Sending new post: ", newPost);
+                this.$store.dispatch("postUserPost", newPost)
             }
-            console.log("Sending post: ", post);
+            this.$refs.overlay.close()
+            this.overlayClosed()
+            this.$router.push('/home/post').catch(err => {})
         },
         uploadthumbnail(thumbnail){
             this.disableSaveButton()
-            axios.post("http://localhost:5555/api"+'/uploadimage', thumbnail, { withCredentials: true})
+            axios.post(this.$store.getters.getAPIURL+'/uploadimage', thumbnail, { withCredentials: true})
             .then(response => {
                 if(response.data.success){
                     this.thumbnail = response.data.imageid
@@ -271,7 +352,7 @@ export default {
         },
         uploadMultipleImages(image){
             if(this.images.length < 6){
-                axios.post("http://localhost:5555/api"+'/uploadimage', image, { withCredentials: true})
+                axios.post(this.$store.getters.getAPIURL+'/uploadimage', image, { withCredentials: true})
                 .then(response => {
                     if(response.data.success){
                         this.images.push(response.data.imageid)
@@ -334,6 +415,7 @@ export default {
 }
 
 .posteditor-td {
+    height: 100%;
     width: 100%;
 }
 
@@ -396,18 +478,42 @@ export default {
 }
 
 .posteditor-innertable {
+    height: 100%;
     width: 100%;
 }
 
-.posteditor-innertable-tr td{
+.posteditor-innertable-tr-td-title {
+    height: 100%;
+    width: 60%;
+}
+
+.posteditor-innertable-tr-td-editbtn {
+    height: 100%;
+    width: 20%;
+}
+
+.posteditor-innertable-tr-td-dltbtn {
+    height: 100%;
+    width: 20%;
+}
+
+.posteditor-innertable-tr-td-dltbtn-btn {
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 100%;
     height: 30px;
-    width: 50%;
+}
+
+.posteditor-innertable-tr-td-dltbtn-btn:hover {
+    background-color: #7f8c8d;
 }
 
 .posteditor-innertable-tr-editbtn {
     background-color: #95a5a6;
     color: white;
-    height: 100%;
+    height: 30px;
     width: 100%;
     border: none;
     border-radius: 3px;
@@ -544,5 +650,4 @@ export default {
     height: auto;
     border: 1px solid silver;
 }
-
 </style>

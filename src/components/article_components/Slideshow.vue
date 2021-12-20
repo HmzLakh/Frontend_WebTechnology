@@ -1,7 +1,7 @@
 <template>
   <div id="slideshow">
       <button @click="slideLeft" class="previous-img"><font-awesome-icon :icon="['fas', 'chevron-left']" /></button>
-      <Slide v-for="(value, index) in imglinks" :key="index" :img="value" v-if="index == currentIdx"></Slide>
+      <Slide v-for="(value, index) in imglinks" :key="index" :img="'http://localhost:5555/api/image/'+value" v-if="index == currentIdx"></Slide>
       <button @click="slideRight"  class="next-img"><font-awesome-icon :icon="['fas', 'chevron-right']" /></button>
   </div>
 </template>

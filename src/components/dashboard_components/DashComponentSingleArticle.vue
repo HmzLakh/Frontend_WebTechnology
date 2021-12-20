@@ -1,9 +1,9 @@
 <template>
     <div class="singlepost">
-        <ConfirmBox :open="openConfirmationBox" text="Are you sure you want to delete this?" @close="close"></ConfirmBox>
-        <EditPost title="Edit post" :open="openOverlay" @close="close"></EditPost>
+        <ConfirmBox :open="openConfirmationBox" text="Are you sure you want to delete this?" @close="close" @yes="yesEvent"></ConfirmBox>
+        <EditPost :editor="true" title="Edit post" :open="openOverlay" @close="closeEditor" :post="getCurrentSinglePost" :postid="postid"></EditPost>
         <div class="single-container">
-            <img src="../../assets/images/show.jpg" alt="">
+            <img :src="'http://localhost:5555/api/image/'+imageid" alt="Profile image">
             <div class="single-overlay">
                 <p class="single-overlay-txt">{{ title }}</p>
             </div>
@@ -25,16 +25,34 @@ import ConfirmBox from '../overlay/ConfirmationBox.vue'
 export default {
   name: 'dashcomponentsinglepost',
   components: { EditPost, ConfirmBox },
-  props: ['title'],
+  props: ['title', 'imageid', 'postid'],
   data () {
       return {
           openOverlay: false,
           openConfirmationBox: false
       }
   },
+  mounted(){
+      this.$store.dispatch('getOwnerSinglePost', this.postid)
+  },
+  computed: {
+      getCurrentSinglePost(){
+          return this.$store.getters.getOwnersSinglePost[this.postid];
+      }
+  },
   methods: {
+      closeEditor(){
+          this.openOverlay = false
+      },
       close(){
-          this.openOverlay = this.openConfirmationBox = false;
+            this.openConfirmationBox = false;
+      },
+      yesEvent(){
+          const delObject = {
+              postid: this.postid
+          }
+          this.$store.dispatch("deletePost", delObject)
+          this.close()
       }
   }
 }

@@ -29,27 +29,29 @@
                     <p>My posts</p>
                 </li>
             </router-link>
-            <router-link class="dash-router-link" :to="{name: 'home_appointment'}" v-if="this.$store.getters.getUserProfile.is_renter">
+            <!-- router-link class="dash-router-link" :to="{name: 'home_appointment'}" v-if="this.$store.getters.getUserProfile.is_renter">
                 <li class="dash-element">
                     <font-awesome-icon :icon="['fas', 'calendar-alt']" class="dash-logo" />
                     <p>My reservations</p>
                 </li>
-            </router-link>
+            </router-link -->
           </ol>
         </div>
         <div class="dash-inner">
           <router-view></router-view>
         </div>
       </div>
+      <Footer />
   </div>
 </template>
 
 <script>
+import Footer from '../components/Footer.vue'
 import Navbar from '../components/Navbar.vue'
 
 export default {
   name: 'dashboardpage',
-  components: { Navbar },
+  components: { Navbar, Footer },
   data(){
     return {
       unwatch: () => null

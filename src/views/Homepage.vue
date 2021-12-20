@@ -3,21 +3,21 @@
     <Navbar />
     <MapViewer />
     <div class="container-layout">
-      <ArticleFilter />
       <ArticleContainer class="home-article-container" />
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
-import ArticleFilter from '../components/Homepage_components/ArticleFilter.vue'
 import ArticleContainer from '../components/Homepage_components/ArticleContainer.vue'
 import MapViewer from '../components/Homepage_components/MapViewer.vue'
+import Footer from '../components/Footer.vue'
 
 export default {
   name: 'homepage',
-  components: {Navbar, ArticleContainer, ArticleFilter, MapViewer}
+  components: {Navbar, ArticleContainer, MapViewer, Footer}
 }
 </script>
 

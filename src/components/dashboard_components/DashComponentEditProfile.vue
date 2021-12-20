@@ -4,7 +4,7 @@
         <div id="editcomponent">
             <div class="edit-pic-container">
                 <div class="image-location">
-                    <img src="https://cultivatedculture.com/wp-content/uploads/2019/12/Austin-Portrait-Taken-By-Professional-Photographer-683x1024.png" alt="Profile picture">
+                    <img :src="`https://www.gravatar.com/avatar/${getGravatarHash}?s=200`" alt="Profile picture">
                     <div class="image-edit-container">
                         <p class="image-edit-txt">Edit profile</p>
                     </div>
@@ -48,6 +48,7 @@
 </template>
 <script>
 import ConfirmationBox from '../overlay/ConfirmationBox.vue'
+import md5 from 'md5';
 
 export default {
     name: 'dashcomponentedit',
@@ -70,6 +71,9 @@ export default {
     computed: {
         getEditProfileStatus(){
             return this.$store.getters.getEditProfileStatus
+        },
+        getGravatarHash(){
+            return md5(this.$store.getters.getUserProfile.is_renter)
         }
     },
     watch: {

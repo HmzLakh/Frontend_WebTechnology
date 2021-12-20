@@ -14,11 +14,11 @@
             </div>
         </div>
         <div class="post-container">
-            <div class="empty-posts" v-if="!dataset">
+            <div class="empty-posts" v-if="!getOwnersPost">
                 <p class="empty-txt">It's pretty empty around here...</p>
             </div>
             <div class="posts" v-else>
-                <Post v-for="i in 20" :key="i" :title="'Title of this'"></Post>
+                <Post v-for="(item, i) in getOwnersPost" :key="i" :title="item.title" :postid="item.post_id" :imageid="item.image"></Post>
             </div>
         </div>
     </div>
@@ -30,9 +30,13 @@ import CreatePost from '../overlay/PostEditor.vue'
 export default {
     name: 'dashcomponentpost',
     components: { Post, CreatePost },
+    computed: {
+        getOwnersPost(){
+            return this.$store.getters.getOwnersPost
+        }
+    },
     data () {
         return {
-            dataset: ['dummy'], // ????
             openPostCreator: false
         }
     },

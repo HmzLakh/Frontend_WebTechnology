@@ -13,10 +13,10 @@
         </div>
       </div>
       <div v-if="showLikeButtons" class="votes">
-          <div class="votes-amount">{{ votes }}</div>
+          <div class="votes-amount">{{ votes == null ? 0 : votes }}</div>
           <div class="votes-buttons">
-              <div class="up-button"><font-awesome-icon :icon="['fas', 'thumbs-up']" /></div>
-              <div class="down-button"><font-awesome-icon :icon="['fas', 'thumbs-down']" /></div>
+              <div @click="addThumbsUp" class="up-button"><font-awesome-icon :icon="['fas', 'thumbs-up']" /></div>
+              <div @click="addThumbsDown" class="down-button"><font-awesome-icon :icon="['fas', 'thumbs-down']" /></div>
         </div>
     </div>
   </div>
@@ -24,8 +24,24 @@
 
 <script>
 export default {
-    props: ['username', 'userpic', 'timestamp', 'value', 'votes', 'isLiked', 'isDisliked', 'showLikeButtons'],
-    name: 'comment'
+    props: ['username', 'userpic', 'timestamp', 'value', 'votes', 'showLikeButtons', 'reviewid'],
+    name: 'comment',
+    methods: {
+        addThumbsUp(){
+            const info = {
+                review_id: this.reviewid,
+                opinion: 1
+            }
+            this.$store.dispatch("sendOpinion", info)
+        },
+        addThumbsDown(){
+            const info = {
+                review_id: this.reviewid,
+                opinion: -1
+            }
+            this.$store.dispatch("sendOpinion", info)
+        }
+    }
 }
 </script>
 <style>

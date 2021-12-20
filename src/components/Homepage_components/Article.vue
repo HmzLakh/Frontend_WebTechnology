@@ -1,15 +1,15 @@
 <template>
   <div id="article-el">
       <div class="image-card">
-          <img src="../../assets/Images/exampleimg.jpg" />
+          <img :src="$store.getters.getAPIURL+'/image/'+thumbnail" />
       </div>
       <div class="article-desc">
           <h1 class="article-title">{{ name }}</h1>
-          <h6 class="article-creator">By {{ author }}</h6>
+        <router-link :to="{ name: 'profile', params: {username: author} }"><h6 class="article-creator">By {{ author }}</h6></router-link>
           <div class="review">
               <font-awesome-icon v-for="index in review" :key="index" class="star-on" :icon="['fas', 'star']" />
               <font-awesome-icon v-for="index in (5-review)" :key="index+review+review" :icon="['fas', 'star']" />
-              <p class="review-amount">(7)</p>
+              <p class="review-amount"></p>
           </div>
           <router-link :to="{ name: 'article', params: {id: id} }"><div class="view-button"><font-awesome-icon class="view-button-image" :icon="['fas', 'eye']" /></div></router-link>
       </div>
@@ -19,7 +19,7 @@
 <script>
 export default {
   name: 'article-el',
-  props: ['id', 'name', 'author', 'tags', 'review'],
+  props: ['id', 'name', 'author', 'tags', 'review', 'thumbnail'],
 }
 </script>
 <style>

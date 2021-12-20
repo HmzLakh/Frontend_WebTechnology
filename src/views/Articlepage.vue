@@ -1,16 +1,16 @@
 <template>
   <div id="articlepage">
       <Navbar />
-      <ReserveOverlay :open="openPopup" @close="closeReserveOverlay" />
+      <ReserveOverlay :sports="getPost.sports" :fields="getPost.fields" :open="openPopup" @close="closeReserveOverlay" />
       <div class="article-container">
         <Slideshow :imglinks="getPost.images" />
           <div class="article-description">
-              <h1 class="article-name">{{ getPost.title }}</h1>
-              <h5>{{ getPost.address }}</h5>
-              <p>{{ getPost.description }}</p>
-              <button class="reserve-button" @click="openPopup = true">Reserve</button>
+              <h1 class="article-name">{{ getPost.name }}</h1>
+              <h5>{{ getPost.address }}, {{getPost.phonenumber}}</h5>
+              <p class="articlepage-txt">{{ getPost.description }}</p>
+              <button class="reserve-button" @click="openPopup = true">Show fields</button>
           </div>
-          <CommentSection :comments="getPost.reviews" />
+          <CommentSection :postid="getPost.post_id" :comments="getPost.reviews" />
       </div>
       <Footer />
   </div>
@@ -92,5 +92,9 @@ export default {
   position: absolute;
   right: 0;
   bottom: 35px;
+}
+
+.articlepage-txt {
+  font-family: Nunito;
 }
 </style>
