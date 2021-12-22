@@ -1,5 +1,5 @@
 <template>
-    <SweetModal icon="warning" title="Confirmation" ref="confirmationbox">
+    <SweetModal icon="warning" title="Confirmation" ref="confirmationbox" @close="exitedOverlay">
         <div id="confirmationbox">
             <p class="confirmationbox-txt">{{ text }}</p>
             <div class="confirm-btns">
@@ -40,6 +40,9 @@ export default {
         yesEvent(){
             this.$refs.confirmationbox.close()
             this.$emit('yes')
+        },
+        exitedOverlay(){
+            this.$emit("exitedOverlay")
         }
     }
 }

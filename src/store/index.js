@@ -31,6 +31,7 @@ const state = {
     currentProfile_isRenter: null,
     editProfile_success: null,
     editProfile_errorMsg: null,
+    dashboard_available: null,
     sportTags: [],
     ownersPost: [],
     ownersSinglePosts: [],
@@ -39,7 +40,7 @@ const state = {
 
 const mutations = {
     setLogState(state, data){
-        console.log(data);
+        console.log("Just connected: ", data);
         state.authenticated = data.logged
         state.userid = data.userid
         state.user_is_renter = data.is_renter
@@ -52,6 +53,9 @@ const mutations = {
         state.sportTags = []
         state.ownersPost = []
         state.ownersSinglePosts = []
+    },
+    setFailLogState(state){
+        state.authenticated = false
     },
     setLogMsg(state, logMsg){
         state.authenticationMsg = logMsg
@@ -138,6 +142,17 @@ const mutations = {
     },
     deletePost(state, postid){
         state.ownersPost = state.ownersPost.filter(post => post.post_id !== postid)
+    },
+    setDashboardAvailable(state, bool){
+        state.dashboard_available = bool
+    },
+    resetDashboardAvailable(state){
+        state.dashboard_available = null
+    },
+    editCurrentUserProfileState(state, data){
+        state.firstname = data.fname
+        state.lastname = data.lname
+        state.email = data.email
     }
 }
 
@@ -159,6 +174,12 @@ const actions = {
                 }
             }
         })
+    },
+    checkDashboardAvailability(context){
+        context.commit('setDashboardAvailable', !!context.getters.isUserConnected)
+    },
+    resetDashboardAvailability(context){
+        context.commit('resetDashboardAvailable')
     },
     getArticlesList(context){
         axios.get(apiURL+'/getPosts', {withCredentials: true})
@@ -225,7 +246,7 @@ const actions = {
         .then(response => {
             commit('setEditProfileStatus', response.data)
             if(response.data.success){
-                dispatch('checkUserIsAlreadyConnected') // In order to update data if data was updated serverside
+                commit('editCurrentUserProfileState', newProfileInfo)
             }
         })
         .catch(err => { 
@@ -378,6 +399,9 @@ const getters = {
     },
     getMapInfo(state){
         return state.mapInfo
+    },
+    getDashboardAvailability(state){
+        return state.dashboard_available
     }
 }
 

@@ -2,7 +2,13 @@
   <div>
     <Navbar></Navbar>
     <div class="profile-container">
-        <ProfileViewer :profile="getProfileInformations" />
+        <ProfileViewer  :username="username" 
+                        :firstname="firstname" 
+                        :lastname="lastname" 
+                        :email="email"
+                        :isOwner="isOwner"
+                        :isRenter="isRenter"
+        />
     </div>
     <Footer />
   </div>
@@ -18,6 +24,12 @@ export default {
   components: {Navbar, ProfileViewer, Footer},
   data(){
     return {
+      username: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      isOwner: false,
+      isRenter: false,
       unwatch: () => null,
     }
   },
@@ -25,20 +37,22 @@ export default {
     const username = this.$route.params.username
     this.$store.dispatch("getProfileInfo", username)
     this.unwatch = this.$store.watch(() => this.$store.getters.getProfileStatus, (newValue) => {
-      console.log("VALUE MODIFIED!!!: ", newValue);
-      if(newValue == false){
+      if(newValue){
+        this.username = this.$store.getters.getProfileInformations.username
+        this.firstname = this.$store.getters.getProfileInformations.firstname
+        this.lastname = this.$store.getters.getProfileInformations.lastname
+        this.email = this.$store.getters.getProfileInformations.email
+        this.isOwner = this.$store.getters.getProfileInformations.isOwner
+        this.isRenter = this.$store.getters.getProfileInformations.isRenter
+      } else {
         this.$router.replace('/')
         this.$store.dispatch("resetProfileViewer")
-        }
+      }
     })
-  },
-  computed: {
-    getProfileInformations(){
-      return this.$store.getters.getProfileInformations
-    }
   },
   beforeDestroy() {
     this.unwatch()
+    this.$store.dispatch("resetProfileViewer")
   }
 }
 </script>

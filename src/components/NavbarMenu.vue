@@ -5,7 +5,7 @@
                 <h2 class="navbar-menutop-title">MyGym</h2>
             </div>
             <ol>
-                <router-link class="navbar-router-link" :to="{name: 'home_home'}">
+                <router-link v-if="isConnected" class="navbar-router-link" :to="{name: 'home_home'}">
                     <li class="navbar-element">
                         <font-awesome-icon :icon="['fas', 'user-edit']" class="navbar-logo" />
                         <p>Dashboard</p>
@@ -15,7 +15,19 @@
                     <font-awesome-icon :icon="['fas', 'info-circle']" class="navbar-logo" />
                     <p>About us</p>
                 </li>
-                <li class="navbar-element" @click="disconnectUser">
+                <router-link v-if="!isConnected" class="navbar-router-link" :to="{name: 'login'}">
+                    <li class="navbar-element">
+                        <font-awesome-icon :icon="['fas', 'sign-in-alt']" class="navbar-logo" />
+                        <p>Login</p>
+                    </li>
+                </router-link>
+                <router-link v-if="!isConnected" class="navbar-router-link" :to="{name: 'register_choice'}">
+                    <li class="navbar-element">
+                        <font-awesome-icon :icon="['fas', 'user-plus' ]" class="navbar-logo" />
+                        <p>Sign up</p>
+                    </li>
+                </router-link>
+                <li v-if="isConnected" class="navbar-element" @click="disconnectUser">
                     <font-awesome-icon :icon="['fas', 'info-circle']" class="navbar-logo" />
                     <p>Disconnect</p>
                 </li>
@@ -31,9 +43,14 @@
 <script>
 export default {
     name: 'navbarmenu',
+    computed: {
+        isConnected(){
+            return this.$store.getters.isUserConnected
+        }
+    },
     methods: {
         insideClick(){
-            // Nothing really
+            // Nothing currently really
         },
         outsideClick(e){
             // When clicking outside window, focus is lost, so we fix this by doing this
@@ -41,13 +58,13 @@ export default {
                 this.$emit('closeMenu')
             }
         },
-        disconnectUser(){
+        disconnectUser(){ // Disconnect user!
             this.$store.dispatch('logoutUser')
             this.$emit('closeMenu')
         }
     },
     mounted() {
-        this.$refs.navbarmenucore.focus();
+        this.$refs.navbarmenucore.focus(); // Apply focus on the sidebar in order to close it when we click outside of it
     }
 }
 </script>

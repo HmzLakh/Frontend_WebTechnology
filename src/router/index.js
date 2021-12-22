@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '../store';
 // Components
 import Homepage from '../views/Homepage.vue'
 import Dashboardpage from '../views/Dashboardpage.vue'
@@ -29,6 +30,9 @@ const routes = [
       name: 'home',
       path: '/home',
       component: Dashboardpage,
+      meta: {
+        needsLogin: true
+      },
       children: [
          {
            name: 'home_home',
@@ -54,12 +58,18 @@ const routes = [
     {
       name: 'login',
       path: '/login',
-      component: Loginpage
+      component: Loginpage,
+      meta: {
+        needsLogout: true
+      },
     },
     {
       name: 'register',
       path: '/register',
       component: Registerpage,
+      meta: {
+        needsLogout: true
+      },
       children: [
         {
           name: 'register_choice',
@@ -101,6 +111,28 @@ const router = new VueRouter({
     //mode: "history",
     base: process.env.BASE_URL,
     routes
+});
+
+// We use this in order to avoid user access pages that he are not supposed to access
+router.beforeResolve((to, from, next) => {
+  if (to.matched.some(record => record.meta.needsLogin)) {
+    if (!store.getters.isUserConnected) {
+      next({ name: 'root' });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+  if(to.matched.some(record => record.meta.needsLogout)){
+    if (store.getters.isUserConnected) {
+      next({ name: 'root' });
+    } else {
+      next();
+    }
+  } else {
+    next()
+  }
 });
 
 export default router;

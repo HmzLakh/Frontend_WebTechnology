@@ -12,25 +12,7 @@ import LoginContainer from '../components/login_components/LoginContainer.vue'
 
 export default {
   name: 'loginpage',
-  components: {LoginContainer},
-  data (){
-    return {
-      unwatch: () => null
-    }
-  },
-  mounted() {
-    if(this.$store.getters.isUserConnected){
-      this.$router.replace('/')
-    }
-    this.unwatch = this.$store.watch(() => this.$store.getters.isUserConnected, (newValue) => {
-      if(newValue){
-        this.$router.replace('/')
-      }
-    })
-  },
-  beforeDestroy() {
-    this.unwatch()
-  }
+  components: {LoginContainer}
 }
 </script>
 

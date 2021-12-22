@@ -19,7 +19,7 @@
                     </div>
                 </router-link>
             </ul>
-            <div v-if="!isConnected" class="responsive-menu">
+            <div v-if="!isConnected" @click="openMenu" class="responsive-menu">
                 <font-awesome-icon :icon="['fas', 'bars']" />
             </div>
         </nav>

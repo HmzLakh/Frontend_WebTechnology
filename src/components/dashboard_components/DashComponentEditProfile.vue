@@ -1,10 +1,10 @@
 <template>
     <div>
-        <ConfirmationBox :open="confirmationOpenOverlay" text="Are you sure you want to submit your modifications?" @close="closeConfirmationOverlay" @yes="submitConfirmationOverlay" />
+        <ConfirmationBox :open="confirmationOpenOverlay" text="Are you sure you want to submit your modifications?" @close="closeConfirmationOverlay" @yes="submitConfirmationOverlay" @exitedOverlay="closeConfirmationOverlay"/>
         <div id="editcomponent">
             <div class="edit-pic-container">
-                <div class="image-location">
-                    <img :src="`https://www.gravatar.com/avatar/${getGravatarHash}?s=200`" alt="Profile picture">
+                <div class="image-location" @click="openGravatar">
+                    <img :src="profileImageURL" alt="Profile picture">
                     <div class="image-edit-container">
                         <p class="image-edit-txt">Edit profile</p>
                     </div>
@@ -33,6 +33,7 @@
                         <td><input class="input-edit" type="password" v-model="password" placeholder="password"/></td>
                     </tr>
                 </table>
+                <p class="editprofile-pwd-msg">(Dont edit password if you don't want to change it)</p>
                 <div class="edit-errormsg" v-if="errorMsg !== null">
                     <p>{{ errorMsg }}</p>
                 </div>
@@ -65,15 +66,14 @@ export default {
             confirmationOpenOverlay: false,
             errorMsg: null,
             successMsg: "Profile edited successfully!",
-            showSuccess: false
+            showSuccess: false,
+            profileImageURL: null,
+            defaultpassword: '*-*-*-*--*-*-*-*-*-*-*' // Default passsword
         }
     },
     computed: {
         getEditProfileStatus(){
             return this.$store.getters.getEditProfileStatus
-        },
-        getGravatarHash(){
-            return md5(this.$store.getters.getUserProfile.is_renter)
         }
     },
     watch: {
@@ -84,16 +84,18 @@ export default {
                 this.showSuccess = true
             } else { // Error occured when profile edited
                 this.errorMsg = this.$store.getters.getEditProfileMsgError
-                console.log("PROFILE ERROR WHEN EDIT! ", this.errorMsg);
             }
             this.$store.dispatch('resetEditProfile')
         }
     },
     mounted() {
-        //default password
-        this.password = 'falsepasswordlol'
-        // Create method in order to reset data when needed!
+        // Init data
         this.initUserInformations()
+        // Gravatar image from email of user
+        this.$nextTick(() => {
+            const email = this.$store.getters.getUserProfile.email
+            this.profileImageURL = `https://www.gravatar.com/avatar/${md5(email)}?s=200` 
+        })
     },
     methods: {
         initUserInformations(){
@@ -103,6 +105,7 @@ export default {
             this.email = info.email
             this.isRenter = info.is_renter
             this.isOwner = info.is_owner
+            this.password = this.defaultpassword
         },
         closeConfirmationOverlay(){
             this.confirmationOpenOverlay = false
@@ -117,7 +120,7 @@ export default {
                 is_renter: this.$store.getters.getUserProfile.is_renter,
                 is_owner: this.$store.getters.getUserProfile.is_owner
             }
-            if(updateProfile.password == 'falsepasswordlol'){
+            if(updateProfile.password == this.defaultpassword){ // If password is unchanged, dont send it to backend
                 delete updateProfile.password
             }
             console.log("Sending: ", updateProfile);
@@ -125,10 +128,23 @@ export default {
             this.closeConfirmationOverlay()
         },
         openSubmitOverlay(){
-            this.errorMsg = null
-            this.showSuccess = false
-            this.$store.dispatch('resetEditProfile')
-            this.confirmationOpenOverlay = true
+            // Check edit form here
+            if(this.firstname.length < 4 || this.lastname.length < 4){
+                this.errorMsg = "Firstname or lastname must be at least 4 characters"
+            } else if(this.password.length !== this.defaultpassword.length && this.defaultpassword.includes(this.password) && this.password.length > 6){
+                this.errorMsg = "Password must be at least 6 characters and cannot be equal to the defaullt one!"
+            } else if (!(this.firstname.length > 0 && this.lastname.length > 0 && this.email.length > 0 && this.password.length > 0)) {
+                this.errorMsg = "One of the fields cannot be empty!"
+            } else {
+                console.log("=> ", this.email.indexOf("@"), " => ", this.email.indexOf("."));
+                this.errorMsg = null
+                this.showSuccess = false
+                this.$store.dispatch('resetEditProfile')
+                this.confirmationOpenOverlay = true
+            }
+        },
+        openGravatar(){ // Open gravatar for client
+            window.open("https://fr.gravatar.com/");
         }
     }
 }
@@ -261,5 +277,12 @@ export default {
     font-size: 12px;
     color: green;
     font-style: italic;
+}
+
+.editprofile-pwd-msg {
+    color: red;
+    font-style: italic;
+    font-family: nunito;
+    font-size:11px;
 }
 </style>

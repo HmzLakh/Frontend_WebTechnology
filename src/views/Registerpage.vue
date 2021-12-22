@@ -10,26 +10,7 @@
 <script>
 
 export default {
-  name: 'registerpage',
-  data() {
-      return {
-        unwatch: () => null,
-        choosen: false
-      }
-  },
-  mounted() {
-    if(this.$store.getters.isUserConnected){
-      this.$router.replace('/')
-    }
-    this.unwatch = this.$store.watch(() => this.$store.getters.isUserConnected, (newValue) => {
-      if(newValue){
-        this.$router.replace('/')
-      }
-    })
-  },
-  beforeDestroy() {
-    this.unwatch()
-  }
+  name: 'registerpage'
 }
 </script>
 

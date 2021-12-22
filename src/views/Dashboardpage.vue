@@ -17,24 +17,12 @@
                     <p>Edit profile</p>
                 </li>
             </router-link>
-            <!-- router-link class="dash-router-link" :to="{name: 'home_edit'}">
-                <li class="dash-element">
-                    <font-awesome-icon :icon="['fas', 'search-location']" class="dash-logo" />
-                    <p>My reviews</p>
-                </li>
-            </router-link -->
             <router-link class="dash-router-link" :to="{name: 'home_post'}" v-if="this.$store.getters.getUserProfile.is_owner">
                 <li class="dash-element">
                     <font-awesome-icon :icon="['fas', 'building']" class="dash-logo" />
                     <p>My posts</p>
                 </li>
             </router-link>
-            <!-- router-link class="dash-router-link" :to="{name: 'home_appointment'}" v-if="this.$store.getters.getUserProfile.is_renter">
-                <li class="dash-element">
-                    <font-awesome-icon :icon="['fas', 'calendar-alt']" class="dash-logo" />
-                    <p>My reservations</p>
-                </li>
-            </router-link -->
           </ol>
         </div>
         <div class="dash-inner">
@@ -54,22 +42,29 @@ export default {
   components: { Navbar, Footer },
   data(){
     return {
-      unwatch: () => null
+      unwatch: () => null,
+      unwatchLogin: () => null
     }
   },
   mounted() {
-    // Logic in order to avoid that users that arent logged in, access this page!
-    if(!(this.$store.getters.isUserConnected)){
-      this.$router.replace('/')
-    }
+    // Check if user is always connected!
     this.unwatch = this.$store.watch(() => this.$store.getters.isUserConnected, (newValue) => {
       if(!newValue){
         this.$router.replace('/')
       }
     })
+    // Check if dashboard informatoins is available
+    this.unwatch = this.$store.watch(() => this.$store.getters.getDashboardAvailability, (newValue) => {
+      if(!newValue){
+        this.$store.dispatch('resetDashboardAvailability')
+        this.$router.replace('/')
+      }
+    })
+    this.$store.dispatch('checkDashboardAvailability')
   },
   beforeDestroy() {
     this.unwatch()
+    this.unwatchLogin()
   }
 }
 </script>

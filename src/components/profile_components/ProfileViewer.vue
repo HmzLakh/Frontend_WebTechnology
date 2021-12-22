@@ -7,11 +7,11 @@
       </div>
       <div class="profile-informations-container">
           <ProfileCard title="Type of profile">
-              <p v-if="profile.isOwner">This user is a owner</p>
-              <p v-if="profile.isRenter">This user is a renter</p>
+              <p v-if="isOwner">This user is a owner</p>
+              <p v-if="isRenter">This user is a renter</p>
           </ProfileCard>
           <ProfileCard title="Profile information">
-              <p>{{ profile.firstname }} {{ profile.lastname }} has {{ profile.email }} as email</p>
+              <p>{{ firstname }} {{ lastname }} has {{ email }} as email</p>
           </ProfileCard>
       </div>
   </div>
@@ -23,11 +23,11 @@ import md5 from 'md5';
 
 export default {
   name: 'profileviewer',
-  props: ['profile'],
+  props: ['username', 'firstname', 'lastname', 'email', 'isOwner', 'isRenter'],
   components: {ProfileCard},
   computed: {
       getGravatarHash(){
-          return md5(this.profile.email)
+          return md5(this.email)
     }
   }
 }
