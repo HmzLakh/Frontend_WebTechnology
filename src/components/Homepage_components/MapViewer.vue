@@ -2,18 +2,6 @@
   <div id="map">
     <l-map v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions" style="height: 95%" @update:center="centerUpdate" @update:zoom="zoomUpdate">
       <l-tile-layer :url="url" :attribution="attribution" />
-      <!--l-marker :lat-lng="withTooltip">
-        <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div @click="innerClick">
-            I am a tooltip
-            <p v-show="showParagraph">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
-              Donec finibus semper metus id malesuada.
-            </p>
-          </div>
-        </l-tooltip>
-      </l-marker-->
       <l-marker v-for="(item, i) in getMapInfo" :key="i" :lat-lng="item.maploc">
         <l-popup>
           <div class="mapviewer-popup">
@@ -49,7 +37,7 @@ export default {
   },
   data () {
     return {
-      zoom: 13,
+      zoom: 9,
       center: latLng(50.8503396, 	4.3517103),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: 'MyGym',
@@ -58,7 +46,7 @@ export default {
       currentZoom: 11.5,
       currentCenter: latLng(50.81322, 4.3517103),
       showParagraph: true,
-      mapOptions: { zoomSnap: 0.5 },
+      mapOptions: { zoomSnap: 1 },
       showMap: true
     }
   },

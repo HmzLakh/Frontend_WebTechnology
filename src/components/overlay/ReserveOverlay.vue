@@ -8,7 +8,7 @@
                         <td class="reserve-td">
                             <select v-model="fieldChoice" class="reserve-selectedtag-input"> <!-- get list from server for here -->
                                 <option value="" disabled selected>Select field</option>
-                                <option v-for="(f, i) in fields" :key="i">{{ f.name }} ({{ f.sports_names }})</option>
+                                <option v-for="(f, i) in fields" :key="i">{{ f.name }} ({{ f.sports_names }} / € {{ f.price }} per hour / {{ f.recommended_number_of_persons }} recommended amount people)</option>
                             </select>
                         </td>
                     </tr>

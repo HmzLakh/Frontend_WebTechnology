@@ -29,7 +29,7 @@
     </div>
     <p class="registerpageowner-errormsg">{{ errorMsg }}</p>
     <input class="register-btn" type="button" value="Register" @click="submitForm">
-    <p class="login-link">Already registered? {{ errorMsg }} <router-link class="link" :to="{name: 'login'}">Login</router-link></p>
+    <p class="login-link">Already registered?<router-link class="link" :to="{name: 'login'}">Login</router-link></p>
     </div>
   </div>
 </template>

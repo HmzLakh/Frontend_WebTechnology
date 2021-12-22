@@ -264,6 +264,7 @@ const actions = {
         })
     },
     postEditedUserPost(context, post){
+        console.log("Send edited post: ", post)
         axios.put(apiURL+'/post', qs.stringify(post), {withCredentials: true})
         .then(response => {
             // Show overlay to user?

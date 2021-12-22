@@ -5,7 +5,8 @@
       </div>
       <div class="article-desc">
           <h1 class="article-title">{{ name }}</h1>
-        <router-link :to="{ name: 'profile', params: {username: author} }"><h6 class="article-creator">By {{ author }}</h6></router-link>
+          <p class="article-tags">{{ tags }}</p>
+          <router-link :to="{ name: 'profile', params: {username: author} }"><h6 class="article-creator">By {{ author }}</h6></router-link>
           <div class="review">
               <font-awesome-icon v-for="index in review" :key="index" class="star-on" :icon="['fas', 'star']" />
               <font-awesome-icon v-for="index in (5-review)" :key="index+review+review" :icon="['fas', 'star']" />
@@ -109,5 +110,13 @@ export default {
 
 .view-button-image {
     color: white;
+}
+
+.article-tags {
+    padding-left: 10px;
+    color: gray;
+    font-family: Nunito;
+    font-style: italic;
+    font-size: 9px;
 }
 </style>

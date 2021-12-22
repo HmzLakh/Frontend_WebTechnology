@@ -151,13 +151,12 @@
 <script>
 import TagComponent from '../TagComponent.vue'
 import UploadComponent from '../UploadFileComponent.vue'
-import { VueTags } from 'vue-tags-component';
 import { SweetModal, SweetModalTab } from 'sweet-modal-vue'
 import axios from 'axios'
 
 export default {
     name: 'overlay-editpost',
-    components: { SweetModal, VueTags, TagComponent, UploadComponent, SweetModalTab },
+    components: { SweetModal, TagComponent, UploadComponent, SweetModalTab },
     props: {open: {
                 required: true
             }, 
