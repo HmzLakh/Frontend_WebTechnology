@@ -16,6 +16,7 @@ import Registerpage_owner from '../components/register_components/Registerpage_o
 import Registerpage_renter from '../components/register_components/Registerpage_renter.vue'
 import Articlepage from '../views/Articlepage.vue'
 import Profilepage from '../views/Profilepage.vue'
+import Aboutpage from '../views/Aboutpage.vue'
 
 Vue.use(VueRouter)
 
@@ -98,6 +99,11 @@ const routes = [
       path: '/profile/:username',
       component: Profilepage,
       props: true
+    },
+    {
+      name: 'about',
+      path: '/about',
+      component: Aboutpage
     },
     {
       name: 'notFound',

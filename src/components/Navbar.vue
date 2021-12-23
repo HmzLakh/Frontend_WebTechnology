@@ -11,7 +11,9 @@
                 <div class="userprofile" @click="openMenu"></div>
             </div>
             <ul class="menu" v-else>
-                <li class="menu-style"><p class="link">About us</p></li>
+                <router-link class="link" :to="{name: 'about'}">
+                    <li class="menu-style"><p class="link">About us</p></li>
+                </router-link>
                 <li class="menu-style"><router-link class="link" :to="{name: 'login'}">Login</router-link></li>
                 <router-link class="link" :to="{name: 'register_choice'}">
                     <div class="signup">

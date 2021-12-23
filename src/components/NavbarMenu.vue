@@ -11,10 +11,12 @@
                         <p>Dashboard</p>
                     </li>
                 </router-link>
-                <li class="navbar-element">
-                    <font-awesome-icon :icon="['fas', 'info-circle']" class="navbar-logo" />
-                    <p>About us</p>
-                </li>
+                <router-link class="navbar-router-link" :to="{name: 'about'}">
+                    <li class="navbar-element">
+                        <font-awesome-icon :icon="['fas', 'info-circle']" class="navbar-logo" />
+                        <p>About us</p>
+                    </li>
+                </router-link>
                 <router-link v-if="!isConnected" class="navbar-router-link" :to="{name: 'login'}">
                     <li class="navbar-element">
                         <font-awesome-icon :icon="['fas', 'sign-in-alt']" class="navbar-logo" />

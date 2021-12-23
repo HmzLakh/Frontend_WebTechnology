@@ -376,7 +376,6 @@ export default {
                 } else if(this.FormValidationEditFieldSport(editPost.fields.concat(editPost.addedfields))){
                     this.errorMsg = "Each field needs to have atleast one sport selected!"
                 } else { // If everything is fine, send the request!
-                    console.log("Sending to backend ", editPost);
                     this.$store.dispatch("postEditedUserPost", editPost);
                     this.$store.dispatch("getOwnersPost")
                     this.$refs.overlay.close()
@@ -411,12 +410,10 @@ export default {
                 } else { // If everything is fine, send the request!
                     this.$store.dispatch("postUserPost", newPost)
                     this.$store.dispatch("getOwnersPost")
-                    console.log("Sending to backend ", newPost);
                     this.$refs.overlay.close()
                     this.overlayClosed()
                 }
             }
-            //this.$router.push('/home/post').catch(err => {})
         },
         FormValidationFieldSport(newPost){
             let result = false
