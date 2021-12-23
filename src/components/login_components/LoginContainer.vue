@@ -34,7 +34,8 @@ export default {
             username: '',
             password: '',
             errorMsg: null,
-            loading: false
+            loading: false,
+            timeOut: null
         }
     },
     methods: {
@@ -47,7 +48,7 @@ export default {
             }
             if(this.password.length == 0){
                 this.$refs.passwordLabel.classList.add("not-valid")
-                setTimeout(() => {
+                this.timeOut = setTimeout(() => {
                     this.$refs.passwordLabel.classList.remove("not-valid")
                 }, 1500)
             }
@@ -56,7 +57,15 @@ export default {
                 password: this.password
             }
 
-            if(this.username.length !== 0 && this.password.length !== 0) {
+            if(this.username.length === 0 && this.password.length === 0) {
+                this.errorMsg = "Username and/or password is required"
+            } else if (this.username.length < 3){
+                this.errorMsg = "Username must be at least 3 characters"
+            } else if (this.username.length > 16){
+                this.errorMsg = "Username must be lesser than 16 characters"
+            } else if (this.password.length < 3){
+                this.errorMsg = "Password must be atleast 3 characters"
+            } else {
                 this.$store.dispatch('postLoginCredentials', login_model)
                 this.loading = true
             }
@@ -79,6 +88,9 @@ export default {
             this.loading = false
             this.$store.dispatch('resetLoginState')
         }
+    },
+    beforeDestroy() {
+        clearTimeout(this.timeOut);
     }
 }
 </script>

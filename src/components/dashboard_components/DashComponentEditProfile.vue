@@ -123,7 +123,6 @@ export default {
             if(updateProfile.password == this.defaultpassword){ // If password is unchanged, dont send it to backend
                 delete updateProfile.password
             }
-            console.log("Sending: ", updateProfile);
             this.$store.dispatch('postEditProfile', updateProfile)
             this.closeConfirmationOverlay()
         },
@@ -136,7 +135,6 @@ export default {
             } else if (!(this.firstname.length > 0 && this.lastname.length > 0 && this.email.length > 0 && this.password.length > 0)) {
                 this.errorMsg = "One of the fields cannot be empty!"
             } else {
-                console.log("=> ", this.email.indexOf("@"), " => ", this.email.indexOf("."));
                 this.errorMsg = null
                 this.showSuccess = false
                 this.$store.dispatch('resetEditProfile')

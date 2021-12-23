@@ -60,9 +60,27 @@ export default {
         'username': this.username,
         'password': this.password,
         'is_owner': true
+      } 
+      if(owner_model.fname.length === 0 || owner_model.fname.length > 16){ // Form validation
+        this.errorMsg = "Firstname cannot be empty or more than 16 characters"
+      } else if (owner_model.lname.length === 0 || owner_model.lname.length > 16) {
+        this.errorMsg = "Lastname cannot be empty or more than 16 characters"
+      } else if (!this.validateEmail(owner_model.email)){
+        this.errorMsg = "Email is not valid"
+      } else if(owner_model.username.length < 3 || owner_model.username.length > 12){
+        this.errorMsg = "Username cannot be empty or more than 16 characters!"
+      } else if (owner_model.password.length < 3 || owner_model.password.length > 12){
+        this.errorMsg = "Password cannot be empty or more than 16 characters!"
+      } else {
+        this.$store.dispatch('postRegisterOwner', owner_model)
+        this.loading = true
       }
-      this.$store.dispatch('postRegisterOwner', owner_model)
-      this.loading = true
+    },
+    validateEmail(email){
+      if(email !== undefined){
+        return email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+      }
+      return false
     }
   },
   computed: {

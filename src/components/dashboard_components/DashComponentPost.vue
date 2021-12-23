@@ -62,7 +62,6 @@ export default {
     watch:{
         getOwnersPost: function(data){
             this.users_post = data
-            console.log("New value: ", data);
         },
         getCurrentActiveEditPostInformation: function(post){
             this.currentActivePost = post

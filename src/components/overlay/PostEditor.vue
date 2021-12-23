@@ -26,6 +26,7 @@
                         </td>
                     </tr>
                 </table>
+                <p v-if="errorMsg !== null" class="posteditor-errormsg">{{ errorMsg }}</p>
                 <div class="posteditor-btncontainer">
                     <button class="postedit-savebtn" @click="sendPost">Save</button>
                 </div>
@@ -211,7 +212,8 @@ export default {
             post_description: '',
             thumbnail: null,
             images: [],
-            phonenumber: ''
+            phonenumber: '',
+            errorMsg: null
         }
     },
     watch: { 
@@ -244,17 +246,32 @@ export default {
                     }
                 }
             }
-        },
-        getPost: function(newVal) {
-            console.log("GOT WHAT YOU WANTED A!", newVal);
         }
     },
     methods: {
-        handleImages(files) {
-            console.log(files)
-        },
         overlayClosed(){
             this.$emit('close')
+            this.errorMsg = null
+            // Reset
+            this.currentSelectedSport = null,
+            this.currentFieldId = null,
+            this.currentField = null,
+            this.fieldsArray = [],
+            this.deletedFieldsArray = [],
+            this.addedFieldsArray = [],
+            this.newFieldName = '',
+            this.fieldname = '',
+            this.recommended_people = 0,
+            this.price = 0,
+            this.tags = [],
+            this.unselected_tags = [],
+            this.post_title = '',
+            this.post_location = '',
+            this.post_description = '',
+            this.thumbnail = null,
+            this.images = [],
+            this.phonenumber = '',
+            this.errorMsg = null
         },
         addField(){
             if(this.newFieldName.length > 0){
@@ -276,10 +293,10 @@ export default {
         deleteField(field, idx){
             if(this.editor){
                 if(field.id !== undefined){
-                    this.fieldsArray = this.fieldsArray.filter(function(value, index, arr){ return index !== idx; });
+                    this.fieldsArray = this.fieldsArray.filter(function(value, index, arr){ return value.name !== field.name; });
                     this.deletedFieldsArray.push(field.id)
                 } else {
-                    this.fieldsArray = this.fieldsArray.filter(function(value, index, arr){ return index !== idx; });
+                    this.addedFieldsArray = this.addedFieldsArray.filter(function(value, index, arr){ return value.name !== field.name; });
                 }
             } else {
                 this.fieldsArray = this.fieldsArray.filter(function(value, index, arr){ return index !== idx; });
@@ -293,6 +310,9 @@ export default {
             this.price = item.price
             this.tags = item.tags
             this.unselected_tags = item.unselected_tags
+            for (const sport of this.tags) {
+                this.unselected_tags = this.unselected_tags.filter(x => x !== sport)
+            }
             this.$refs.fieldOverlay.open()
         },
         closeFieldOverlay(){
@@ -301,7 +321,13 @@ export default {
             this.currentField.price = this.price
             this.currentField.tags = this.tags
             this.currentField.unselected_tags = this.unselected_tags
-            this.fieldsArray[this.currentFieldId] = this.currentField
+            if(this.currentField.id !== undefined){
+                this.fieldsArray = this.fieldsArray.filter((value, index, arr) => { return value.name !== this.currentField.name; });
+                this.fieldsArray.push(this.currentField)
+            } else {
+                this.addedFieldsArray = this.addedFieldsArray.filter((value, index, arr) => { return value.name !== this.currentField.name; });
+                this.addedFieldsArray.push(this.currentField)
+            }
             this.currentField = null
             this.currentFieldId = null
         },
@@ -319,6 +345,7 @@ export default {
             this.tags = filteredList
         },
         sendPost(){
+            this.errorMsg = null
             if(this.editor){
                 const editPost = {
                     postid: this.postid,
@@ -332,8 +359,29 @@ export default {
                     images: this.images,
                     phonenumber: this.phonenumber
                 }
-                console.log("Sending edited post: ", editPost);
-                this.$store.dispatch("postEditedUserPost", editPost);
+                if(editPost.name.length < 4){ // Form validation!
+                    this.errorMsg = "Post title must be at least 4 characters"
+                } else if(editPost.location.length == 0){
+                    this.errorMsg = "Location cannot be empty!"
+                } else if(editPost.description.length == 0){
+                    this.errorMsg = "Description cannot be empty!"
+                } else if(editPost.thumbnail == null || editPost.thumbnail.length == 0){
+                    this.errorMsg = "Thumbnail cannot be empty!"
+                } else if(editPost.images.length == 0){
+                    this.errorMsg = "Please upload atleast one image!"
+                } else if(editPost.phonenumber.length < 4){
+                    this.errorMsg = "Phonenumber must be at least 4 charachter long"
+                } else if(editPost.fields.concat(editPost.addedfields).length == 0) {
+                    this.errorMsg = "You need to have atleast one field!"
+                } else if(this.FormValidationEditFieldSport(editPost.fields.concat(editPost.addedfields))){
+                    this.errorMsg = "Each field needs to have atleast one sport selected!"
+                } else { // If everything is fine, send the request!
+                    console.log("Sending to backend ", editPost);
+                    this.$store.dispatch("postEditedUserPost", editPost);
+                    this.$store.dispatch("getOwnersPost")
+                    this.$refs.overlay.close()
+                    this.overlayClosed()
+                }
             } else {
                 const newPost = {
                     name: this.post_title,
@@ -344,13 +392,53 @@ export default {
                     images: this.images,
                     phonenumber: this.phonenumber
                 }
-                console.log("Sending new post: ", newPost);
-                this.$store.dispatch("postUserPost", newPost)
+                if(newPost.name.length < 4){ // Form validation!
+                    this.errorMsg = "Post title must be at least 4 characters"
+                } else if(newPost.location.length == 0){
+                    this.errorMsg = "Location cannot be empty!"
+                } else if(newPost.description.length == 0){
+                    this.errorMsg = "Description cannot be empty!"
+                } else if(newPost.thumbnail == null || newPost.thumbnail.length == 0){
+                    this.errorMsg = "Thumbnail cannot be empty!"
+                } else if(newPost.images.length == 0){
+                    this.errorMsg = "Please upload atleast one image!"
+                } else if(newPost.phonenumber.length < 4){
+                    this.errorMsg = "Phonenumber must be at least 4 charachter long"
+                } else if(newPost.fields.length == 0) {
+                    this.errorMsg = "You need to have atleast one field!"
+                } else if(this.FormValidationFieldSport(newPost)){
+                    this.errorMsg = "Each field needs to have atleast one sport selected!"
+                } else { // If everything is fine, send the request!
+                    this.$store.dispatch("postUserPost", newPost)
+                    this.$store.dispatch("getOwnersPost")
+                    console.log("Sending to backend ", newPost);
+                    this.$refs.overlay.close()
+                    this.overlayClosed()
+                }
             }
-            this.$store.dispatch("getOwnersPost")
-            this.$refs.overlay.close()
-            this.overlayClosed()
-            this.$router.push('/home/post').catch(err => {})
+            //this.$router.push('/home/post').catch(err => {})
+        },
+        FormValidationFieldSport(newPost){
+            let result = false
+            if(newPost.fields.length > 0){
+                for (const field of newPost.fields) {
+                   if(field.tags.length == 0){
+                       result = true
+                   } 
+                }
+            }
+            return result
+        },
+        FormValidationEditFieldSport(fields){
+            let result = false
+            if(fields.length > 0){
+                for (const field of fields) {
+                   if(field.tags.length == 0){
+                       result = true
+                   } 
+                }
+            }
+            return result
         },
         uploadthumbnail(thumbnail){
             this.disableSaveButton()
@@ -361,9 +449,6 @@ export default {
                 }
                 this.enableSaveButton()
             })
-            .catch(err => {
-                console.log("Error while sending image:", err);
-            })
         },
         uploadMultipleImages(image){
             if(this.images.length < 6){
@@ -373,9 +458,6 @@ export default {
                         this.images.push(response.data.imageid)
                     }
                     this.enableSaveButton()
-                })
-                .catch(err => {
-                    console.log("Error while sending image:", err);
                 })
             }
         },
@@ -604,6 +686,7 @@ export default {
     padding: 10px;
     width: 100%;
     resize: vertical;
+    font-family: Nunito;
 }
 
 .posteditor-imgpreview {
@@ -664,5 +747,12 @@ export default {
     width: auto;
     height: auto;
     border: 1px solid silver;
+}
+
+.posteditor-errormsg {
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    color: red;
 }
 </style>

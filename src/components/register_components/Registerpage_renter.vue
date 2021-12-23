@@ -52,7 +52,8 @@ export default {
       birthdate: '1970-01-01',
       email: '',
       username: '',
-      password: ''
+      password: '',
+      defaultbirthdate: '1970-01-01'
     }
   },
   methods: {
@@ -66,8 +67,29 @@ export default {
         'password': this.password,
         'is_renter': true
       }
-      this.$store.dispatch('postRegisterRenter', renter_model)
-      this.loading = true
+      if(renter_model.fname.length === 0 || renter_model.fname.length > 16){ // Form validation
+        this.errorMsg = "Firstname cannot be empty or more than 16 characters"
+      } else if (renter_model.lname.length === 0 || renter_model.lname.length > 16) {
+        this.errorMsg = "Lastname cannot be empty or more than 16 characters"
+      } else if (!this.validateEmail(renter_model.email)){
+        this.errorMsg = "Email is not valid"
+      } else if(renter_model.dateofbirth === this.defaultbirthdate) {
+        this.errorMsg = "Don't forget your birthdate!"
+      } else if(renter_model.username.length < 3 || renter_model.username.length > 12){
+        this.errorMsg = "Username cannot be empty or more than 16 characters!"
+      } else if (renter_model.password.length < 3 || renter_model.password.length > 12){
+        this.errorMsg = "Password cannot be empty or more than 16 characters!"
+      } else {
+        this.$store.dispatch('postRegisterRenter', renter_model)
+        this.loading = true
+      }
+
+    },
+    validateEmail(email){
+      if(email !== undefined){
+        return email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+      }
+      return false
     }
   },
   computed: {
