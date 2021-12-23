@@ -1,17 +1,14 @@
 <template>
     <div class="singlepost">
-        <ConfirmBox :open="openConfirmationBox" text="Are you sure you want to delete this?" @close="close" @yes="yesEvent"></ConfirmBox>
-        <EditPost :editor="true" title="Edit post" :open="openOverlay" @close="closeEditor" :post="getCurrentSinglePost" :postid="postid"></EditPost>
+        <ConfirmBox :open="openConfirmationBox" text="Are you sure you want to delete this?" @close="close" @yes="yesEvent" />
         <div class="single-container">
-            <img :src="'http://localhost:5555/api/image/'+imageid" alt="Profile image">
+            <img :src="$store.getters.getAPIURL+'/image/'+imageid" alt="Profile image">
             <div class="single-overlay">
                 <p class="single-overlay-txt">{{ title }}</p>
             </div>
         </div>
         <div class="single-buttons">
-            <div @click="openOverlay = true" class="single-edit-btn">
-                <font-awesome-icon :icon="['fas', 'edit']" />
-            </div>
+            <slot></slot>
             <div @click="openConfirmationBox = true" class="single-delete-btn">
                 <font-awesome-icon :icon="['fas', 'trash']" />
             </div>
@@ -28,29 +25,19 @@ export default {
   props: ['title', 'imageid', 'postid'],
   data () {
       return {
-          openOverlay: false,
-          openConfirmationBox: false
+          openConfirmationBox: false,
+          posts: []
       }
   },
   mounted(){
       this.$store.dispatch('getOwnerSinglePost', this.postid)
   },
-  computed: {
-      getCurrentSinglePost(){
-          return this.$store.getters.getOwnersSinglePost[this.postid];
-      }
-  },
   methods: {
-      closeEditor(){
-          this.openOverlay = false
-      },
       close(){
             this.openConfirmationBox = false;
       },
       yesEvent(){
-          const delObject = {
-              postid: this.postid
-          }
+          const delObject = { postid: this.postid }
           this.$store.dispatch("deletePost", delObject)
           this.close()
       }

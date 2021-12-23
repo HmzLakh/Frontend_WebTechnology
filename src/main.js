@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faStar, faEye, faArrowAltCircleLeft, faSearch, faChevronLeft, faChevronRight, faThumbsUp, faThumbsDown, faBars, faHome, faSearchLocation, faUserEdit, faBuilding, faPlus, faEdit, faTrash, faCalendarAlt, faTimes, faSpinner, faInfoCircle, faSignInAlt, faUserPlus)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-
+// Creating our instance of vue
 new Vue({
   el: '#app',
   router,

@@ -21,7 +21,7 @@
                         <td class="posteditor-td">
                             <UploadComponent @uploadthumbnail="uploadthumbnail"></UploadComponent>
                             <div v-if="thumbnail !== null" class="posteditor-imgpreview-thumbnail">
-                                <img :src="'http://localhost:5555/api/image/'+thumbnail" alt="Thumbnail">
+                                <img :src="$store.getters.getAPIURL+'/image/'+thumbnail" alt="Thumbnail">
                             </div>
                         </td>
                     </tr>
@@ -170,31 +170,12 @@ export default {
                 default: false
             },
             post: {},
-            postid: {}
+            postid: {
+                default: null
+            }
     },
     mounted(){
         this.$store.dispatch('getSportTags')
-        if(this.editor){
-            console.log(this.post)
-            const fields = []
-            for (const field of this.post.fields) {
-                const parsedField = {
-                    id: field.field_id,
-                    name: field.name,
-                    recommended: field.recommended_number_of_persons,
-                    price: field.price,
-                    tags: (field.sports_names == null || field.sports_names == undefined) ? [] : field.sports_names,
-                    unselected_tags: this.$store.getters.getSportTags
-                }
-                fields.push(parsedField)
-            }
-            this.post_title = this.post.name
-            this.post_location = this.post.address
-            this.post_description = this.post.description
-            this.fieldsArray = fields
-            this.thumbnail = this.post.thumbnail
-            this.images = this.post.images.map(x => x.image_id)
-        }
     },
     computed: {
         getFields(){
@@ -203,6 +184,12 @@ export default {
             } else {
                 return this.fieldsArray
             }
+        },
+        getSportsTag(){
+            return this.$store.getters.getSportTags
+        },
+        getPost(){
+            return this.post
         }
     },
     data() {
@@ -231,7 +218,35 @@ export default {
         open: function(newVal, oldVal) {
             if(newVal == true) {
                 this.$refs.overlay.open()
+                // Also get informations needed in order to edit the post
+                if(this.editor){
+                    this.$store.dispatch('setOwnersCurrentActiveEditPost', this.postid)
+                    if(this.post !== undefined){
+                        const fields = []
+                        for (const field of this.post.fields) {
+                            const parsedField = {
+                                id: field.field_id,
+                                name: field.name,
+                                recommended: field.recommended_number_of_persons,
+                                price: field.price,
+                                tags: (field.sports_names == null || field.sports_names == undefined) ? [] : field.sports_names,
+                                unselected_tags: this.$store.getters.getSportTags
+                            }
+                            fields.push(parsedField)
+                        }
+                        this.post_title = this.post.name
+                        this.post_location = this.post.address
+                        this.post_description = this.post.description
+                        this.fieldsArray = fields
+                        this.thumbnail = this.post.thumbnail
+                        this.images = this.post.images.map(x => x.image_id)   
+                        this.phonenumber = this.post.phone_number
+                    }
+                }
             }
+        },
+        getPost: function(newVal) {
+            console.log("GOT WHAT YOU WANTED A!", newVal);
         }
     },
     methods: {
@@ -332,6 +347,7 @@ export default {
                 console.log("Sending new post: ", newPost);
                 this.$store.dispatch("postUserPost", newPost)
             }
+            this.$store.dispatch("getOwnersPost")
             this.$refs.overlay.close()
             this.overlayClosed()
             this.$router.push('/home/post').catch(err => {})

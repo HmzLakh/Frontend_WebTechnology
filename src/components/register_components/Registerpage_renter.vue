@@ -81,7 +81,7 @@ export default {
       if(register_succes === null) return;
 
       if(register_succes){
-        this.$router.replace('/')
+        this.$router.push({name: 'root'})
       } else {
         this.errorMsg = this.$store.getters.getRegisterMessageStatus
       }

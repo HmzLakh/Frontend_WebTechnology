@@ -50,14 +50,14 @@ export default {
     // Check if user is always connected!
     this.unwatch = this.$store.watch(() => this.$store.getters.isUserConnected, (newValue) => {
       if(!newValue){
-        this.$router.replace('/')
+        this.$router.push({name: 'root'})
       }
     })
     // Check if dashboard informatoins is available
     this.unwatch = this.$store.watch(() => this.$store.getters.getDashboardAvailability, (newValue) => {
       if(!newValue){
         this.$store.dispatch('resetDashboardAvailability')
-        this.$router.replace('/')
+        this.$router.push({name: 'root'})
       }
     })
     this.$store.dispatch('checkDashboardAvailability')

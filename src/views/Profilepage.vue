@@ -45,7 +45,7 @@ export default {
         this.isOwner = this.$store.getters.getProfileInformations.isOwner
         this.isRenter = this.$store.getters.getProfileInformations.isRenter
       } else {
-        this.$router.replace('/')
+        this.$router.push({name: 'root'})
         this.$store.dispatch("resetProfileViewer")
       }
     })

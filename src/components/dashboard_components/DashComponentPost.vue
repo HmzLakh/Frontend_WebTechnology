@@ -1,6 +1,7 @@
 <template>
     <div id="postcomponent">
-        <CreatePost title="Create post" :editor="false" :open="openPostCreator" @close="closePostCreator"></CreatePost>
+        <CreatePost title="Create post" :editor="false" :open="openPostCreator" @close="closePostCreator" />
+        <EditPost :editor="true" title="Edit post" :open="openPostEditor" :post="currentActivePost" :postid="currentActivePostID" @close="closePostEditor" />
         <div class="post-toolbar">
             <div class="add-post-btn" @click="openPostCreator = true" >
                 <font-awesome-icon :icon="['fas', 'plus']" class="add-post-logo" />
@@ -14,35 +15,70 @@
             </div>
         </div>
         <div class="post-container">
-            <div class="empty-posts" v-if="!getOwnersPost">
-                <p class="empty-txt">It's pretty empty around here...</p>
+            <div class="empty-posts" v-if="getOwnersPost.length < 1">
+                <p class="empty-txt">It's pretty empty around here, try to add a project!</p>
             </div>
             <div class="posts" v-else>
-                <Post v-for="(item, i) in getOwnersPost" :key="i" :title="item.title" :postid="item.post_id" :imageid="item.image"></Post>
+                <EditPostCard v-for="(item, i) in users_post" :key="i" :title="item.title" :postid="item.post_id" :imageid="item.image">
+                    <div @click="openEditor(item.post_id)" class="single-edit-btn">
+                        <font-awesome-icon :icon="['fas', 'edit']" />
+                    </div>
+                </EditPostCard>
             </div>
         </div>
     </div>
 </template>
 <script>
-import Post from './DashComponentSingleArticle.vue'
+import EditPostCard from './DashComponentSingleArticle.vue'
 import CreatePost from '../overlay/PostEditor.vue'
+import EditPost from '../overlay/PostEditor.vue'
 
 export default {
     name: 'dashcomponentpost',
-    components: { Post, CreatePost },
-    computed: {
-        getOwnersPost(){
-            return this.$store.getters.getOwnersPost
-        }
+    components: { EditPostCard, CreatePost, EditPost },
+    mounted(){
+        this.users_post = this.$store.getters.getOwnersPost
     },
     data () {
         return {
-            openPostCreator: false
+            openPostCreator: false,
+            openPostEditor: false,
+            currentActivePost: null,
+            currentActivePostID: -1,
+            users_post: []
+        }
+    },
+    computed: {
+        getOwnersPost(){
+            return this.$store.getters.getOwnersPost
+        },
+        getOpenPostEditor(){
+            return this.openPostEditor
+        },
+        getCurrentActiveEditPostInformation(){
+            return this.$store.getters.getCurrentActiveEditPostInformation
+        }
+    },
+    watch:{
+        getOwnersPost: function(data){
+            this.users_post = data
+            console.log("New value: ", data);
+        },
+        getCurrentActiveEditPostInformation: function(post){
+            this.currentActivePost = post
         }
     },
     methods: {
         closePostCreator(){
             this.openPostCreator = false;
+        },
+        closePostEditor(){
+            this.openPostEditor = false;
+        },
+        openEditor(postid){
+            this.currentActivePostID = postid
+            this.openPostEditor = true;
+            this.$store.dispatch('setOwnersCurrentActiveEditPost', this.currentActivePostID)
         }
     }
 }
@@ -160,11 +196,12 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    min-height: 300px;
     width: 100%;
 }
 
 .empty-txt {
+    font-family: NUnito;
     font-size: 16px;
 }
 
@@ -182,5 +219,22 @@ export default {
     .posts {
         justify-content: center;
     }
+}
+
+.single-edit-btn,
+.single-delete-btn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.single-edit-btn {
+    background: #00aaa0;
+}
+
+.single-edit-btn:hover {
+    background-color:  #8ed2c9;
 }
 </style>

@@ -15,7 +15,6 @@ import RegisterChoice from '../components/register_components/RegisterChoice.vue
 import Registerpage_owner from '../components/register_components/Registerpage_owner.vue'
 import Registerpage_renter from '../components/register_components/Registerpage_renter.vue'
 import Articlepage from '../views/Articlepage.vue'
-import NotFound from '../views/NotFound.vue'
 import Profilepage from '../views/Profilepage.vue'
 
 Vue.use(VueRouter)
@@ -103,7 +102,7 @@ const routes = [
     {
       name: 'notFound',
       path: '*',
-      component: NotFound
+      component: Homepage
     }
 ]
 

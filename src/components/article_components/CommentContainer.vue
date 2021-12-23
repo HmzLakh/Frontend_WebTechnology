@@ -1,7 +1,7 @@
 <template>
   <div id="comment-container">
     <h1 class="comment-title">Comments ({{ comments.length }})</h1>
-    <Comment v-for="(comment, index) in comments" :key="index" :reviewid="comment.review_id" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.date_time" :value="comment.content" :votes="comment.votes" :showLikeButtons="true" />
+    <Comment v-for="(comment, index) in comments" :key="index" :postid="postid" :reviewid="comment.review_id" :username="comment.username" :userpic="comment.userpic" :timestamp="comment.date_time" :value="comment.content" :votes="comment.votes" :rating="comment.rating" :showLikeButtons="true" />
     <InputComment :postid="postid" v-if="this.$store.getters.isUserConnected && this.$store.getters.getUserProfile.is_renter" />
   </div>
 </template>
@@ -18,10 +18,9 @@ export default {
 </script>
 <style scope>
 #comment-container {
-    min-height: 260px;
-    width: 100%;
-    border: 1px solid silver;
-    border-top: none;
+  width: 100%;
+  border: 1px solid silver;
+  border-top: none;
 }
 
 .add-comment {

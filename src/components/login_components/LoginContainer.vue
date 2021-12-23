@@ -72,7 +72,7 @@ export default {
             const isConnected = this.$store.getters.isUserConnected
             if (isConnected === null) return;
             if(isConnected) {
-                this.$router.replace('/')
+                this.$router.push({name: 'root'})
             } else {
                 this.errorMsg = this.$store.getters.getAuthenticationMessage
             }
@@ -86,7 +86,7 @@ export default {
 <style>
 #login-container {
     position: relative;
-    width: 400px;
+    width: min(400px, 100%);
     padding: 0 40px;
     background-color: #fff;
     border-radius: 30px;

@@ -1,16 +1,16 @@
 <template>
   <div id="articlepage">
       <Navbar />
-      <ReserveOverlay :sports="getPost.sports" :fields="getPost.fields" :open="openPopup" @close="closeReserveOverlay" />
+      <ReserveOverlay :sports="sports" :fields="fields" :open="openPopup" @close="closeReserveOverlay" />
       <div class="article-container">
-        <Slideshow :imglinks="getPost.images" />
+        <Slideshow :imglinks="images" />
           <div class="article-description">
-              <h1 class="article-name">{{ getPost.name }}</h1>
-              <h5>{{ getPost.address }}, {{getPost.phonenumber}}</h5>
-              <p class="articlepage-txt">{{ getPost.description }}</p>
+              <h1 class="article-name">{{ article_name }}</h1>
+              <h5>{{ article_address }}, {{ article_phonenumber }}</h5>
+              <p class="articlepage-txt">{{ article_description }}</p>
               <button class="reserve-button" @click="openPopup = true">Show fields</button>
           </div>
-          <CommentSection :postid="getPost.post_id" :comments="getPost.reviews" />
+          <CommentSection :postid="article_id" :comments="reviews" />
       </div>
       <Footer />
   </div>
@@ -29,15 +29,42 @@ export default {
   data () {
     return {
       openPopup: false,
+      article_id: -1,
+      article_name: 'Loading please wait...',
+      article_address: '',
+      article_phonenumber: '',
+      article_description: '',
+      reviews: [],
+      images: [],
+      sports: [],
+      fields: []
     }
   },
   mounted(){
     const paramid = this.$route.params.id
     this.$store.dispatch("getArticle", paramid)
+
   },
   computed: {
     getPost(){
       return this.$store.getters.getCurrentArticle
+    }
+  },
+  watch:{
+    getPost: function(data){
+      if(data.success !== undefined){ // This means we have an error with our request :(, so we redirect user to homepage
+        this.$router.push({name: 'root'})
+      } else {
+        this.images = data.images
+        this.sports = data.sports
+        this.fields = data.fields
+        this.reviews = data.reviews
+        this.article_name = data.name
+        this.article_address = data.address
+        this.article_phonenumber = data.phonenumber
+        this.article_description = data.description
+        this.article_id = data.post_id
+      }
     }
   },
   methods: {

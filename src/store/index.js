@@ -5,7 +5,6 @@ import qs from 'qs'
 
 const apiURL = "http://localhost:5555/api"
 axios.defaults.withCredentials = true;
-
 Vue.use(Vuex)
 
 const state = {
@@ -35,12 +34,12 @@ const state = {
     sportTags: [],
     ownersPost: [],
     ownersSinglePosts: [],
+    ownersCurrentActiveEditPost: null,
     mapInfo: []
 }
 
 const mutations = {
     setLogState(state, data){
-        console.log("Just connected: ", data);
         state.authenticated = data.logged
         state.userid = data.userid
         state.user_is_renter = data.is_renter
@@ -130,7 +129,13 @@ const mutations = {
         state.ownersPost = data
     },
     setOwnersSinglePost(state, data){
-        state.ownersSinglePosts[data.postid] = data.content
+        Vue.set(state.ownersSinglePosts, data.postid, data)
+    },
+    setOwnersCurrentActiveEditPost(state, postid){
+        state.ownersCurrentActiveEditPost = state.ownersSinglePosts[postid]
+    },
+    resetOwnersCurrentActiveEditPost(state){
+        state.ownersCurrentActiveEditPost = null
     },
     setMapInfo(state, data){
         const result = []
@@ -257,10 +262,8 @@ const actions = {
         context.commit("resetEditProfile")
     },
     postUserReview(context, comment){
-        console.log("Sended: ", comment);
         axios.post(apiURL+'/review', qs.stringify(comment), {withCredentials: true})
         .then(response => {
-            console.log(response.data);
             context.dispatch("getArticle", comment.post_id)
         })
     },
@@ -277,22 +280,14 @@ const actions = {
         axios.post(apiURL+'/post', qs.stringify(post), {withCredentials: true})
         .then(response => {
             // Show overlay to user?
-            console.log("Got as anwser (create): "+JSON.stringify(response.data));
             context.dispatch("getOwnersPost")
-        })
-        .catch(err => { 
-            console.log("Erreur when making request!");
         })
     },
     postEditedUserPost(context, post){
-        console.log("Send edited post: ", post)
         axios.put(apiURL+'/post', qs.stringify(post), {withCredentials: true})
         .then(response => {
             // Show overlay to user?
-            console.log("Got as anwser (edit): "+JSON.stringify(response.data));
-        })
-        .catch(err => { 
-            console.log("Erreur when making request!");
+            context.dispatch("getOwnersPost")
         })
     },
     getOwnersPost(context){
@@ -308,8 +303,15 @@ const actions = {
     getOwnerSinglePost(context, postid){
         axios.get(apiURL+'/getMyPost/'+postid, {withCredentials: true})
         .then(response => {
-            context.commit("setOwnersSinglePost", {postid, content: response.data})
+            response.data.postid = postid
+            context.commit("setOwnersSinglePost", response.data)
         })
+    },
+    setOwnersCurrentActiveEditPost(context, postid){
+        context.commit("setOwnersCurrentActiveEditPost", postid)
+    },
+    resetOwnersCurrentActiveEditPost(context){
+        context.commit("resetOwnersCurrentActiveEditPost")
     },
     getMapInfo(context){
         axios.get(apiURL+'/getmap', {withCredentials: true})
@@ -320,12 +322,11 @@ const actions = {
     deletePost(context, deleteObject){
         axios.post(apiURL+'/deletepost', qs.stringify(deleteObject), { withCredentials: true}).then(response => {
             context.commit("deletePost", deleteObject.postid)
-            console.log("Response ", response.data);
         })
     },
     sendOpinion(context, value){
         axios.post(apiURL+'/opinion', qs.stringify(value), { withCredentials: true}).then(response => {
-            console.log("Response ", response.data);
+            context.dispatch("getArticle", value.postid)
         })
     },
     resetRegisterStates(context){
@@ -402,6 +403,9 @@ const getters = {
     },
     getDashboardAvailability(state){
         return state.dashboard_available
+    },
+    getCurrentActiveEditPostInformation(state){
+        return state.ownersCurrentActiveEditPost
     }
 }
 
